@@ -1,0 +1,2012 @@
+{
+ "subjects": [
+  {
+   "id": "6dd5a36f-8463-589c-8f76-af2673b788eb",
+   "slug": "mathematics",
+   "name": {
+    "en": "Mathematics",
+    "fr": "Mathématiques"
+   },
+   "icon": "calculator"
+  },
+  {
+   "id": "76af4c0c-14e5-5868-9162-cf037ff3966c",
+   "slug": "physics",
+   "name": {
+    "en": "Physics",
+    "fr": "Physique"
+   },
+   "icon": "atom"
+  },
+  {
+   "id": "7865edd1-9870-56e0-88ea-4f86b98b3dba",
+   "slug": "chemistry",
+   "name": {
+    "en": "Chemistry",
+    "fr": "Chimie"
+   },
+   "icon": "flask"
+  },
+  {
+   "id": "33630e83-3ab4-5eac-b165-e905799a3e2f",
+   "slug": "biology",
+   "name": {
+    "en": "Biology",
+    "fr": "SVT (Sciences de la Vie et de la Terre)"
+   },
+   "icon": "leaf"
+  },
+  {
+   "id": "55bea193-ab17-5c06-ba02-4aeb2a2901b7",
+   "slug": "english-language",
+   "name": {
+    "en": "English Language",
+    "fr": "Anglais"
+   },
+   "icon": "book"
+  },
+  {
+   "id": "cd8a1d61-18ce-5321-a029-d828f5d1091a",
+   "slug": "french",
+   "name": {
+    "en": "French",
+    "fr": "Français"
+   },
+   "icon": "language"
+  },
+  {
+   "id": "957fe482-2801-5d6d-bbe5-3247c0123e95",
+   "slug": "history",
+   "name": {
+    "en": "History",
+    "fr": "Histoire"
+   },
+   "icon": "landmark"
+  },
+  {
+   "id": "f633a105-75d9-5f41-869c-f16b8f9e6a1f",
+   "slug": "geography",
+   "name": {
+    "en": "Geography",
+    "fr": "Géographie"
+   },
+   "icon": "globe"
+  },
+  {
+   "id": "0bb9a39a-226f-5885-b0cc-93b6b53b6899",
+   "slug": "philosophy",
+   "name": {
+    "en": "Philosophy",
+    "fr": "Philosophie"
+   },
+   "icon": "brain"
+  },
+  {
+   "id": "481ee63c-a275-5c57-b5a9-11bbab833bf1",
+   "slug": "literature",
+   "name": {
+    "en": "Literature in English",
+    "fr": "Littérature"
+   },
+   "icon": "feather"
+  },
+  {
+   "id": "71b87edf-6b24-50b5-a5ac-b169b715e80f",
+   "slug": "economics",
+   "name": {
+    "en": "Economics",
+    "fr": "Économie"
+   },
+   "icon": "chart"
+  },
+  {
+   "id": "f04af4de-63ec-55ff-bde0-3e3a593b1522",
+   "slug": "computer-science",
+   "name": {
+    "en": "Computer Science",
+    "fr": "Informatique"
+   },
+   "icon": "cpu"
+  }
+ ],
+ "exams": [
+  {
+   "id": "de368c80-a9df-5792-99cd-578d26bedfc5",
+   "slug": "cm-gce-o-level",
+   "countryCode": "CM",
+   "name": {
+    "en": "GCE Ordinary Level",
+    "fr": "GCE Ordinary Level"
+   },
+   "description": {
+    "en": "Cameroon GCE O Level (Anglophone subsystem). Candidates sit individual subjects graded A–E.",
+    "fr": "GCE O Level du Cameroun (sous-système anglophone)."
+   },
+   "level": "secondary",
+   "primaryLanguage": "en",
+   "program": {
+    "kind": "grades",
+    "grades": [
+     "A",
+     "B",
+     "C",
+     "D",
+     "E",
+     "U"
+    ],
+    "passGrades": [
+     "A",
+     "B",
+     "C"
+    ],
+    "minSubjects": 4,
+    "maxSubjects": 11
+   },
+   "tracks": [
+    {
+     "id": "0f9b4ce4-cb41-5347-9ea7-8658e76e77c7",
+     "slug": "general",
+     "name": {
+      "en": "General",
+      "fr": "Général"
+     },
+     "subjects": [
+      {
+       "subjectId": "6dd5a36f-8463-589c-8f76-af2673b788eb",
+       "coefficient": 1
+      },
+      {
+       "subjectId": "55bea193-ab17-5c06-ba02-4aeb2a2901b7",
+       "coefficient": 1
+      },
+      {
+       "subjectId": "76af4c0c-14e5-5868-9162-cf037ff3966c",
+       "coefficient": 1
+      },
+      {
+       "subjectId": "7865edd1-9870-56e0-88ea-4f86b98b3dba",
+       "coefficient": 1
+      },
+      {
+       "subjectId": "33630e83-3ab4-5eac-b165-e905799a3e2f",
+       "coefficient": 1
+      },
+      {
+       "subjectId": "957fe482-2801-5d6d-bbe5-3247c0123e95",
+       "coefficient": 1
+      },
+      {
+       "subjectId": "f633a105-75d9-5f41-869c-f16b8f9e6a1f",
+       "coefficient": 1
+      },
+      {
+       "subjectId": "71b87edf-6b24-50b5-a5ac-b169b715e80f",
+       "coefficient": 1
+      },
+      {
+       "subjectId": "cd8a1d61-18ce-5321-a029-d828f5d1091a",
+       "coefficient": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "25231ff5-14b3-51e9-be20-1fc1e60fb239",
+   "slug": "cm-gce-a-level",
+   "countryCode": "CM",
+   "name": {
+    "en": "GCE Advanced Level",
+    "fr": "GCE Advanced Level"
+   },
+   "description": {
+    "en": "Cameroon GCE A Level (Anglophone subsystem), taken at the end of high school.",
+    "fr": "GCE A Level du Cameroun (sous-système anglophone)."
+   },
+   "level": "upper-secondary",
+   "primaryLanguage": "en",
+   "program": {
+    "kind": "grades",
+    "grades": [
+     "A",
+     "B",
+     "C",
+     "D",
+     "E",
+     "O",
+     "F"
+    ],
+    "passGrades": [
+     "A",
+     "B",
+     "C",
+     "D",
+     "E"
+    ],
+    "minSubjects": 2,
+    "maxSubjects": 5
+   },
+   "tracks": [
+    {
+     "id": "8e9931dd-85d5-54a5-9311-0fd33566c569",
+     "slug": "science",
+     "name": {
+      "en": "Science",
+      "fr": "Sciences"
+     },
+     "subjects": [
+      {
+       "subjectId": "6dd5a36f-8463-589c-8f76-af2673b788eb",
+       "coefficient": 1
+      },
+      {
+       "subjectId": "76af4c0c-14e5-5868-9162-cf037ff3966c",
+       "coefficient": 1
+      },
+      {
+       "subjectId": "7865edd1-9870-56e0-88ea-4f86b98b3dba",
+       "coefficient": 1
+      },
+      {
+       "subjectId": "33630e83-3ab4-5eac-b165-e905799a3e2f",
+       "coefficient": 1
+      },
+      {
+       "subjectId": "f04af4de-63ec-55ff-bde0-3e3a593b1522",
+       "coefficient": 1
+      }
+     ]
+    },
+    {
+     "id": "a3f9d02f-6ec4-563a-a9d5-72341d8c3787",
+     "slug": "arts",
+     "name": {
+      "en": "Arts",
+      "fr": "Lettres"
+     },
+     "subjects": [
+      {
+       "subjectId": "481ee63c-a275-5c57-b5a9-11bbab833bf1",
+       "coefficient": 1
+      },
+      {
+       "subjectId": "957fe482-2801-5d6d-bbe5-3247c0123e95",
+       "coefficient": 1
+      },
+      {
+       "subjectId": "71b87edf-6b24-50b5-a5ac-b169b715e80f",
+       "coefficient": 1
+      },
+      {
+       "subjectId": "f633a105-75d9-5f41-869c-f16b8f9e6a1f",
+       "coefficient": 1
+      },
+      {
+       "subjectId": "cd8a1d61-18ce-5321-a029-d828f5d1091a",
+       "coefficient": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "4be1c186-dc45-5fb2-89aa-4266efe7e929",
+   "slug": "cm-probatoire",
+   "countryCode": "CM",
+   "name": {
+    "fr": "Probatoire",
+    "en": "Probatoire"
+   },
+   "description": {
+    "fr": "Examen de fin de Première (sous-système francophone), prérequis pour la Terminale.",
+    "en": "End of Première exam (Francophone subsystem), required to enter Terminale."
+   },
+   "level": "secondary",
+   "primaryLanguage": "fr",
+   "program": {
+    "kind": "average",
+    "scale": 20,
+    "passMark": 10,
+    "mentions": [
+     {
+      "min": 10,
+      "label": {
+       "fr": "Passable",
+       "en": "Pass"
+      }
+     },
+     {
+      "min": 12,
+      "label": {
+       "fr": "Assez bien",
+       "en": "Fairly good"
+      }
+     },
+     {
+      "min": 14,
+      "label": {
+       "fr": "Bien",
+       "en": "Good"
+      }
+     },
+     {
+      "min": 16,
+      "label": {
+       "fr": "Très bien",
+       "en": "Very good"
+      }
+     }
+    ]
+   },
+   "tracks": [
+    {
+     "id": "bddad6a8-d69f-5a41-8b7d-9d80ef717fc9",
+     "slug": "serie-c",
+     "name": {
+      "fr": "Série C",
+      "en": "Series C"
+     },
+     "subjects": [
+      {
+       "subjectId": "6dd5a36f-8463-589c-8f76-af2673b788eb",
+       "coefficient": 6
+      },
+      {
+       "subjectId": "76af4c0c-14e5-5868-9162-cf037ff3966c",
+       "coefficient": 3
+      },
+      {
+       "subjectId": "7865edd1-9870-56e0-88ea-4f86b98b3dba",
+       "coefficient": 2
+      },
+      {
+       "subjectId": "33630e83-3ab4-5eac-b165-e905799a3e2f",
+       "coefficient": 2
+      },
+      {
+       "subjectId": "cd8a1d61-18ce-5321-a029-d828f5d1091a",
+       "coefficient": 2
+      },
+      {
+       "subjectId": "55bea193-ab17-5c06-ba02-4aeb2a2901b7",
+       "coefficient": 2
+      }
+     ]
+    },
+    {
+     "id": "52586692-d106-561d-936f-7027fd1ae44c",
+     "slug": "serie-d",
+     "name": {
+      "fr": "Série D",
+      "en": "Series D"
+     },
+     "subjects": [
+      {
+       "subjectId": "6dd5a36f-8463-589c-8f76-af2673b788eb",
+       "coefficient": 4
+      },
+      {
+       "subjectId": "76af4c0c-14e5-5868-9162-cf037ff3966c",
+       "coefficient": 2
+      },
+      {
+       "subjectId": "7865edd1-9870-56e0-88ea-4f86b98b3dba",
+       "coefficient": 2
+      },
+      {
+       "subjectId": "33630e83-3ab4-5eac-b165-e905799a3e2f",
+       "coefficient": 2
+      },
+      {
+       "subjectId": "cd8a1d61-18ce-5321-a029-d828f5d1091a",
+       "coefficient": 2
+      },
+      {
+       "subjectId": "55bea193-ab17-5c06-ba02-4aeb2a2901b7",
+       "coefficient": 2
+      }
+     ]
+    },
+    {
+     "id": "1a2e9c5c-f206-5fc3-9c67-9f6760fe671f",
+     "slug": "serie-a4",
+     "name": {
+      "fr": "Série A4",
+      "en": "Series A4"
+     },
+     "subjects": [
+      {
+       "subjectId": "cd8a1d61-18ce-5321-a029-d828f5d1091a",
+       "coefficient": 4
+      },
+      {
+       "subjectId": "957fe482-2801-5d6d-bbe5-3247c0123e95",
+       "coefficient": 2
+      },
+      {
+       "subjectId": "f633a105-75d9-5f41-869c-f16b8f9e6a1f",
+       "coefficient": 2
+      },
+      {
+       "subjectId": "55bea193-ab17-5c06-ba02-4aeb2a2901b7",
+       "coefficient": 3
+      },
+      {
+       "subjectId": "6dd5a36f-8463-589c-8f76-af2673b788eb",
+       "coefficient": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "c5396e6b-800c-5abc-9c0a-332b7f7f9d33",
+   "slug": "cm-bac",
+   "countryCode": "CM",
+   "name": {
+    "fr": "Baccalauréat",
+    "en": "Baccalaureate"
+   },
+   "description": {
+    "fr": "Examen de fin d'études secondaires (sous-système francophone).",
+    "en": "End of secondary school exam (Francophone subsystem)."
+   },
+   "level": "upper-secondary",
+   "primaryLanguage": "fr",
+   "program": {
+    "kind": "average",
+    "scale": 20,
+    "passMark": 10,
+    "mentions": [
+     {
+      "min": 10,
+      "label": {
+       "fr": "Passable",
+       "en": "Pass"
+      }
+     },
+     {
+      "min": 12,
+      "label": {
+       "fr": "Assez bien",
+       "en": "Fairly good"
+      }
+     },
+     {
+      "min": 14,
+      "label": {
+       "fr": "Bien",
+       "en": "Good"
+      }
+     },
+     {
+      "min": 16,
+      "label": {
+       "fr": "Très bien",
+       "en": "Very good"
+      }
+     }
+    ]
+   },
+   "tracks": [
+    {
+     "id": "90210aaa-1b9c-5fc8-9fb8-b0eaec002cc3",
+     "slug": "serie-c",
+     "name": {
+      "fr": "Série C",
+      "en": "Series C"
+     },
+     "subjects": [
+      {
+       "subjectId": "6dd5a36f-8463-589c-8f76-af2673b788eb",
+       "coefficient": 7
+      },
+      {
+       "subjectId": "76af4c0c-14e5-5868-9162-cf037ff3966c",
+       "coefficient": 4
+      },
+      {
+       "subjectId": "7865edd1-9870-56e0-88ea-4f86b98b3dba",
+       "coefficient": 2
+      },
+      {
+       "subjectId": "33630e83-3ab4-5eac-b165-e905799a3e2f",
+       "coefficient": 2
+      },
+      {
+       "subjectId": "0bb9a39a-226f-5885-b0cc-93b6b53b6899",
+       "coefficient": 2
+      },
+      {
+       "subjectId": "cd8a1d61-18ce-5321-a029-d828f5d1091a",
+       "coefficient": 2
+      },
+      {
+       "subjectId": "55bea193-ab17-5c06-ba02-4aeb2a2901b7",
+       "coefficient": 2
+      }
+     ]
+    },
+    {
+     "id": "1127b20b-443d-557f-bf50-99ed8a311a97",
+     "slug": "serie-d",
+     "name": {
+      "fr": "Série D",
+      "en": "Series D"
+     },
+     "subjects": [
+      {
+       "subjectId": "6dd5a36f-8463-589c-8f76-af2673b788eb",
+       "coefficient": 4
+      },
+      {
+       "subjectId": "33630e83-3ab4-5eac-b165-e905799a3e2f",
+       "coefficient": 5
+      },
+      {
+       "subjectId": "76af4c0c-14e5-5868-9162-cf037ff3966c",
+       "coefficient": 3
+      },
+      {
+       "subjectId": "7865edd1-9870-56e0-88ea-4f86b98b3dba",
+       "coefficient": 2
+      },
+      {
+       "subjectId": "0bb9a39a-226f-5885-b0cc-93b6b53b6899",
+       "coefficient": 2
+      },
+      {
+       "subjectId": "cd8a1d61-18ce-5321-a029-d828f5d1091a",
+       "coefficient": 2
+      },
+      {
+       "subjectId": "55bea193-ab17-5c06-ba02-4aeb2a2901b7",
+       "coefficient": 2
+      }
+     ]
+    },
+    {
+     "id": "50d9fd3a-62ba-56b4-9976-51eb2e232e11",
+     "slug": "serie-a4",
+     "name": {
+      "fr": "Série A4",
+      "en": "Series A4"
+     },
+     "subjects": [
+      {
+       "subjectId": "0bb9a39a-226f-5885-b0cc-93b6b53b6899",
+       "coefficient": 5
+      },
+      {
+       "subjectId": "cd8a1d61-18ce-5321-a029-d828f5d1091a",
+       "coefficient": 4
+      },
+      {
+       "subjectId": "957fe482-2801-5d6d-bbe5-3247c0123e95",
+       "coefficient": 2
+      },
+      {
+       "subjectId": "f633a105-75d9-5f41-869c-f16b8f9e6a1f",
+       "coefficient": 2
+      },
+      {
+       "subjectId": "55bea193-ab17-5c06-ba02-4aeb2a2901b7",
+       "coefficient": 3
+      },
+      {
+       "subjectId": "6dd5a36f-8463-589c-8f76-af2673b788eb",
+       "coefficient": 1
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "chapters": [
+  {
+   "id": "b8330436-7f80-51be-b374-b3824d468670",
+   "trackId": "0f9b4ce4-cb41-5347-9ea7-8658e76e77c7",
+   "subjectId": "6dd5a36f-8463-589c-8f76-af2673b788eb",
+   "title": {
+    "en": "Quadratic equations",
+    "fr": "Équations du second degré"
+   },
+   "orderIndex": 0,
+   "lessons": [
+    {
+     "id": "1ac738da-e6b4-5537-9ef5-d4a070466c1d",
+     "title": {
+      "en": "Solving quadratic equations",
+      "fr": "Résoudre une équation du second degré"
+     },
+     "body": {
+      "en": "# Quadratic equations\n\nA quadratic equation has the form **ax² + bx + c = 0**, where a ≠ 0.\n\n## 1. Solving by factorisation\n\nIf the expression factorises, set each factor to zero:\n\nx² − 5x + 6 = 0 → (x − 2)(x − 3) = 0 → **x = 2 or x = 3**\n\n## 2. The quadratic formula\n\nWhen factorising is hard, use:\n\n**x = (−b ± √(b² − 4ac)) / 2a**\n\n## 3. The discriminant Δ = b² − 4ac\n\n- Δ > 0: two distinct real roots\n- Δ = 0: one repeated root\n- Δ < 0: no real roots\n\n## Worked example\n\nSolve 2x² + 3x − 2 = 0.\n\na = 2, b = 3, c = −2, so Δ = 9 + 16 = 25 and √Δ = 5.\n\nx = (−3 + 5)/4 = **1/2** or x = (−3 − 5)/4 = **−2**.\n\n## Useful facts\n\nFor roots x₁ and x₂: **x₁ + x₂ = −b/a** and **x₁ · x₂ = c/a**.\n\n> Exam tip: always check your roots by substituting them back into the equation.",
+      "fr": "# Équations du second degré\n\nUne équation du second degré s'écrit **ax² + bx + c = 0**, avec a ≠ 0.\n\n## 1. Résolution par factorisation\n\nSi l'expression se factorise, on annule chaque facteur :\n\nx² − 5x + 6 = 0 → (x − 2)(x − 3) = 0 → **x = 2 ou x = 3**\n\n## 2. La formule générale\n\n**x = (−b ± √(b² − 4ac)) / 2a**\n\n## 3. Le discriminant Δ = b² − 4ac\n\n- Δ > 0 : deux racines réelles distinctes\n- Δ = 0 : une racine double\n- Δ < 0 : aucune racine réelle\n\n## Exemple corrigé\n\nRésoudre 2x² + 3x − 2 = 0.\n\na = 2, b = 3, c = −2, donc Δ = 9 + 16 = 25 et √Δ = 5.\n\nx = (−3 + 5)/4 = **1/2** ou x = (−3 − 5)/4 = **−2**.\n\n## À retenir\n\nPour les racines x₁ et x₂ : **x₁ + x₂ = −b/a** et **x₁ · x₂ = c/a**.\n\n> Conseil d'examen : vérifiez toujours vos racines en les remplaçant dans l'équation."
+     },
+     "estimatedMinutes": 12
+    }
+   ],
+   "questions": [
+    {
+     "id": "c10ad4e6-b298-5b34-8a1d-2d344d569764",
+     "type": "single_choice",
+     "prompt": {
+      "en": "Solve x² − 7x + 12 = 0.",
+      "fr": "Résoudre x² − 7x + 12 = 0."
+     },
+     "difficulty": 1,
+     "options": [
+      {
+       "id": "38511f8b-020b-559c-97ff-55d170306520",
+       "text": {
+        "en": "x = 3 or x = 4",
+        "fr": "x = 3 ou x = 4"
+       },
+       "isCorrect": true
+      },
+      {
+       "id": "7b524195-f6bc-5082-a230-fcc85f0d854f",
+       "text": {
+        "en": "x = −3 or x = −4",
+        "fr": "x = −3 ou x = −4"
+       },
+       "isCorrect": false
+      },
+      {
+       "id": "5b58043d-7c53-5917-b71c-5a54ac9e6ad7",
+       "text": {
+        "en": "x = 2 or x = 6",
+        "fr": "x = 2 ou x = 6"
+       },
+       "isCorrect": false
+      },
+      {
+       "id": "bc14307c-c9e6-5bac-a47a-b05519af2530",
+       "text": {
+        "en": "x = 1 or x = 12",
+        "fr": "x = 1 ou x = 12"
+       },
+       "isCorrect": false
+      }
+     ],
+     "numericAnswer": null,
+     "numericTolerance": null,
+     "explanation": {
+      "en": "x² − 7x + 12 = (x − 3)(x − 4). Check: 3 + 4 = 7 and 3 × 4 = 12.",
+      "fr": "x² − 7x + 12 = (x − 3)(x − 4). Vérification : 3 + 4 = 7 et 3 × 4 = 12."
+     }
+    },
+    {
+     "id": "44242d03-659f-55af-8ce8-b35deb34ba74",
+     "type": "numeric",
+     "prompt": {
+      "en": "Calculate the discriminant of x² + 2x + 5.",
+      "fr": "Calculer le discriminant de x² + 2x + 5."
+     },
+     "difficulty": 2,
+     "options": [],
+     "numericAnswer": -16,
+     "numericTolerance": 0,
+     "explanation": {
+      "en": "Δ = b² − 4ac = 4 − 20 = −16.",
+      "fr": "Δ = b² − 4ac = 4 − 20 = −16."
+     }
+    },
+    {
+     "id": "1b8bd767-cfa9-5ca5-87d9-27ec2b97b121",
+     "type": "single_choice",
+     "prompt": {
+      "en": "If Δ < 0, the equation ax² + bx + c = 0 has…",
+      "fr": "Si Δ < 0, l'équation ax² + bx + c = 0 admet…"
+     },
+     "difficulty": 1,
+     "options": [
+      {
+       "id": "815113cc-318a-5805-b705-880a92f43f4e",
+       "text": {
+        "en": "no real roots",
+        "fr": "aucune racine réelle"
+       },
+       "isCorrect": true
+      },
+      {
+       "id": "7c7600b5-e285-523c-8d99-ffb88657c339",
+       "text": {
+        "en": "one repeated root",
+        "fr": "une racine double"
+       },
+       "isCorrect": false
+      },
+      {
+       "id": "e33bcc86-7213-590b-ba76-1600f97c6a10",
+       "text": {
+        "en": "two distinct real roots",
+        "fr": "deux racines réelles distinctes"
+       },
+       "isCorrect": false
+      },
+      {
+       "id": "3ef3f1f0-43ee-5c22-aa2a-2f98941b089f",
+       "text": {
+        "en": "infinitely many roots",
+        "fr": "une infinité de racines"
+       },
+       "isCorrect": false
+      }
+     ],
+     "numericAnswer": null,
+     "numericTolerance": null,
+     "explanation": {
+      "en": "The square root of a negative number is not real, so there are no real solutions.",
+      "fr": "La racine carrée d'un nombre négatif n'est pas réelle : il n'y a pas de solution réelle."
+     }
+    },
+    {
+     "id": "0ee6b337-7505-5bf5-b62e-1713d4fd0feb",
+     "type": "numeric",
+     "prompt": {
+      "en": "What is the sum of the roots of 2x² − 8x + 3 = 0?",
+      "fr": "Quelle est la somme des racines de 2x² − 8x + 3 = 0 ?"
+     },
+     "difficulty": 3,
+     "options": [],
+     "numericAnswer": 4,
+     "numericTolerance": 0,
+     "explanation": {
+      "en": "Sum of roots = −b/a = 8/2 = 4.",
+      "fr": "Somme des racines = −b/a = 8/2 = 4."
+     }
+    },
+    {
+     "id": "66b29408-80e4-59be-87b4-f9a1dc1d9e7a",
+     "type": "multiple_choice",
+     "prompt": {
+      "en": "Which equations have x = 2 as a root? Select all that apply.",
+      "fr": "Quelles équations admettent x = 2 comme racine ? Cochez toutes les bonnes réponses."
+     },
+     "difficulty": 3,
+     "options": [
+      {
+       "id": "abc00e4c-c13a-568f-bb3b-1ea0f67e7d59",
+       "text": {
+        "en": "x² − 4 = 0",
+        "fr": "x² − 4 = 0"
+       },
+       "isCorrect": true
+      },
+      {
+       "id": "64d5d09c-8d75-5d01-acac-710947588342",
+       "text": {
+        "en": "x² − 5x + 6 = 0",
+        "fr": "x² − 5x + 6 = 0"
+       },
+       "isCorrect": true
+      },
+      {
+       "id": "2175d81c-61ca-562a-866a-2e9a9ffd3894",
+       "text": {
+        "en": "x² + 4 = 0",
+        "fr": "x² + 4 = 0"
+       },
+       "isCorrect": false
+      },
+      {
+       "id": "caeb0dfe-de70-5215-82ad-4b5565547a8e",
+       "text": {
+        "en": "x² − 2x = 0",
+        "fr": "x² − 2x = 0"
+       },
+       "isCorrect": true
+      }
+     ],
+     "numericAnswer": null,
+     "numericTolerance": null,
+     "explanation": {
+      "en": "Substitute x = 2: 4 − 4 = 0, 4 − 10 + 6 = 0 and 4 − 4 = 0 all work; 4 + 4 = 8 ≠ 0.",
+      "fr": "En remplaçant x par 2 : 4 − 4 = 0, 4 − 10 + 6 = 0 et 4 − 4 = 0 ; mais 4 + 4 = 8 ≠ 0."
+     }
+    }
+   ]
+  },
+  {
+   "id": "a9867202-3ca2-54a2-9941-de392aef4d4f",
+   "trackId": "0f9b4ce4-cb41-5347-9ea7-8658e76e77c7",
+   "subjectId": "76af4c0c-14e5-5868-9162-cf037ff3966c",
+   "title": {
+    "en": "Speed, velocity and acceleration",
+    "fr": "Vitesse et accélération"
+   },
+   "orderIndex": 1,
+   "lessons": [
+    {
+     "id": "2cae5e02-6fdb-5f8e-8079-116e433182db",
+     "title": {
+      "en": "Describing motion",
+      "fr": "Décrire un mouvement"
+     },
+     "body": {
+      "en": "# Describing motion\n\n## Speed and velocity\n\n- **Speed** = distance ÷ time (a scalar, unit m/s).\n- **Velocity** is speed in a given direction (a vector).\n\n## Acceleration\n\nAcceleration is the rate of change of velocity:\n\n**a = (v − u) / t**, measured in **m/s²**.\n\n## Equations of uniformly accelerated motion\n\n- v = u + at\n- s = ut + ½at²\n- v² = u² + 2as\n\nwhere u is the initial velocity, v the final velocity, s the displacement and t the time.\n\n## Worked example\n\nA cyclist starts from rest and accelerates at 2 m/s² for 3 s.\nDistance: s = 0 × 3 + ½ × 2 × 3² = **9 m**.",
+      "fr": "# Décrire un mouvement\n\n## Vitesse\n\n- **Vitesse moyenne** = distance ÷ durée (en m/s).\n- Le **vecteur vitesse** possède en plus une direction et un sens.\n\n## Accélération\n\n**a = (v − u) / t**, en **m/s²**.\n\n## Mouvement uniformément accéléré\n\n- v = u + at\n- s = ut + ½at²\n- v² = u² + 2as\n\n## Exemple\n\nUn cycliste part du repos avec a = 2 m/s² pendant 3 s : s = ½ × 2 × 3² = **9 m**."
+     },
+     "estimatedMinutes": 10
+    }
+   ],
+   "questions": [
+    {
+     "id": "90c45378-5d1a-58a1-a7c0-01a85c3be3f8",
+     "type": "numeric",
+     "prompt": {
+      "en": "A bus travels 150 km in 2.5 hours. What is its average speed in km/h?",
+      "fr": "Un bus parcourt 150 km en 2,5 heures. Quelle est sa vitesse moyenne en km/h ?"
+     },
+     "difficulty": 1,
+     "options": [],
+     "numericAnswer": 60,
+     "numericTolerance": 0,
+     "explanation": {
+      "en": "150 ÷ 2.5 = 60 km/h.",
+      "fr": "150 ÷ 2,5 = 60 km/h."
+     }
+    },
+    {
+     "id": "1a37701b-d38a-50d1-844a-a580616a8d0d",
+     "type": "numeric",
+     "prompt": {
+      "en": "A car accelerates uniformly from rest to 20 m/s in 5 s. Find its acceleration in m/s².",
+      "fr": "Une voiture passe du repos à 20 m/s en 5 s. Calculer son accélération en m/s²."
+     },
+     "difficulty": 2,
+     "options": [],
+     "numericAnswer": 4,
+     "numericTolerance": 0,
+     "explanation": {
+      "en": "a = (20 − 0) / 5 = 4 m/s².",
+      "fr": "a = (20 − 0) / 5 = 4 m/s²."
+     }
+    },
+    {
+     "id": "8eac88c7-d316-50fe-a6ba-4d507c8af67c",
+     "type": "single_choice",
+     "prompt": {
+      "en": "What is the SI unit of acceleration?",
+      "fr": "Quelle est l'unité SI de l'accélération ?"
+     },
+     "difficulty": 1,
+     "options": [
+      {
+       "id": "ccd9171f-ce30-59b3-879f-66f9de71dc0a",
+       "text": {
+        "en": "m/s²",
+        "fr": "m/s²"
+       },
+       "isCorrect": true
+      },
+      {
+       "id": "e099cb0c-bc5f-5da0-8755-06fa729dda76",
+       "text": {
+        "en": "m/s",
+        "fr": "m/s"
+       },
+       "isCorrect": false
+      },
+      {
+       "id": "c37c05d8-0643-56f4-a3a0-40db939006ba",
+       "text": {
+        "en": "N",
+        "fr": "N"
+       },
+       "isCorrect": false
+      },
+      {
+       "id": "f2d06108-af89-5498-a003-82d6435e43e1",
+       "text": {
+        "en": "km/h",
+        "fr": "km/h"
+       },
+       "isCorrect": false
+      }
+     ],
+     "numericAnswer": null,
+     "numericTolerance": null,
+     "explanation": {
+      "en": "Acceleration is change of velocity (m/s) per second, so m/s².",
+      "fr": "C'est une variation de vitesse (m/s) par seconde, donc m/s²."
+     }
+    },
+    {
+     "id": "6445dd0b-c896-5e10-a6b9-b833977f3ddb",
+     "type": "true_false",
+     "prompt": {
+      "en": "True or false: velocity has both magnitude and direction.",
+      "fr": "Vrai ou faux : la vitesse vectorielle possède une valeur et une direction."
+     },
+     "difficulty": 1,
+     "options": [
+      {
+       "id": "9d9c3245-0a4f-5920-bc16-13a8335583b9",
+       "text": {
+        "en": "True",
+        "fr": "Vrai"
+       },
+       "isCorrect": true
+      },
+      {
+       "id": "4779f47a-9ec1-58af-b0a5-7044059c854f",
+       "text": {
+        "en": "False",
+        "fr": "Faux"
+       },
+       "isCorrect": false
+      }
+     ],
+     "numericAnswer": null,
+     "numericTolerance": null,
+     "explanation": {
+      "en": "Velocity is a vector quantity.",
+      "fr": "La vitesse vectorielle est un vecteur."
+     }
+    },
+    {
+     "id": "929f1a34-3f92-55d4-a716-c166fd17ad9d",
+     "type": "numeric",
+     "prompt": {
+      "en": "An object starts from rest with a = 2 m/s². How far (in m) does it travel in 3 s?",
+      "fr": "Un objet part du repos avec a = 2 m/s². Quelle distance (en m) parcourt-il en 3 s ?"
+     },
+     "difficulty": 3,
+     "options": [],
+     "numericAnswer": 9,
+     "numericTolerance": 0,
+     "explanation": {
+      "en": "s = ½ × 2 × 3² = 9 m.",
+      "fr": "s = ½ × 2 × 3² = 9 m."
+     }
+    }
+   ]
+  },
+  {
+   "id": "89d0248b-9fb3-5f15-b8fa-ebd46ba5cbd0",
+   "trackId": "8e9931dd-85d5-54a5-9311-0fd33566c569",
+   "subjectId": "6dd5a36f-8463-589c-8f76-af2673b788eb",
+   "title": {
+    "en": "Differentiation",
+    "fr": "Dérivation"
+   },
+   "orderIndex": 0,
+   "lessons": [
+    {
+     "id": "3ffe1c38-9d82-5e84-9884-4881fc864991",
+     "title": {
+      "en": "Rules of differentiation",
+      "fr": "Règles de dérivation"
+     },
+     "body": {
+      "en": "# Rules of differentiation\n\nThe derivative f'(x) measures the rate of change (gradient) of f at x.\n\n## Standard results\n\n| f(x) | f'(x) |\n|---|---|\n| xⁿ | n·xⁿ⁻¹ |\n| sin x | cos x |\n| cos x | −sin x |\n| eˣ | eˣ |\n| ln x | 1/x |\n\n## Rules\n\n- **Product:** (uv)' = u'v + uv'\n- **Quotient:** (u/v)' = (u'v − uv') / v²\n- **Chain:** d/dx f(g(x)) = f'(g(x)) · g'(x)\n\n## Stationary points\n\nSolve f'(x) = 0. Then use f''(x): positive → minimum, negative → maximum.\n\n## Example\n\ny = x² − 6x + 1 → y' = 2x − 6 = 0 → x = 3, and y'' = 2 > 0, so it is a **minimum**.",
+      "fr": "# Règles de dérivation\n\n| f(x) | f'(x) |\n|---|---|\n| xⁿ | n·xⁿ⁻¹ |\n| sin x | cos x |\n| cos x | −sin x |\n| eˣ | eˣ |\n| ln x | 1/x |\n\n- **Produit :** (uv)' = u'v + uv'\n- **Quotient :** (u/v)' = (u'v − uv') / v²\n- **Composée :** (f∘g)' = (f'∘g) · g'\n\n## Points stationnaires\n\nOn résout f'(x) = 0, puis on étudie le signe de f''(x)."
+     },
+     "estimatedMinutes": 15
+    }
+   ],
+   "questions": [
+    {
+     "id": "26d3d9d0-b9c0-589f-b575-9d014cf9b3dc",
+     "type": "single_choice",
+     "prompt": {
+      "en": "Differentiate x³ with respect to x.",
+      "fr": "Dériver x³ par rapport à x."
+     },
+     "difficulty": 1,
+     "options": [
+      {
+       "id": "bb724cc7-cb85-5b1c-9d1b-8ce556edf518",
+       "text": {
+        "en": "3x²",
+        "fr": "3x²"
+       },
+       "isCorrect": true
+      },
+      {
+       "id": "7d844b9b-0c07-5689-8ab4-7492a37da187",
+       "text": {
+        "en": "x²",
+        "fr": "x²"
+       },
+       "isCorrect": false
+      },
+      {
+       "id": "eb665e9e-1358-591f-8d58-87cc37428318",
+       "text": {
+        "en": "3x³",
+        "fr": "3x³"
+       },
+       "isCorrect": false
+      },
+      {
+       "id": "9359242f-18bd-5585-87d7-12a0d3eac70a",
+       "text": {
+        "en": "x⁴/4",
+        "fr": "x⁴/4"
+       },
+       "isCorrect": false
+      }
+     ],
+     "numericAnswer": null,
+     "numericTolerance": null,
+     "explanation": {
+      "en": "Power rule: n·xⁿ⁻¹ = 3x².",
+      "fr": "Règle de la puissance : n·xⁿ⁻¹ = 3x²."
+     }
+    },
+    {
+     "id": "a65b9356-4f4c-582d-b26d-a62c144be5e7",
+     "type": "numeric",
+     "prompt": {
+      "en": "If f(x) = 5x² − 3x, find f'(2).",
+      "fr": "Si f(x) = 5x² − 3x, calculer f'(2)."
+     },
+     "difficulty": 2,
+     "options": [],
+     "numericAnswer": 17,
+     "numericTolerance": 0,
+     "explanation": {
+      "en": "f'(x) = 10x − 3, so f'(2) = 17.",
+      "fr": "f'(x) = 10x − 3, donc f'(2) = 17."
+     }
+    },
+    {
+     "id": "ff1533e3-b1fa-5b02-903b-8ee853846f96",
+     "type": "single_choice",
+     "prompt": {
+      "en": "Differentiate sin(2x).",
+      "fr": "Dériver sin(2x)."
+     },
+     "difficulty": 3,
+     "options": [
+      {
+       "id": "817166f9-42d5-576b-9c31-0b05ecf5e6f6",
+       "text": {
+        "en": "2cos(2x)",
+        "fr": "2cos(2x)"
+       },
+       "isCorrect": true
+      },
+      {
+       "id": "6bd99f1c-c405-5401-9357-758242429048",
+       "text": {
+        "en": "cos(2x)",
+        "fr": "cos(2x)"
+       },
+       "isCorrect": false
+      },
+      {
+       "id": "284d692d-195f-5d22-92bd-74fb3ac16e02",
+       "text": {
+        "en": "−2cos(2x)",
+        "fr": "−2cos(2x)"
+       },
+       "isCorrect": false
+      },
+      {
+       "id": "e19e5cf3-037a-5493-9aaf-baa0fb1c4915",
+       "text": {
+        "en": "2sin(2x)",
+        "fr": "2sin(2x)"
+       },
+       "isCorrect": false
+      }
+     ],
+     "numericAnswer": null,
+     "numericTolerance": null,
+     "explanation": {
+      "en": "Chain rule: cos(2x) × d/dx(2x) = 2cos(2x).",
+      "fr": "Dérivée d'une composée : cos(2x) × 2 = 2cos(2x)."
+     }
+    },
+    {
+     "id": "48ea5262-94cc-5102-a7ac-78c0c410c714",
+     "type": "numeric",
+     "prompt": {
+      "en": "At what value of x does y = x² − 6x + 1 have a stationary point?",
+      "fr": "Pour quelle valeur de x la fonction y = x² − 6x + 1 a-t-elle un point stationnaire ?"
+     },
+     "difficulty": 2,
+     "options": [],
+     "numericAnswer": 3,
+     "numericTolerance": 0,
+     "explanation": {
+      "en": "y' = 2x − 6 = 0 gives x = 3.",
+      "fr": "y' = 2x − 6 = 0 donne x = 3."
+     }
+    }
+   ]
+  },
+  {
+   "id": "3f8db855-fb49-5090-842e-b3e431ed4777",
+   "trackId": "8e9931dd-85d5-54a5-9311-0fd33566c569",
+   "subjectId": "7865edd1-9870-56e0-88ea-4f86b98b3dba",
+   "title": {
+    "en": "The mole concept",
+    "fr": "La notion de mole"
+   },
+   "orderIndex": 1,
+   "lessons": [
+    {
+     "id": "eb0a95f0-5244-5658-93ee-419c7116e57f",
+     "title": {
+      "en": "Amount of substance",
+      "fr": "Quantité de matière"
+     },
+     "body": {
+      "en": "# The mole concept\n\nOne **mole** contains Avogadro's number of particles: **L ≈ 6.02 × 10²³ mol⁻¹**.\n\n## Key relationships\n\n- **n = m / M** (moles = mass ÷ molar mass)\n- **c = n / V** (concentration in mol/dm³, with V in dm³)\n- Number of particles = n × L\n\n## Molar mass\n\nAdd the relative atomic masses: M(CO₂) = 12 + 2 × 16 = **44 g/mol**.\n\n## Worked example\n\nHow many moles are in 36 g of water (M = 18 g/mol)? n = 36 / 18 = **2 mol**.\n\n> Remember: 1 dm³ = 1000 cm³.",
+      "fr": "# La mole\n\nUne **mole** contient **N_A ≈ 6,02 × 10²³** entités.\n\n- **n = m / M**\n- **C = n / V** (en mol/L)\n\nExemple : 36 g d'eau (M = 18 g/mol) → n = **2 mol**."
+     },
+     "estimatedMinutes": 12
+    }
+   ],
+   "questions": [
+    {
+     "id": "8961d9ea-447f-50a7-b568-c1c35d7cf34c",
+     "type": "numeric",
+     "prompt": {
+      "en": "How many moles are in 36 g of water? (M = 18 g/mol)",
+      "fr": "Combien de moles y a-t-il dans 36 g d'eau ? (M = 18 g/mol)"
+     },
+     "difficulty": 1,
+     "options": [],
+     "numericAnswer": 2,
+     "numericTolerance": 0,
+     "explanation": {
+      "en": "n = m/M = 36/18 = 2 mol.",
+      "fr": "n = m/M = 36/18 = 2 mol."
+     }
+    },
+    {
+     "id": "d24c5f05-8f5e-58e6-b390-2272716736ed",
+     "type": "numeric",
+     "prompt": {
+      "en": "Calculate the molar mass of CO₂ in g/mol. (C = 12, O = 16)",
+      "fr": "Calculer la masse molaire de CO₂ en g/mol. (C = 12, O = 16)"
+     },
+     "difficulty": 1,
+     "options": [],
+     "numericAnswer": 44,
+     "numericTolerance": 0,
+     "explanation": {
+      "en": "12 + 2 × 16 = 44 g/mol.",
+      "fr": "12 + 2 × 16 = 44 g/mol."
+     }
+    },
+    {
+     "id": "61e73cbb-4bee-5c1a-8c5b-b91228bf52ed",
+     "type": "single_choice",
+     "prompt": {
+      "en": "What is the approximate value of the Avogadro constant?",
+      "fr": "Quelle est la valeur approchée de la constante d'Avogadro ?"
+     },
+     "difficulty": 1,
+     "options": [
+      {
+       "id": "ea4c02ba-481b-5d85-a023-b617240ffe7e",
+       "text": {
+        "en": "6.02 × 10²³ mol⁻¹",
+        "fr": "6,02 × 10²³ mol⁻¹"
+       },
+       "isCorrect": true
+      },
+      {
+       "id": "8cd23c91-d7d5-5fc2-9ff1-88b72ace44b2",
+       "text": {
+        "en": "6.02 × 10⁻²³ mol⁻¹",
+        "fr": "6,02 × 10⁻²³ mol⁻¹"
+       },
+       "isCorrect": false
+      },
+      {
+       "id": "f475c9ed-5f8d-5f87-8841-cb745e233379",
+       "text": {
+        "en": "3.00 × 10⁸ mol⁻¹",
+        "fr": "3,00 × 10⁸ mol⁻¹"
+       },
+       "isCorrect": false
+      },
+      {
+       "id": "6f230fe3-757b-5fb7-9737-19c16a7f840a",
+       "text": {
+        "en": "1.60 × 10⁻¹⁹ mol⁻¹",
+        "fr": "1,60 × 10⁻¹⁹ mol⁻¹"
+       },
+       "isCorrect": false
+      }
+     ],
+     "numericAnswer": null,
+     "numericTolerance": null,
+     "explanation": {
+      "en": "L ≈ 6.02 × 10²³ particles per mole.",
+      "fr": "N_A ≈ 6,02 × 10²³ entités par mole."
+     }
+    },
+    {
+     "id": "186dba5b-30f4-54c9-86d5-91fdb6a8e9c7",
+     "type": "numeric",
+     "prompt": {
+      "en": "0.5 mol of NaCl is dissolved to make 250 cm³ of solution. What is the concentration in mol/dm³?",
+      "fr": "On dissout 0,5 mol de NaCl pour obtenir 250 mL de solution. Quelle est la concentration en mol/L ?"
+     },
+     "difficulty": 3,
+     "options": [],
+     "numericAnswer": 2,
+     "numericTolerance": 0,
+     "explanation": {
+      "en": "250 cm³ = 0.25 dm³, so c = 0.5 / 0.25 = 2 mol/dm³.",
+      "fr": "250 mL = 0,25 L, donc C = 0,5 / 0,25 = 2 mol/L."
+     }
+    }
+   ]
+  },
+  {
+   "id": "735037b0-3d27-509c-8650-bcdb8cf5549b",
+   "trackId": "bddad6a8-d69f-5a41-8b7d-9d80ef717fc9",
+   "subjectId": "6dd5a36f-8463-589c-8f76-af2673b788eb",
+   "title": {
+    "fr": "Polynômes du second degré",
+    "en": "Second-degree polynomials"
+   },
+   "orderIndex": 0,
+   "lessons": [
+    {
+     "id": "32f9be4f-7d97-56b5-81a6-02b467f44d65",
+     "title": {
+      "fr": "Forme canonique, discriminant et signe",
+      "en": "Canonical form, discriminant and sign"
+     },
+     "body": {
+      "fr": "# Polynômes du second degré\n\nUn trinôme s'écrit **P(x) = ax² + bx + c**, avec a ≠ 0.\n\n## Forme canonique\n\n**P(x) = a[(x + b/2a)² − Δ/4a²]** où **Δ = b² − 4ac**.\n\nExemple : x² + 4x + 1 = (x + 2)² − 3.\n\n## Racines\n\n- Δ > 0 : x₁ = (−b − √Δ)/2a et x₂ = (−b + √Δ)/2a\n- Δ = 0 : racine double x₀ = −b/2a\n- Δ < 0 : pas de racine réelle\n\n## Somme et produit\n\n**S = x₁ + x₂ = −b/a** et **P = x₁ · x₂ = c/a**.\n\n## Signe du trinôme\n\n- Si Δ < 0, P(x) est toujours du **signe de a**.\n- Si Δ > 0, P(x) est du signe de a **à l'extérieur** des racines, du signe contraire **entre** les racines.",
+      "en": "# Second-degree polynomials\n\n**P(x) = ax² + bx + c**, a ≠ 0, with discriminant **Δ = b² − 4ac**.\n\n- Canonical form: x² + 4x + 1 = (x + 2)² − 3.\n- Sum of roots −b/a, product c/a.\n- If Δ < 0, P(x) always has the **sign of a**.\n- If Δ > 0, P(x) has the sign of a outside the roots and the opposite sign between them."
+     },
+     "estimatedMinutes": 15
+    }
+   ],
+   "questions": [
+    {
+     "id": "6f468acd-8209-5289-a6c1-dc3c03eef219",
+     "type": "single_choice",
+     "prompt": {
+      "fr": "Résoudre x² − x − 6 = 0.",
+      "en": "Solve x² − x − 6 = 0."
+     },
+     "difficulty": 1,
+     "options": [
+      {
+       "id": "fde07307-42eb-51ac-8a19-b19fce31df44",
+       "text": {
+        "en": "x = −2 or x = 3",
+        "fr": "x = −2 ou x = 3"
+       },
+       "isCorrect": true
+      },
+      {
+       "id": "641802c1-84b6-5673-b12d-72b369110c85",
+       "text": {
+        "en": "x = 2 or x = −3",
+        "fr": "x = 2 ou x = −3"
+       },
+       "isCorrect": false
+      },
+      {
+       "id": "413c9977-24fc-513f-a8db-b35af0a9338d",
+       "text": {
+        "en": "x = 1 or x = 6",
+        "fr": "x = 1 ou x = 6"
+       },
+       "isCorrect": false
+      },
+      {
+       "id": "8da48101-c969-5d66-aa87-3c2b30cfa020",
+       "text": {
+        "en": "No real root",
+        "fr": "Pas de racine réelle"
+       },
+       "isCorrect": false
+      }
+     ],
+     "numericAnswer": null,
+     "numericTolerance": null,
+     "explanation": {
+      "fr": "Δ = 1 + 24 = 25, donc x = (1 ± 5)/2, soit −2 ou 3.",
+      "en": "Δ = 1 + 24 = 25, so x = (1 ± 5)/2, giving −2 or 3."
+     }
+    },
+    {
+     "id": "f157ea7d-47f5-5ebe-a668-62c8a998eb42",
+     "type": "single_choice",
+     "prompt": {
+      "fr": "Quel est le signe de P(x) = 2x² + x + 1 ?",
+      "en": "What is the sign of P(x) = 2x² + x + 1?"
+     },
+     "difficulty": 2,
+     "options": [
+      {
+       "id": "857ac4db-b340-5bde-a6a5-ec4577701cb7",
+       "text": {
+        "en": "Always strictly positive",
+        "fr": "Toujours strictement positif"
+       },
+       "isCorrect": true
+      },
+      {
+       "id": "2d6b586c-d2eb-5188-938a-7914f634ce3b",
+       "text": {
+        "en": "Always negative",
+        "fr": "Toujours négatif"
+       },
+       "isCorrect": false
+      },
+      {
+       "id": "b13219fc-c914-5d47-a504-cba46c81908c",
+       "text": {
+        "en": "Changes sign",
+        "fr": "Change de signe"
+       },
+       "isCorrect": false
+      },
+      {
+       "id": "6d0a544e-5c29-540b-ab62-9ce761685d6a",
+       "text": {
+        "en": "Zero at x = 1",
+        "fr": "S'annule en x = 1"
+       },
+       "isCorrect": false
+      }
+     ],
+     "numericAnswer": null,
+     "numericTolerance": null,
+     "explanation": {
+      "fr": "Δ = 1 − 8 = −7 < 0 : P(x) est toujours du signe de a = 2 > 0.",
+      "en": "Δ = 1 − 8 = −7 < 0, so P(x) always has the sign of a = 2 > 0."
+     }
+    },
+    {
+     "id": "ea0cf01d-e2a8-5012-9d2b-dc3658bafdd7",
+     "type": "single_choice",
+     "prompt": {
+      "fr": "Forme canonique de x² + 4x + 1 :",
+      "en": "Canonical form of x² + 4x + 1:"
+     },
+     "difficulty": 2,
+     "options": [
+      {
+       "id": "94e82ba5-d69e-5a04-a8bb-63591414b023",
+       "text": {
+        "en": "(x + 2)² − 3",
+        "fr": "(x + 2)² − 3"
+       },
+       "isCorrect": true
+      },
+      {
+       "id": "206e72f0-0b51-564a-b9fd-60714ad2e6c1",
+       "text": {
+        "en": "(x + 2)² + 1",
+        "fr": "(x + 2)² + 1"
+       },
+       "isCorrect": false
+      },
+      {
+       "id": "cc098b7b-ad5c-5d62-8825-6004d6b8bac5",
+       "text": {
+        "en": "(x − 2)² − 3",
+        "fr": "(x − 2)² − 3"
+       },
+       "isCorrect": false
+      },
+      {
+       "id": "3e81fcb3-5eba-5784-b667-6f9c3b3db727",
+       "text": {
+        "en": "(x + 4)² − 15",
+        "fr": "(x + 4)² − 15"
+       },
+       "isCorrect": false
+      }
+     ],
+     "numericAnswer": null,
+     "numericTolerance": null,
+     "explanation": {
+      "fr": "(x + 2)² = x² + 4x + 4, donc x² + 4x + 1 = (x + 2)² − 3.",
+      "en": "(x + 2)² = x² + 4x + 4, so subtract 3."
+     }
+    },
+    {
+     "id": "95ecdcb3-475f-5e29-b2e6-19bd2a97a0c2",
+     "type": "numeric",
+     "prompt": {
+      "fr": "Produit des racines de 3x² − 12x + 9 = 0 ?",
+      "en": "Product of the roots of 3x² − 12x + 9 = 0?"
+     },
+     "difficulty": 2,
+     "options": [],
+     "numericAnswer": 3,
+     "numericTolerance": 0,
+     "explanation": {
+      "fr": "P = c/a = 9/3 = 3 (racines 1 et 3).",
+      "en": "Product = c/a = 9/3 = 3 (roots 1 and 3)."
+     }
+    }
+   ]
+  },
+  {
+   "id": "623387e2-6546-52f5-8466-a28a66a915d6",
+   "trackId": "bddad6a8-d69f-5a41-8b7d-9d80ef717fc9",
+   "subjectId": "76af4c0c-14e5-5868-9162-cf037ff3966c",
+   "title": {
+    "fr": "Travail et puissance",
+    "en": "Work and power"
+   },
+   "orderIndex": 1,
+   "lessons": [
+    {
+     "id": "8bc2d5cb-8d5b-58bf-af4f-414cd3b72719",
+     "title": {
+      "fr": "Travail d'une force et puissance",
+      "en": "Work done by a force and power"
+     },
+     "body": {
+      "fr": "# Travail et puissance\n\n## Travail d'une force constante\n\n**W = F × d × cos α**, en **joules (J)**, où α est l'angle entre la force et le déplacement.\n\n- α = 0 : travail moteur maximal, W = F·d\n- α = 90° : **travail nul**\n- α > 90° : travail résistant (négatif)\n\n## Travail du poids\n\n**W = m × g × h** (h : dénivellation), positif à la descente.\n\n## Puissance\n\n**P = W / t**, en **watts (W)**.",
+      "en": "# Work and power\n\n- **W = F × d × cos α** (joules). A force perpendicular to the motion does **no work**.\n- Work done by weight: **W = m g h**.\n- Power: **P = W / t** (watts)."
+     },
+     "estimatedMinutes": 12
+    }
+   ],
+   "questions": [
+    {
+     "id": "ac022750-1843-5fc4-ad79-6518b6eb1cf6",
+     "type": "numeric",
+     "prompt": {
+      "fr": "Une force de 50 N déplace un objet de 4 m dans sa propre direction. Travail en J ?",
+      "en": "A 50 N force moves an object 4 m in its own direction. Work done in J?"
+     },
+     "difficulty": 1,
+     "options": [],
+     "numericAnswer": 200,
+     "numericTolerance": 0,
+     "explanation": {
+      "fr": "W = 50 × 4 × cos 0 = 200 J.",
+      "en": "W = 50 × 4 × cos 0 = 200 J."
+     }
+    },
+    {
+     "id": "4a70e8f7-03d7-5f17-89bf-2c1893eb4283",
+     "type": "single_choice",
+     "prompt": {
+      "fr": "Le travail d'une force perpendiculaire au déplacement est :",
+      "en": "The work done by a force perpendicular to the displacement is:"
+     },
+     "difficulty": 1,
+     "options": [
+      {
+       "id": "c884c7d1-b7d7-590f-bb54-748a362e99d3",
+       "text": {
+        "en": "Zero",
+        "fr": "Nul"
+       },
+       "isCorrect": true
+      },
+      {
+       "id": "884840c7-a9e9-50c2-a002-cee0a967c188",
+       "text": {
+        "en": "Maximal",
+        "fr": "Maximal"
+       },
+       "isCorrect": false
+      },
+      {
+       "id": "15d2ffd8-230e-580b-a38e-e284dcd9c530",
+       "text": {
+        "en": "Negative",
+        "fr": "Négatif"
+       },
+       "isCorrect": false
+      },
+      {
+       "id": "2e272366-1dcc-56d1-95f1-2dd875a8b9e9",
+       "text": {
+        "en": "Equal to F × d",
+        "fr": "Égal à F × d"
+       },
+       "isCorrect": false
+      }
+     ],
+     "numericAnswer": null,
+     "numericTolerance": null,
+     "explanation": {
+      "fr": "cos 90° = 0, donc W = 0.",
+      "en": "cos 90° = 0, so W = 0."
+     }
+    },
+    {
+     "id": "64d8712f-399c-5ab4-8087-170eb89eb809",
+     "type": "numeric",
+     "prompt": {
+      "fr": "Un moteur fournit un travail de 1200 J en 4 s. Puissance en W ?",
+      "en": "A motor does 1200 J of work in 4 s. Power in W?"
+     },
+     "difficulty": 2,
+     "options": [],
+     "numericAnswer": 300,
+     "numericTolerance": 0,
+     "explanation": {
+      "fr": "P = 1200 / 4 = 300 W.",
+      "en": "P = 1200 / 4 = 300 W."
+     }
+    }
+   ]
+  },
+  {
+   "id": "7a8f9820-c8e0-57b3-823a-43d756fa100b",
+   "trackId": "90210aaa-1b9c-5fc8-9fb8-b0eaec002cc3",
+   "subjectId": "6dd5a36f-8463-589c-8f76-af2673b788eb",
+   "title": {
+    "fr": "Suites numériques",
+    "en": "Sequences"
+   },
+   "orderIndex": 0,
+   "lessons": [
+    {
+     "id": "863747c5-bfb7-55de-b406-f70c67c8741c",
+     "title": {
+      "fr": "Suites arithmétiques et géométriques",
+      "en": "Arithmetic and geometric sequences"
+     },
+     "body": {
+      "fr": "# Suites arithmétiques et géométriques\n\n## Suite arithmétique de raison r\n\n- **uₙ = u₀ + n·r**\n- Somme de termes consécutifs : (nombre de termes) × (premier + dernier) / 2\n\n## Suite géométrique de raison q\n\n- **uₙ = u₀ · qⁿ**\n- Somme : u₀ (1 − qⁿ⁺¹)/(1 − q) si q ≠ 1\n\n## Convergence\n\nSi **|q| < 1**, alors qⁿ → 0 : la suite géométrique converge vers **0**.",
+      "en": "# Arithmetic and geometric sequences\n\n- Arithmetic: **uₙ = u₀ + n·r**\n- Geometric: **uₙ = u₀ · qⁿ**\n- If |q| < 1, a geometric sequence converges to 0."
+     },
+     "estimatedMinutes": 15
+    }
+   ],
+   "questions": [
+    {
+     "id": "5574e7c1-857b-5796-a6dd-c92198ec55e7",
+     "type": "numeric",
+     "prompt": {
+      "fr": "(uₙ) est arithmétique avec u₀ = 3 et r = 4. Calculer u₁₀.",
+      "en": "(uₙ) is arithmetic with u₀ = 3 and r = 4. Find u₁₀."
+     },
+     "difficulty": 1,
+     "options": [],
+     "numericAnswer": 43,
+     "numericTolerance": 0,
+     "explanation": {
+      "fr": "u₁₀ = 3 + 10 × 4 = 43.",
+      "en": "u₁₀ = 3 + 10 × 4 = 43."
+     }
+    },
+    {
+     "id": "af9a959b-9e12-59a3-8efb-41336defcc33",
+     "type": "numeric",
+     "prompt": {
+      "fr": "(vₙ) est géométrique avec v₀ = 2 et q = 3. Calculer v₄.",
+      "en": "(vₙ) is geometric with v₀ = 2 and q = 3. Find v₄."
+     },
+     "difficulty": 2,
+     "options": [],
+     "numericAnswer": 162,
+     "numericTolerance": 0,
+     "explanation": {
+      "fr": "v₄ = 2 × 3⁴ = 162.",
+      "en": "v₄ = 2 × 3⁴ = 162."
+     }
+    },
+    {
+     "id": "aed1c5b5-79e7-534c-af39-26b23ced5a55",
+     "type": "single_choice",
+     "prompt": {
+      "fr": "Une suite géométrique de raison q = 0,5 et de premier terme 8 :",
+      "en": "A geometric sequence with q = 0.5 and first term 8:"
+     },
+     "difficulty": 2,
+     "options": [
+      {
+       "id": "2ddefcc6-aa45-5bf7-8fef-bebe02d43b6e",
+       "text": {
+        "en": "Converges to 0",
+        "fr": "Converge vers 0"
+       },
+       "isCorrect": true
+      },
+      {
+       "id": "46621dce-c251-5e45-a2fe-0d3fd4892760",
+       "text": {
+        "en": "Converges to 8",
+        "fr": "Converge vers 8"
+       },
+       "isCorrect": false
+      },
+      {
+       "id": "ba660bcf-5411-53eb-9dd6-3d8f39d5a1f5",
+       "text": {
+        "en": "Diverges to +∞",
+        "fr": "Diverge vers +∞"
+       },
+       "isCorrect": false
+      },
+      {
+       "id": "fabdcbba-9f1a-5740-9c7e-3cc51cc47a91",
+       "text": {
+        "en": "Converges to 16",
+        "fr": "Converge vers 16"
+       },
+       "isCorrect": false
+      }
+     ],
+     "numericAnswer": null,
+     "numericTolerance": null,
+     "explanation": {
+      "fr": "|q| < 1 donc qⁿ → 0 et vₙ → 0.",
+      "en": "|q| < 1 so qⁿ → 0."
+     }
+    }
+   ]
+  },
+  {
+   "id": "cf51f09c-70bd-5c22-846c-658774a83d11",
+   "trackId": "1127b20b-443d-557f-bf50-99ed8a311a97",
+   "subjectId": "6dd5a36f-8463-589c-8f76-af2673b788eb",
+   "title": {
+    "fr": "Nombres complexes",
+    "en": "Complex numbers"
+   },
+   "orderIndex": 0,
+   "lessons": [
+    {
+     "id": "18eb21e8-812f-539d-a3b4-5f24627839f9",
+     "title": {
+      "fr": "Forme algébrique, module et conjugué",
+      "en": "Algebraic form, modulus and conjugate"
+     },
+     "body": {
+      "fr": "# Nombres complexes\n\nOn pose **i² = −1**. Tout complexe s'écrit **z = a + ib** (a = Re z, b = Im z).\n\n## Conjugué\n\n**z̄ = a − ib**, et z · z̄ = a² + b².\n\n## Module et argument\n\n- **|z| = √(a² + b²)**\n- Si z ≠ 0, un argument θ vérifie cos θ = a/|z| et sin θ = b/|z|.\n- Forme trigonométrique : **z = |z|(cos θ + i sin θ)**.\n\n## Exemples\n\n- |3 + 4i| = √(9 + 16) = **5**\n- (1 + i)² = 1 + 2i + i² = **2i**\n- arg(i) = **π/2**",
+      "en": "# Complex numbers\n\nWith **i² = −1**, every complex number is **z = a + ib**.\n\n- Conjugate: z̄ = a − ib.\n- Modulus: |z| = √(a² + b²), e.g. |3 + 4i| = 5.\n- (1 + i)² = 2i, and arg(i) = π/2."
+     },
+     "estimatedMinutes": 15
+    }
+   ],
+   "questions": [
+    {
+     "id": "aadba20f-b8d1-5d3e-87f6-890850fd9b26",
+     "type": "numeric",
+     "prompt": {
+      "fr": "Module de z = 3 + 4i ?",
+      "en": "Modulus of z = 3 + 4i?"
+     },
+     "difficulty": 1,
+     "options": [],
+     "numericAnswer": 5,
+     "numericTolerance": 0,
+     "explanation": {
+      "fr": "|z| = √(9 + 16) = 5.",
+      "en": "|z| = √(9 + 16) = 5."
+     }
+    },
+    {
+     "id": "580545b2-00fd-5504-bb0c-455a0f974f0b",
+     "type": "single_choice",
+     "prompt": {
+      "fr": "Conjugué de 2 − 5i :",
+      "en": "Conjugate of 2 − 5i:"
+     },
+     "difficulty": 1,
+     "options": [
+      {
+       "id": "191bb098-41fa-58ec-8aa6-5c8ac4a2f3b8",
+       "text": {
+        "en": "2 + 5i",
+        "fr": "2 + 5i"
+       },
+       "isCorrect": true
+      },
+      {
+       "id": "00248b1b-5126-55da-9447-9fa6b79de568",
+       "text": {
+        "en": "−2 + 5i",
+        "fr": "−2 + 5i"
+       },
+       "isCorrect": false
+      },
+      {
+       "id": "5823e9ad-4af0-5622-95c5-748ed44a42a2",
+       "text": {
+        "en": "−2 − 5i",
+        "fr": "−2 − 5i"
+       },
+       "isCorrect": false
+      },
+      {
+       "id": "1437580d-6cd6-5e11-8e70-645aa80f36b7",
+       "text": {
+        "en": "5 − 2i",
+        "fr": "5 − 2i"
+       },
+       "isCorrect": false
+      }
+     ],
+     "numericAnswer": null,
+     "numericTolerance": null,
+     "explanation": {
+      "fr": "On change le signe de la partie imaginaire.",
+      "en": "Change the sign of the imaginary part."
+     }
+    },
+    {
+     "id": "dab54115-4e30-5857-a114-3e524aa792cf",
+     "type": "single_choice",
+     "prompt": {
+      "fr": "(1 + i)² = ?",
+      "en": "(1 + i)² = ?"
+     },
+     "difficulty": 2,
+     "options": [
+      {
+       "id": "b889dcb3-a4d2-5eae-a3ef-16a829df7f26",
+       "text": {
+        "en": "2i",
+        "fr": "2i"
+       },
+       "isCorrect": true
+      },
+      {
+       "id": "2765cf3b-6a7e-522c-bbbf-a62fc5f7eceb",
+       "text": {
+        "en": "2",
+        "fr": "2"
+       },
+       "isCorrect": false
+      },
+      {
+       "id": "4e77c68c-0c2d-5c1f-adc1-194e602e7f86",
+       "text": {
+        "en": "2 + 2i",
+        "fr": "2 + 2i"
+       },
+       "isCorrect": false
+      },
+      {
+       "id": "4d7b0cab-40f7-5f7d-8d0f-9c3b14f154ef",
+       "text": {
+        "en": "0",
+        "fr": "0"
+       },
+       "isCorrect": false
+      }
+     ],
+     "numericAnswer": null,
+     "numericTolerance": null,
+     "explanation": {
+      "fr": "1 + 2i + i² = 1 + 2i − 1 = 2i.",
+      "en": "1 + 2i + i² = 1 + 2i − 1 = 2i."
+     }
+    },
+    {
+     "id": "702c4471-cf67-53f7-aea7-7de0adf95dbc",
+     "type": "single_choice",
+     "prompt": {
+      "fr": "Un argument de i est :",
+      "en": "An argument of i is:"
+     },
+     "difficulty": 2,
+     "options": [
+      {
+       "id": "075dbc82-62f7-5c59-b4ab-233fb6c8328e",
+       "text": {
+        "en": "π/2",
+        "fr": "π/2"
+       },
+       "isCorrect": true
+      },
+      {
+       "id": "9cfe2602-6aab-54c7-be2d-56f70f41361d",
+       "text": {
+        "en": "π",
+        "fr": "π"
+       },
+       "isCorrect": false
+      },
+      {
+       "id": "3fdff175-41c6-5b14-a180-156d5c0e42d7",
+       "text": {
+        "en": "0",
+        "fr": "0"
+       },
+       "isCorrect": false
+      },
+      {
+       "id": "4db3ba1c-10f8-5b66-b96e-3837c3cd98f0",
+       "text": {
+        "en": "−π/2",
+        "fr": "−π/2"
+       },
+       "isCorrect": false
+      }
+     ],
+     "numericAnswer": null,
+     "numericTolerance": null,
+     "explanation": {
+      "fr": "i = cos(π/2) + i sin(π/2).",
+      "en": "i = cos(π/2) + i sin(π/2)."
+     }
+    }
+   ]
+  },
+  {
+   "id": "89f4811c-144a-5d66-b732-083ce2985b25",
+   "trackId": "1127b20b-443d-557f-bf50-99ed8a311a97",
+   "subjectId": "33630e83-3ab4-5eac-b165-e905799a3e2f",
+   "title": {
+    "fr": "Génétique : les lois de Mendel",
+    "en": "Genetics: Mendel's laws"
+   },
+   "orderIndex": 1,
+   "lessons": [
+    {
+     "id": "4b192392-3fca-5290-b5f2-eccab515ba1b",
+     "title": {
+      "fr": "Monohybridisme",
+      "en": "Monohybrid crosses"
+     },
+     "body": {
+      "fr": "# Monohybridisme\n\n- Un **gène** existe sous plusieurs formes : les **allèles**.\n- **Homozygote** : deux allèles identiques (AA ou aa). **Hétérozygote** : deux allèles différents (Aa).\n- Un allèle **dominant** (A) s'exprime même en un seul exemplaire ; un allèle **récessif** (a) seulement chez aa.\n\n## Première loi : uniformité de la F1\n\nLe croisement de deux lignées pures différant par un caractère donne une F1 **uniforme** (tous Aa).\n\n## Deuxième loi : ségrégation\n\nF1 × F1 (Aa × Aa) donne en F2 : ¼ AA, ½ Aa, ¼ aa, soit **3/4 phénotype dominant et 1/4 récessif**.",
+      "en": "# Monohybrid crosses\n\n- **Homozygous**: two identical alleles; **heterozygous**: two different alleles.\n- Crossing two pure lines gives a **uniform F1** (all Aa).\n- Aa × Aa gives **3 dominant : 1 recessive** phenotypes in F2."
+     },
+     "estimatedMinutes": 12
+    }
+   ],
+   "questions": [
+    {
+     "id": "ec71133b-e1ac-5eee-819f-7f460bd89ca8",
+     "type": "single_choice",
+     "prompt": {
+      "fr": "Aa × Aa : quelle proportion de descendants a le phénotype récessif ?",
+      "en": "Aa × Aa: what proportion of offspring show the recessive phenotype?"
+     },
+     "difficulty": 2,
+     "options": [
+      {
+       "id": "1045450c-4612-53f9-9728-9575e30effba",
+       "text": {
+        "en": "1/4",
+        "fr": "1/4"
+       },
+       "isCorrect": true
+      },
+      {
+       "id": "32a5dc06-136b-588d-830d-a62374077699",
+       "text": {
+        "en": "1/2",
+        "fr": "1/2"
+       },
+       "isCorrect": false
+      },
+      {
+       "id": "00a24619-2ce3-541f-beb1-ecfbfd852306",
+       "text": {
+        "en": "3/4",
+        "fr": "3/4"
+       },
+       "isCorrect": false
+      },
+      {
+       "id": "bd6f8a93-b64e-5fe5-9fdb-65b09a8d09b8",
+       "text": {
+        "en": "0",
+        "fr": "0"
+       },
+       "isCorrect": false
+      }
+     ],
+     "numericAnswer": null,
+     "numericTolerance": null,
+     "explanation": {
+      "fr": "Seuls les aa (1/4) expriment le caractère récessif.",
+      "en": "Only aa offspring (1/4) show it."
+     }
+    },
+    {
+     "id": "7d33b071-b4d4-50e9-a774-7c85a6b5c3ff",
+     "type": "single_choice",
+     "prompt": {
+      "fr": "La F1 issue du croisement de deux lignées pures est :",
+      "en": "The F1 from crossing two pure lines is:"
+     },
+     "difficulty": 1,
+     "options": [
+      {
+       "id": "93e9388f-4ce8-549c-9a4d-07d25f3d7cf2",
+       "text": {
+        "en": "Uniform",
+        "fr": "Uniforme"
+       },
+       "isCorrect": true
+      },
+      {
+       "id": "da42e618-9a11-56b7-a1e5-0db988a7972b",
+       "text": {
+        "en": "3:1 ratio",
+        "fr": "En proportions 3:1"
+       },
+       "isCorrect": false
+      },
+      {
+       "id": "662d410d-1078-5523-a8e1-82ca867193b6",
+       "text": {
+        "en": "1:1 ratio",
+        "fr": "En proportions 1:1"
+       },
+       "isCorrect": false
+      },
+      {
+       "id": "52978d72-c5aa-5a86-a6ce-ce64938f0e79",
+       "text": {
+        "en": "Unpredictable",
+        "fr": "Imprévisible"
+       },
+       "isCorrect": false
+      }
+     ],
+     "numericAnswer": null,
+     "numericTolerance": null,
+     "explanation": {
+      "fr": "Première loi de Mendel : uniformité des hybrides de F1.",
+      "en": "Mendel's first law: F1 hybrids are uniform."
+     }
+    },
+    {
+     "id": "94d2ab72-4bba-5bb4-b707-581cdbe3e580",
+     "type": "multiple_choice",
+     "prompt": {
+      "fr": "Quels génotypes sont hétérozygotes ? (plusieurs réponses)",
+      "en": "Which genotypes are heterozygous? (select all)"
+     },
+     "difficulty": 2,
+     "options": [
+      {
+       "id": "4be56469-d70f-5a1b-acb8-dcafa434bb98",
+       "text": {
+        "en": "Aa",
+        "fr": "Aa"
+       },
+       "isCorrect": true
+      },
+      {
+       "id": "e98857d0-a2e9-5e0a-957f-98b6fd5bdbcc",
+       "text": {
+        "en": "Bb",
+        "fr": "Bb"
+       },
+       "isCorrect": true
+      },
+      {
+       "id": "c195a354-74e1-54c4-83bb-4e86f6dec87b",
+       "text": {
+        "en": "AA",
+        "fr": "AA"
+       },
+       "isCorrect": false
+      },
+      {
+       "id": "a7417255-7f22-54a7-baff-359c3e0d2a77",
+       "text": {
+        "en": "bb",
+        "fr": "bb"
+       },
+       "isCorrect": false
+      }
+     ],
+     "numericAnswer": null,
+     "numericTolerance": null,
+     "explanation": {
+      "fr": "Hétérozygote = deux allèles différents.",
+      "en": "Heterozygous means two different alleles."
+     }
+    }
+   ]
+  }
+ ]
+}

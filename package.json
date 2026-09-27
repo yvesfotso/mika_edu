@@ -1,0 +1,26 @@
+{
+  "name": "eduprep-africa",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.6.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "dev:admin": "pnpm --filter @eduprep/admin dev",
+    "dev:mobile": "pnpm --filter @eduprep/mobile start",
+    "build": "turbo run build",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "db:seed:generate": "node supabase/seed/generate.ts && node supabase/seed/export-demo.ts",
+    "demo:backend": "bash supabase/demo/start.sh",
+    "demo:backend:stop": "bash supabase/demo/stop.sh",
+    "demo:admin": "bash supabase/demo/start.sh && pnpm --filter @eduprep/admin exec next dev --port 3001"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.0",
+    "typescript": "~5.9.2"
+  }
+}

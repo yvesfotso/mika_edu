@@ -1,0 +1,11 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+
+# React Native's Metro bundler resolves dependencies most reliably from a flat node_modules.
+nodeLinker: hoisted
+
+allowBuilds:
+  esbuild: true
+  sharp: false
+  unrs-resolver: false

@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: light dark;
+  --canvas: #e6eaea;
+  --frame: #ffffff;
+  --card: #f2f4f4;
+  --panel: #eef3f5;
+  --line: #e1e6e7;
+  --ink: #16201f;
+  --muted: #76827f;
+  --brand: #8fd19e;
+  --brand-strong: #4f9e62;
+  --brand-soft: #e3f4e6;
+  --brand-ink: #123a1d;
+  --ocean: #3f6e8c;
+  --ocean-strong: #2f5670;
+  --ocean-soft: #d8e6ee;
+  --ocean-mute: #9fb9c9;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --canvas: #0c1112;
+    --frame: #131a1c;
+    --card: #1b2426;
+    --panel: #172023;
+    --line: #273336;
+    --ink: #e7eeec;
+    --muted: #93a19e;
+    --brand: #7cc58c;
+    --brand-strong: #8fd19e;
+    --brand-soft: #1d3324;
+    --brand-ink: #0b2412;
+    --ocean: #4a7d9c;
+    --ocean-strong: #8fb8d0;
+    --ocean-soft: #1f3340;
+    --ocean-mute: #4d6d80;
+  }
+}
+
+@theme inline {
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --color-canvas: var(--canvas);
+  --color-frame: var(--frame);
+  --color-card: var(--card);
+  --color-panel: var(--panel);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-brand: var(--brand);
+  --color-brand-strong: var(--brand-strong);
+  --color-brand-soft: var(--brand-soft);
+  --color-brand-ink: var(--brand-ink);
+  --color-ocean: var(--ocean);
+  --color-ocean-strong: var(--ocean-strong);
+  --color-ocean-soft: var(--ocean-soft);
+  --color-ocean-mute: var(--ocean-mute);
+
+  --radius-4xl: 1.75rem;
+}
+
+/* Existing pages use the indigo scale for links and accents; point it at the ocean palette. */
+@theme {
+  --color-indigo-50: #eef4f8;
+  --color-indigo-100: #d8e6ee;
+  --color-indigo-200: #b5cedd;
+  --color-indigo-400: #7ea6bf;
+  --color-indigo-500: #56859f;
+  --color-indigo-600: #3f6e8c;
+  --color-indigo-700: #2f5670;
+  --color-indigo-900: #1d3445;
+  --color-indigo-950: #142430;
+}
+
+body {
+  @apply bg-canvas text-ink;
+}
+
+.prose-lesson h1 { @apply mb-3 text-2xl font-semibold; }
+.prose-lesson h2 { @apply mt-5 mb-2 text-lg font-semibold; }
+.prose-lesson p { @apply my-2 leading-relaxed; }
+.prose-lesson ul { @apply my-2 list-disc pl-6; }
+.prose-lesson ol { @apply my-2 list-decimal pl-6; }
+.prose-lesson blockquote { @apply my-3 rounded-r-xl border-l-4 border-ocean bg-ocean-soft px-3 py-2; }
+.prose-lesson table { @apply my-3 border-collapse text-sm; }
+.prose-lesson th, .prose-lesson td { @apply border border-line px-2 py-1; }
+.prose-lesson code { @apply rounded bg-card px-1; }
