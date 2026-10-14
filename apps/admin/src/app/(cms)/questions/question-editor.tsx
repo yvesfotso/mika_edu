@@ -1,6 +1,6 @@
 "use client";
 
-import { QUESTION_SOURCES, QUESTION_TYPES, type LocalizedText, type QuestionSource, type QuestionType } from "@eduprep/core";
+import { QUESTION_SOURCES, QUESTION_TYPES, type LocalizedText, type QuestionPurpose, type QuestionSource, type QuestionType } from "@eduprep/core";
 import { useActionState, useState } from "react";
 import { FormMessage } from "@/components/action-form";
 import { buttonClass, Field, inputClass, secondaryButtonClass } from "@/components/ui";
@@ -19,8 +19,11 @@ export interface QuestionEditorValue {
   officialSourceUrl: string | null;
   numericAnswer: number | null;
   numericTolerance: number | null;
-  options: { id?: string; text: LocalizedText; isCorrect: boolean }[];
+  options: { id?: string; text: LocalizedText; isCorrect: boolean; misconception?: LocalizedText }[];
   explanation: LocalizedText;
+  skillId: string | null;
+  purpose: QuestionPurpose;
+  hint: LocalizedText;
 }
 
 const TYPE_LABELS: Record<QuestionType, string> = {
@@ -45,7 +48,7 @@ export function QuestionEditor({
   readOnly,
 }: {
   value: QuestionEditorValue;
-  chapters: { id: string; title: string }[];
+  chapters: { id: string; title: string; skills: { id: string; name: string }[] }[];
   readOnly: boolean;
 }) {
   const [state, formAction, pending] = useActionState(saveQuestion, initialActionState);
@@ -84,9 +87,17 @@ export function QuestionEditor({
     }));
   }
 
+  const skills = chapters.find((c) => c.id === q.chapterId)?.skills ?? [];
   const payload = JSON.stringify({
     ...q,
-    options: q.type === "numeric" ? [] : q.options.filter((o) => o.text.en?.trim() || o.text.fr?.trim()),
+    // A skill only applies within its chapter.
+    skillId: skills.some((s) => s.id === q.skillId) ? q.skillId : null,
+    options:
+      q.type === "numeric"
+        ? []
+        : q.options
+            .filter((o) => o.text.en?.trim() || o.text.fr?.trim())
+            .map((o) => ({ ...o, misconception: o.isCorrect ? undefined : o.misconception })),
     prompt: { en: q.prompt.en || undefined, fr: q.prompt.fr || undefined },
   });
 
@@ -202,6 +213,22 @@ export function QuestionEditor({
                       Remove
                     </button>
                   )}
+                  {!o.isCorrect && q.type !== "multiple_choice" && (
+                    <div className="flex w-full flex-wrap gap-2 pl-6">
+                      <input
+                        placeholder="Misconception this choice reveals (English, optional)"
+                        value={o.misconception?.en ?? ""}
+                        onChange={(e) => setOption(i, { misconception: { ...o.misconception, en: e.target.value } })}
+                        className={`${inputClass} min-w-40 flex-1 text-xs`}
+                      />
+                      <input
+                        placeholder="Erreur révélée par ce choix (Français, facultatif)"
+                        value={o.misconception?.fr ?? ""}
+                        onChange={(e) => setOption(i, { misconception: { ...o.misconception, fr: e.target.value } })}
+                        className={`${inputClass} min-w-40 flex-1 text-xs`}
+                      />
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -231,6 +258,34 @@ export function QuestionEditor({
             />
           </Field>
         </div>
+
+        <fieldset className="rounded-md border border-slate-200 p-4 dark:border-slate-700">
+          <legend className="px-1 text-sm font-medium">Learning</legend>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Field label="Skill" hint={skills.length === 0 ? "This chapter has no skills: the question counts for the whole chapter." : undefined}>
+              <select value={q.skillId ?? ""} onChange={(e) => set("skillId", e.target.value || null)} className={inputClass} disabled={skills.length === 0}>
+                <option value="">— Whole chapter —</option>
+                {skills.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.name}
+                  </option>
+                ))}
+              </select>
+            </Field>
+            <Field label="Used in" hint="Lesson checkpoints are kept out of practice sessions.">
+              <select value={q.purpose} onChange={(e) => set("purpose", e.target.value as QuestionPurpose)} className={inputClass}>
+                <option value="practice">Practice</option>
+                <option value="checkpoint">Lesson checkpoint</option>
+              </select>
+            </Field>
+            <Field label="Hint (English)" hint="Offered on request outside exams; a hinted answer counts less towards mastery.">
+              <textarea rows={2} value={q.hint.en ?? ""} onChange={(e) => set("hint", { ...q.hint, en: e.target.value })} className={inputClass} />
+            </Field>
+            <Field label="Indice (Français)">
+              <textarea rows={2} value={q.hint.fr ?? ""} onChange={(e) => set("hint", { ...q.hint, fr: e.target.value })} className={inputClass} />
+            </Field>
+          </div>
+        </fieldset>
 
         <fieldset className="rounded-md border border-slate-200 p-4 dark:border-slate-700">
           <legend className="px-1 text-sm font-medium">Provenance</legend>

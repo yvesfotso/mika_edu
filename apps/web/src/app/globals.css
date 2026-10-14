@@ -1,0 +1,627 @@
+@import "tailwindcss";
+
+/* Same palette as the learner app (apps/mobile/src/lib/theme.ts) and the admin CMS. */
+@theme {
+  --color-paper: #f3f3ee;
+  --color-card: #ffffff;
+  --color-ink: #17171f;
+  --color-strong: #1d1d29;
+  --color-raised: #2b2b3a;
+  --color-strong-muted: #c7c7d3;
+  /* Body copy on paper; the app's #8b8b97 is too light for long text on the page. */
+  --color-muted: #5c5c68;
+  --color-app-muted: #8b8b97;
+  --color-line: #e4e4dd;
+  --color-track: #ecece8;
+  --color-lime: #d5f26a;
+  --color-lime-soft: #f2fad2;
+  --color-lime-deep: #557a0c;
+  --color-success: #3e9b34;
+  --color-danger: #c2412d;
+  --color-drop: #22adeb;
+  --color-sun: #ffc93c;
+  --color-lavender: #ece4fe;
+  --color-lavender-ink: #6a4fd6;
+  --color-mint: #e4f8d6;
+  --color-mint-ink: #3e8e2f;
+  --color-peach: #fde6da;
+  --color-peach-ink: #c2552f;
+  --color-sky: #ddebff;
+  --color-sky-ink: #2f6fd1;
+  --color-lemon: #fff3c9;
+  --color-lemon-ink: #a67c00;
+
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-bricolage), var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Times New Roman", Georgia, serif;
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-float-slow: float 8s ease-in-out infinite;
+
+  @keyframes float {
+    0%,
+    100% {
+      translate: 0 0;
+    }
+    50% {
+      translate: 0 -10px;
+    }
+  }
+}
+
+:root {
+  /* The page is designed light-only; keep form controls and scrollbars light too. */
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 96px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+::selection {
+  background: var(--color-lime);
+  color: var(--color-strong);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-lime-deep);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Component classes live in a layer so utilities can still override them. */
+@layer components {
+  /* Display headings: tight, heavy and a little narrow, like the app's 800-weight titles. */
+  .display {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 1;
+    font-variation-settings: "opsz" 96;
+  }
+
+  /* Lime marker behind a word, slightly tilted. */
+  .marker {
+    position: relative;
+    white-space: nowrap;
+    z-index: 0;
+  }
+  .marker::before {
+    content: "";
+    position: absolute;
+    inset: 0.12em -0.12em 0.02em;
+    background: var(--color-lime);
+    border-radius: 0.18em;
+    rotate: -1.5deg;
+    z-index: -1;
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Phone mockup: a 412×866 device scaled by --s                        */
+  /* ------------------------------------------------------------------ */
+
+  .phone-shell {
+    --s: 0.7;
+    position: relative;
+    flex: none;
+    width: calc(412px * var(--s));
+    height: calc(866px * var(--s));
+  }
+  .phone {
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 412px;
+    height: 866px;
+    padding: 11px;
+    border-radius: 60px;
+    background: #0e0e14;
+    transform: scale(var(--s));
+    transform-origin: top left;
+    box-shadow:
+      inset 0 0 0 2px #3a3a48,
+      inset 0 0 0 5px #0e0e14,
+      0 60px 90px -40px rgb(23 23 31 / 0.55),
+      0 24px 40px -24px rgb(23 23 31 / 0.4);
+  }
+  .phone-screen {
+    position: relative;
+    width: 390px;
+    height: 844px;
+    overflow: hidden;
+    border-radius: 49px;
+    background: var(--color-paper);
+    font-family: var(--font-sans);
+    line-height: 1.3;
+    -webkit-font-smoothing: antialiased;
+  }
+  .phone-island {
+    position: absolute;
+    top: 23px;
+    left: 50%;
+    width: 122px;
+    height: 35px;
+    translate: -50% 0;
+    border-radius: 20px;
+    background: #0e0e14;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Study buddy (components/mascot.tsx). Origins are set inline, in     */
+/* canvas units, so every animated part transforms in view-box space.  */
+/* ------------------------------------------------------------------ */
+
+[class*="bd-"] {
+  transform-box: view-box;
+}
+
+/* Shared: blink, idle glance, gentle bob */
+.bd-blink {
+  animation: bd-blink 5s infinite;
+}
+.bd-look {
+  animation: bd-look 8s ease-in-out infinite;
+}
+.bd-bob {
+  animation: bd-bob 2.6s ease-in-out infinite;
+}
+.bd-shadow-bob {
+  animation: bd-shadow-bob 2.6s ease-in-out infinite;
+}
+
+@keyframes bd-blink {
+  0%,
+  91%,
+  95%,
+  100% {
+    scale: 1 1;
+  }
+  93% {
+    scale: 1 0.08;
+  }
+}
+@keyframes bd-look {
+  0%,
+  16% {
+    translate: 0 0;
+  }
+  22%,
+  38% {
+    translate: -3px 1px;
+  }
+  44%,
+  60% {
+    translate: 2px -3px;
+  }
+  66%,
+  82% {
+    translate: 3px 2px;
+  }
+  88%,
+  100% {
+    translate: 0 0;
+  }
+}
+@keyframes bd-bob {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -4px;
+  }
+}
+@keyframes bd-shadow-bob {
+  0%,
+  100% {
+    scale: 1;
+  }
+  50% {
+    scale: 0.9;
+  }
+}
+
+/* Wave */
+.bd-wave {
+  animation: bd-wave 2.4s ease-in-out infinite;
+}
+@keyframes bd-wave {
+  0%,
+  56%,
+  100% {
+    rotate: 0deg;
+  }
+  10%,
+  34% {
+    rotate: -18deg;
+  }
+  22%,
+  46% {
+    rotate: 8deg;
+  }
+}
+
+/* Study: reading eyes, swaying, a page turning */
+.bd-read {
+  animation: bd-read 5s ease-in-out infinite;
+}
+.bd-sway {
+  animation: bd-sway 5s ease-in-out infinite;
+}
+.bd-flip {
+  animation: bd-flip 5s ease-in-out infinite;
+}
+@keyframes bd-read {
+  0% {
+    translate: -2.5px 3px;
+  }
+  40% {
+    translate: 2.5px 3px;
+  }
+  46% {
+    translate: -2.5px 4.5px;
+  }
+  86% {
+    translate: 2.5px 4.5px;
+  }
+  100% {
+    translate: -2.5px 3px;
+  }
+}
+@keyframes bd-sway {
+  0%,
+  100% {
+    rotate: -1.5deg;
+  }
+  50% {
+    rotate: 1.5deg;
+  }
+}
+@keyframes bd-flip {
+  0%,
+  78% {
+    scale: 1 1;
+  }
+  88% {
+    scale: 0 1;
+  }
+  98%,
+  100% {
+    scale: -1 1;
+  }
+}
+
+/* Play: juggling a football */
+.bd-kick {
+  animation: bd-kick 1.5s infinite;
+}
+.bd-ball {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: bd-ball 1.5s infinite;
+}
+.bd-follow {
+  animation: bd-follow 1.5s infinite;
+}
+.bd-play-hop {
+  animation: bd-play-hop 1.5s infinite;
+}
+@keyframes bd-kick {
+  0%,
+  6% {
+    rotate: 0deg;
+    animation-timing-function: ease-out;
+  }
+  14% {
+    rotate: -46deg;
+    animation-timing-function: ease-in;
+  }
+  28%,
+  100% {
+    rotate: 0deg;
+  }
+}
+@keyframes bd-ball {
+  0%,
+  12% {
+    translate: 0 0;
+    rotate: 0deg;
+    animation-timing-function: cubic-bezier(0.2, 0.7, 0.4, 1);
+  }
+  54% {
+    translate: 6px -84px;
+    rotate: 200deg;
+    animation-timing-function: cubic-bezier(0.6, 0, 0.8, 0.4);
+  }
+  94%,
+  100% {
+    translate: 0 0;
+    rotate: 360deg;
+  }
+}
+@keyframes bd-follow {
+  0%,
+  12% {
+    translate: 0 3px;
+  }
+  54% {
+    translate: 1px -4px;
+  }
+  94%,
+  100% {
+    translate: 0 3px;
+  }
+}
+@keyframes bd-play-hop {
+  0%,
+  8%,
+  30%,
+  100% {
+    translate: 0 0;
+  }
+  16% {
+    translate: 0 -3px;
+  }
+}
+
+/* Celebrate: jump with a squash on landing */
+.bd-jump {
+  animation: bd-jump 1.3s infinite;
+}
+.bd-jump-shadow {
+  animation: bd-jump-shadow 1.3s infinite;
+}
+.bd-burst {
+  animation: bd-burst 1.3s infinite;
+}
+@keyframes bd-jump {
+  0%,
+  100% {
+    translate: 0 0;
+    scale: 1.07 0.92;
+  }
+  14% {
+    translate: 0 0;
+    scale: 1 1;
+    animation-timing-function: cubic-bezier(0.2, 0.7, 0.4, 1);
+  }
+  46% {
+    translate: 0 -30px;
+    scale: 1 1.02;
+    animation-timing-function: cubic-bezier(0.6, 0, 0.8, 0.4);
+  }
+  80% {
+    translate: 0 0;
+    scale: 1 1;
+  }
+}
+@keyframes bd-jump-shadow {
+  0%,
+  14%,
+  80%,
+  100% {
+    scale: 1;
+    opacity: 0.22;
+  }
+  46% {
+    scale: 0.55;
+    opacity: 0.12;
+  }
+}
+@keyframes bd-burst {
+  0%,
+  10% {
+    opacity: 1;
+    scale: 1.08;
+  }
+  32%,
+  78% {
+    opacity: 0;
+    scale: 0.7;
+  }
+  100% {
+    opacity: 1;
+    scale: 1.08;
+  }
+}
+
+/* Run: swinging limbs, bob and speed lines */
+.bd-swing {
+  animation: bd-swing 0.6s ease-in-out infinite;
+}
+.bd-swing-late {
+  animation-delay: -0.3s;
+}
+.bd-run-bob {
+  animation: bd-run-bob 0.3s ease-in-out infinite alternate;
+}
+.bd-shadow-run {
+  animation: bd-shadow-run 0.3s ease-in-out infinite alternate;
+}
+.bd-speed {
+  animation: bd-speed 0.6s linear infinite;
+}
+@keyframes bd-swing {
+  0%,
+  100% {
+    rotate: 32deg;
+  }
+  50% {
+    rotate: -32deg;
+  }
+}
+@keyframes bd-run-bob {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: 0 -5px;
+  }
+}
+@keyframes bd-shadow-run {
+  from {
+    scale: 1;
+  }
+  to {
+    scale: 0.88;
+  }
+}
+@keyframes bd-speed {
+  from {
+    translate: 6px 0;
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  to {
+    translate: -14px 0;
+    opacity: 0;
+  }
+}
+
+/* Think: head tilt and a glowing idea */
+.bd-tilt {
+  animation: bd-tilt 4s ease-in-out infinite;
+}
+.bd-bulb {
+  animation: bd-bulb 2s ease-in-out infinite;
+}
+.bd-rays {
+  animation: bd-rays 2s ease-in-out infinite;
+}
+@keyframes bd-tilt {
+  0%,
+  100% {
+    rotate: -3deg;
+  }
+  50% {
+    rotate: 2deg;
+  }
+}
+@keyframes bd-bulb {
+  0%,
+  100% {
+    scale: 1;
+    translate: 0 0;
+  }
+  50% {
+    scale: 1.1;
+    translate: 0 -3px;
+  }
+}
+@keyframes bd-rays {
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Zen: levitating, with twinkles */
+.bd-float {
+  animation: bd-float 3.6s ease-in-out infinite;
+}
+.bd-float-shadow {
+  animation: bd-float-shadow 3.6s ease-in-out infinite;
+}
+.bd-twinkle {
+  animation: bd-twinkle 2.1s ease-in-out infinite;
+}
+@keyframes bd-float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -12px;
+  }
+}
+@keyframes bd-float-shadow {
+  0%,
+  100% {
+    scale: 1;
+    opacity: 0.22;
+  }
+  50% {
+    scale: 0.72;
+    opacity: 0.12;
+  }
+}
+@keyframes bd-twinkle {
+  0%,
+  100% {
+    scale: 0.3;
+    rotate: 0deg;
+    opacity: 0.2;
+  }
+  50% {
+    scale: 1;
+    rotate: 45deg;
+    opacity: 1;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Scroll reveal (only once JS has marked the page; see RevealObserver) */
+/* ------------------------------------------------------------------ */
+
+/* Uses `transform` so it composes with Tailwind's translate/rotate/scale utilities, which use the
+   individual CSS properties. */
+html[data-js] [data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.8s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--delay, 0ms);
+}
+html[data-js] [data-reveal][data-shown] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Horizontal phone gallery */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* FAQ disclosure */
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+details[open] .faq-icon {
+  rotate: 45deg;
+  background: var(--color-lime);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  html[data-js] [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}

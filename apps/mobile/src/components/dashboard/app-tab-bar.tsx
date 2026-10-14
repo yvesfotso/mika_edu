@@ -21,6 +21,7 @@ export interface TabBarProps {
 const ICONS: Record<string, [IconName, IconName]> = {
   index: ["grid-outline", "grid"],
   subjects: ["library-outline", "library"],
+  practice: ["barbell-outline", "barbell"],
   progress: ["stats-chart-outline", "stats-chart"],
   messages: ["chatbubbles-outline", "chatbubbles"],
   profile: ["person-outline", "person"],
@@ -140,9 +141,9 @@ export function Sidebar(props: TabBarProps) {
 /** Bottom navigation for phones, styled to match the sidebar. */
 export function BottomBar(props: TabBarProps) {
   const c = useColors();
-  const { t } = useSession();
   const unread = useUnreadMessages(true);
-  const items = useTabItems(props);
+  // Five destinations on phones; Profile opens from the avatar on Today.
+  const items = useTabItems(props).filter((i) => i.name !== "profile");
   const insets = useSafeAreaInsets();
   return (
     <View
@@ -173,7 +174,7 @@ export function BottomBar(props: TabBarProps) {
             )}
           </View>
           <Text style={{ fontSize: 11, color: item.focused ? "#FFFFFF" : c.strongMuted, fontWeight: item.focused ? "700" : "400" }} numberOfLines={1}>
-            {item.name === "index" ? t("home") : item.label}
+            {item.label}
           </Text>
         </Pressable>
       ))}

@@ -6,7 +6,7 @@ import { api, cacheKey, NetworkError } from "@/lib/api";
 import { translate, type MessageKey } from "@/lib/i18n";
 import { store } from "@/lib/storage";
 import { auth, type AuthSession } from "@/lib/auth";
-import { flushQueue, pendingJobs, subscribePending } from "@/lib/sync";
+import { failedJobs, flushQueue, pendingJobs, subscribePending } from "@/lib/sync";
 
 const LOCALE_KEY = "pref:locale";
 
@@ -22,6 +22,8 @@ interface SessionContextValue {
   updateProfile: (patch: UpdateProfileInput) => Promise<ProfileDto>;
   refreshProfile: () => Promise<void>;
   pendingSync: number;
+  /** Offline writes the server rejected; shown in Profile → Offline & sync. */
+  failedSync: number;
   syncNow: () => Promise<void>;
   signOut: () => Promise<void>;
 }
@@ -52,6 +54,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     subscribePending,
     () => (userId ? pendingJobs(userId).length : 0),
   );
+  const failedSync = useSyncExternalStore(subscribePending, () => (userId ? failedJobs(userId).length : 0));
 
   useEffect(() => {
     auth.getSession().then((current) => {
@@ -134,7 +137,13 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   );
 
   const signOut = useCallback(async () => {
-    if (userId) store.removePrefix(`cache:${userId}:`);
+    // Cached responses and downloaded packs are private to the account; queued writes stay keyed to
+    // this account and sync the next time it signs in.
+    if (userId) {
+      store.removePrefix(`cache:${userId}:`);
+      store.removePrefix(`pack:${userId}:`);
+      store.remove(`packs:${userId}`);
+    }
     await auth.signOut();
     setProfile(null);
   }, [userId]);
@@ -151,10 +160,11 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       updateProfile,
       refreshProfile,
       pendingSync,
+      failedSync,
       syncNow,
       signOut,
     }),
-    [session, userId, profile, initializing, locale, setLocale, updateProfile, refreshProfile, pendingSync, syncNow, signOut],
+    [session, userId, profile, initializing, locale, setLocale, updateProfile, refreshProfile, pendingSync, failedSync, syncNow, signOut],
   );
 
   return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>;

@@ -1,4 +1,4 @@
-import { localize, type DashboardDto } from "@eduprep/core";
+import { localize, type DashboardDto, type ProgressDto, type SkillStatus } from "@eduprep/core";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import type { ComponentProps } from "react";
@@ -7,6 +7,7 @@ import { ActivityChart } from "@/components/dashboard/activity-chart";
 import { ProgressRing } from "@/components/dashboard/progress-ring";
 import { Panel, RecentQuizzes, type RecentAttempt } from "@/components/dashboard/sections";
 import { subjectIcon, TileIcon } from "@/components/dashboard/tile-icon";
+import { SkillRow, STATUS_LOOK } from "@/components/learning";
 import { OfflineNotice, pct, ProgressBar, Screen, StateView, T } from "@/components/ui";
 import { useApi } from "@/hooks/use-api";
 import { SIDEBAR_BREAKPOINT, toneFor, useColors, type TileTone } from "@/lib/theme";
@@ -32,6 +33,7 @@ export default function Progress() {
   const wide = width >= SIDEBAR_BREAKPOINT;
   const dashboard = useApi<DashboardDto>("/me/dashboard");
   const attempts = useApi<{ attempts: RecentAttempt[] }>("/me/attempts");
+  const skills = useApi<ProgressDto>("/me/progress");
   const data = dashboard.data;
 
   if (!data) return <StateView loading={dashboard.loading || !dashboard.error} error={dashboard.error} onRetry={dashboard.refresh} />;
@@ -57,6 +59,34 @@ export default function Progress() {
         <StatTile icon="time-outline" tone="sky" label={t("thisWeek")} value={t("minutes", { n: weekMinutes })} />
       </View>
     </View>
+  );
+
+  const totals = skills.data?.totals;
+  const assessed = totals ? Object.values(totals).reduce((a, b) => a + b, 0) : 0;
+  const statusPanel = totals && assessed > 0 && (
+    <Panel title={t("skillsTitle")}>
+      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
+        {(Object.keys(STATUS_LOOK) as SkillStatus[]).map((status) => (
+          <View key={status} style={{ flexDirection: "row", alignItems: "center", gap: 6, backgroundColor: c.tiles[STATUS_LOOK[status].tone].bg, borderRadius: 999, paddingHorizontal: 12, paddingVertical: 7 }}>
+            <Ionicons name={STATUS_LOOK[status].icon} size={14} color={c.tiles[STATUS_LOOK[status].tone].ink} />
+            <Text style={{ fontSize: 12.5, fontWeight: "700", color: c.tiles[STATUS_LOOK[status].tone].ink }}>
+              {totals[status]} {t(STATUS_LOOK[status].label)}
+            </Text>
+          </View>
+        ))}
+      </View>
+      <T variant="small">{t("masteryRule")}</T>
+      {(skills.data?.subjects ?? []).map((s) => {
+        const chapters = s.chapters.filter((ch) => ch.skills.some((k) => k.questionCount > 0));
+        if (chapters.length === 0) return null;
+        return (
+          <View key={s.id} style={{ gap: 4, marginTop: 8 }}>
+            <T style={{ fontWeight: "700" }}>{localize(s.name, locale)}</T>
+            {chapters.flatMap((ch) => ch.skills.filter((k) => k.questionCount > 0).map((k) => <SkillRow key={k.key} skill={k} />))}
+          </View>
+        );
+      })}
+    </Panel>
   );
 
   const masteryPanel = (
@@ -100,6 +130,7 @@ export default function Progress() {
             <Panel title={t("studyActivity")}>
               <ActivityChart activity={data.activity} />
             </Panel>
+            {statusPanel}
             {masteryPanel}
           </View>
           <View style={{ width: 360 }}>{quizzes}</View>
@@ -110,6 +141,7 @@ export default function Progress() {
           <Panel title={t("studyActivity")}>
             <ActivityChart activity={data.activity} />
           </Panel>
+          {statusPanel}
           {masteryPanel}
           {quizzes}
         </>

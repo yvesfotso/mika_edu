@@ -3,7 +3,8 @@
 // Coefficients are placeholders to be verified against the official regulations.
 
 export type L = { en?: string; fr?: string };
-export type Opt = [en: string, fr: string, correct?: true];
+/** An answer option; a wrong option may name the misconception that choosing it reveals. */
+export type Opt = [en: string, fr: string, correct?: boolean, misconception?: L];
 
 export interface SeedQuestion {
   key: string;
@@ -13,6 +14,22 @@ export interface SeedQuestion {
   options?: Opt[];
   numeric?: [answer: number, tolerance: number];
   explanation: L;
+  /** Skill key within the chapter. Chapters without skills are assessed as a whole. */
+  skill?: string;
+  /** "checkpoint" questions are asked inside a lesson and kept out of practice. */
+  purpose?: "practice" | "checkpoint";
+  hint?: L;
+}
+
+export interface SeedLesson {
+  key: string;
+  title: L;
+  minutes: number;
+  /** Markdown; `## ` headings split it into blocks. Keep the same headings in every language. */
+  body: L;
+  status?: "draft" | "published";
+  /** Checkpoint question keys and the block they follow. */
+  checkpoints?: { question: string; afterBlock: number }[];
 }
 
 export interface SeedChapter {
@@ -20,7 +37,8 @@ export interface SeedChapter {
   subject: string;
   title: L;
   status?: "draft" | "published";
-  lessons: { key: string; title: L; minutes: number; body: L; status?: "draft" | "published" }[];
+  skills?: { key: string; name: L }[];
+  lessons: SeedLesson[];
   questions: SeedQuestion[];
 }
 
@@ -745,82 +763,302 @@ const travail: SeedChapter = {
   ],
 };
 
+// Vertical slice for the learning loop (BAC Série D, Mathématiques): skills, checkpoints, hints and
+// misconception tags. Original demonstration content, not taken from official papers.
+const SIGN_I2: L = { fr: "Oubli que i² = −1", en: "Forgetting that i² = −1" };
+const FACE_TO_FACE: L = {
+  fr: "Seuls les termes « face à face » ont été multipliés : il faut développer tous les produits",
+  en: "Only the matching terms were multiplied: expand every product",
+};
+const NO_ROOT: L = { fr: "Oubli de la racine carrée : |z| = √(a² + b²)", en: "Forgetting the square root: |z| = √(a² + b²)" };
+
 const complexes: SeedChapter = {
   key: "bac-d-maths-complexes",
   subject: "mathematics",
   title: { fr: "Nombres complexes", en: "Complex numbers" },
+  skills: [
+    { key: "forme-algebrique", name: { fr: "Forme algébrique et calculs", en: "Algebraic form and arithmetic" } },
+    { key: "conjugue", name: { fr: "Conjugué", en: "Conjugate" } },
+    { key: "module-argument", name: { fr: "Module et argument", en: "Modulus and argument" } },
+  ],
   lessons: [
     {
       key: "complexes-intro",
       title: { fr: "Forme algébrique, module et conjugué", en: "Algebraic form, modulus and conjugate" },
       minutes: 15,
+      checkpoints: [
+        { question: "c1", afterBlock: 1 },
+        { question: "c2", afterBlock: 2 },
+        { question: "c3", afterBlock: 3 },
+      ],
       body: {
         fr: `# Nombres complexes
 
-On pose **i² = −1**. Tout complexe s'écrit **z = a + ib** (a = Re z, b = Im z).
+On pose **i² = −1**. Tout nombre complexe s'écrit de façon unique **z = a + ib**, avec a et b réels :
+a est la **partie réelle** (Re z) et b la **partie imaginaire** (Im z). Attention : Im z est le réel b, pas ib.
 
-## Conjugué
+## Calculer avec la forme algébrique
 
-**z̄ = a − ib**, et z · z̄ = a² + b².
+On calcule comme avec des polynômes en i, puis on remplace **i² par −1**.
+
+- Somme : (a + ib) + (c + id) = (a + c) + i(b + d)
+- Produit : on développe **tous** les termes.
+
+Exemple : (2 + 3i)(4 − i) = 8 − 2i + 12i − 3i² = 8 + 10i + 3 = **11 + 10i**.
+
+## Le conjugué
+
+Le conjugué de z = a + ib est **z̄ = a − ib** : seule la partie imaginaire change de signe.
+
+- z · z̄ = a² + b², un réel positif.
+- Pour écrire un quotient sous forme algébrique, on multiplie en haut et en bas par le conjugué du dénominateur.
+
+Exemple : 1/(2 − i) = (2 + i)/((2 − i)(2 + i)) = (2 + i)/5 = **2/5 + (1/5)i**.
 
 ## Module et argument
 
-- **|z| = √(a² + b²)**
+- Module : **|z| = √(a² + b²)**, la distance de l'origine au point d'affixe z.
 - Si z ≠ 0, un argument θ vérifie cos θ = a/|z| et sin θ = b/|z|.
-- Forme trigonométrique : **z = |z|(cos θ + i sin θ)**.
 
-## Exemples
+Exemples : |3 + 4i| = √(9 + 16) = **5** ; arg(i) = **π/2** ; arg(−1) = **π**.
 
-- |3 + 4i| = √(9 + 16) = **5**
-- (1 + i)² = 1 + 2i + i² = **2i**
-- arg(i) = **π/2**`,
+## À retenir
+
+- i² = −1 : à appliquer après chaque développement.
+- Conjugué : on change seulement le signe de la partie imaginaire.
+- Module : n'oublie pas la racine carrée.`,
         en: `# Complex numbers
 
-With **i² = −1**, every complex number is **z = a + ib**.
+We set **i² = −1**. Every complex number can be written in exactly one way as **z = a + ib**, with a and b real:
+a is the **real part** (Re z) and b the **imaginary part** (Im z). Careful: Im z is the real number b, not ib.
 
-- Conjugate: z̄ = a − ib.
-- Modulus: |z| = √(a² + b²), e.g. |3 + 4i| = 5.
-- (1 + i)² = 2i, and arg(i) = π/2.`,
+## Calculating in algebraic form
+
+Calculate as with polynomials in i, then replace **i² with −1**.
+
+- Sum: (a + ib) + (c + id) = (a + c) + i(b + d)
+- Product: expand **every** term.
+
+Example: (2 + 3i)(4 − i) = 8 − 2i + 12i − 3i² = 8 + 10i + 3 = **11 + 10i**.
+
+## The conjugate
+
+The conjugate of z = a + ib is **z̄ = a − ib**: only the imaginary part changes sign.
+
+- z · z̄ = a² + b², a non-negative real number.
+- To write a quotient in algebraic form, multiply top and bottom by the conjugate of the denominator.
+
+Example: 1/(2 − i) = (2 + i)/((2 − i)(2 + i)) = (2 + i)/5 = **2/5 + (1/5)i**.
+
+## Modulus and argument
+
+- Modulus: **|z| = √(a² + b²)**, the distance from the origin to the point z.
+- If z ≠ 0, an argument θ satisfies cos θ = a/|z| and sin θ = b/|z|.
+
+Examples: |3 + 4i| = √(9 + 16) = **5**; arg(i) = **π/2**; arg(−1) = **π**.
+
+## Key points
+
+- i² = −1: apply it after every expansion.
+- Conjugate: change only the sign of the imaginary part.
+- Modulus: don't forget the square root.`,
       },
     },
   ],
   questions: [
+    // --- Checkpoints inside the lesson ---
     {
-      key: "q1",
-      type: "numeric",
-      difficulty: 1,
-      prompt: { fr: "Module de z = 3 + 4i ?", en: "Modulus of z = 3 + 4i?" },
-      numeric: [5, 0],
-      explanation: { fr: "|z| = √(9 + 16) = 5.", en: "|z| = √(9 + 16) = 5." },
-    },
-    {
-      key: "q2",
+      key: "c1",
+      skill: "forme-algebrique",
+      purpose: "checkpoint",
       type: "single_choice",
       difficulty: 1,
-      prompt: { fr: "Conjugué de 2 − 5i :", en: "Conjugate of 2 − 5i:" },
+      prompt: { fr: "(2 + 3i)(1 − i) = ?", en: "(2 + 3i)(1 − i) = ?" },
       options: [
-        ["2 + 5i", "2 + 5i", true],
-        ["−2 + 5i", "−2 + 5i"],
-        ["−2 − 5i", "−2 − 5i"],
-        ["5 − 2i", "5 − 2i"],
+        ["5 + i", "5 + i", true],
+        ["−1 + i", "−1 + i", false, SIGN_I2],
+        ["2 − 3i", "2 − 3i", false, FACE_TO_FACE],
+        ["5 − i", "5 − i"],
       ],
-      explanation: { fr: "On change le signe de la partie imaginaire.", en: "Change the sign of the imaginary part." },
+      hint: { fr: "Développe les quatre produits, puis remplace i² par −1.", en: "Expand all four products, then replace i² with −1." },
+      explanation: { fr: "2 − 2i + 3i − 3i² = 2 + i + 3 = 5 + i.", en: "2 − 2i + 3i − 3i² = 2 + i + 3 = 5 + i." },
+    },
+    {
+      key: "c2",
+      skill: "conjugue",
+      purpose: "checkpoint",
+      type: "single_choice",
+      difficulty: 1,
+      prompt: { fr: "Conjugué de −3 + 2i :", en: "Conjugate of −3 + 2i:" },
+      options: [
+        ["−3 − 2i", "−3 − 2i", true],
+        ["3 − 2i", "3 − 2i", false, { fr: "On a aussi changé le signe de la partie réelle", en: "The real part's sign was changed too" }],
+        ["3 + 2i", "3 + 2i", false, { fr: "Seule la partie réelle a changé de signe", en: "Only the real part's sign was changed" }],
+        ["−3 + 2i", "−3 + 2i"],
+      ],
+      hint: { fr: "Le conjugué ne change que le signe de la partie imaginaire.", en: "The conjugate only changes the sign of the imaginary part." },
+      explanation: { fr: "z̄ = a − ib : −3 + 2i devient −3 − 2i.", en: "z̄ = a − ib: −3 + 2i becomes −3 − 2i." },
+    },
+    {
+      key: "c3",
+      skill: "module-argument",
+      purpose: "checkpoint",
+      type: "numeric",
+      difficulty: 1,
+      prompt: { fr: "Module de z = 6 − 8i ?", en: "Modulus of z = 6 − 8i?" },
+      numeric: [10, 0],
+      hint: { fr: "Calcule √(6² + (−8)²).", en: "Work out √(6² + (−8)²)." },
+      explanation: { fr: "|z| = √(36 + 64) = √100 = 10.", en: "|z| = √(36 + 64) = √100 = 10." },
+    },
+
+    // --- Practice: algebraic form ---
+    {
+      key: "fa1",
+      skill: "forme-algebrique",
+      type: "single_choice",
+      difficulty: 1,
+      prompt: { fr: "Partie imaginaire de z = 4 − 7i :", en: "Imaginary part of z = 4 − 7i:" },
+      options: [
+        ["−7", "−7", true],
+        ["7", "7", false, { fr: "Le signe de la partie imaginaire a été oublié", en: "The sign of the imaginary part was dropped" }],
+        ["−7i", "−7i", false, { fr: "La partie imaginaire est le réel b, pas ib", en: "The imaginary part is the real number b, not ib" }],
+        ["4", "4"],
+      ],
+      hint: { fr: "Écris z = a + ib et identifie b.", en: "Write z = a + ib and read off b." },
+      explanation: { fr: "z = 4 + (−7)i, donc Im z = −7 (un réel).", en: "z = 4 + (−7)i, so Im z = −7 (a real number)." },
+    },
+    {
+      key: "fa2",
+      skill: "forme-algebrique",
+      type: "single_choice",
+      difficulty: 1,
+      prompt: { fr: "(3 + 2i) + (1 − 5i) = ?", en: "(3 + 2i) + (1 − 5i) = ?" },
+      options: [
+        ["4 − 3i", "4 − 3i", true],
+        ["4 + 7i", "4 + 7i", false, { fr: "Erreur de signe sur −5i", en: "Sign error on −5i" }],
+        ["3 − 10i", "3 − 10i", false, { fr: "Multiplication au lieu d'addition", en: "Multiplied instead of added" }],
+        ["2 + 7i", "2 + 7i"],
+      ],
+      hint: { fr: "Additionne les parties réelles entre elles, puis les parties imaginaires.", en: "Add the real parts together, then the imaginary parts." },
+      explanation: { fr: "(3 + 1) + (2 − 5)i = 4 − 3i.", en: "(3 + 1) + (2 − 5)i = 4 − 3i." },
+    },
+    {
+      key: "fa3",
+      skill: "forme-algebrique",
+      type: "single_choice",
+      difficulty: 2,
+      prompt: { fr: "(2 + i)(1 + 3i) = ?", en: "(2 + i)(1 + 3i) = ?" },
+      options: [
+        ["−1 + 7i", "−1 + 7i", true],
+        ["5 + 7i", "5 + 7i", false, SIGN_I2],
+        ["2 + 3i", "2 + 3i", false, FACE_TO_FACE],
+        ["−1 + 3i", "−1 + 3i"],
+      ],
+      hint: { fr: "Développe : 2·1 + 2·3i + i·1 + i·3i.", en: "Expand: 2·1 + 2·3i + i·1 + i·3i." },
+      explanation: { fr: "2 + 6i + i + 3i² = 2 + 7i − 3 = −1 + 7i.", en: "2 + 6i + i + 3i² = 2 + 7i − 3 = −1 + 7i." },
     },
     {
       key: "q3",
+      skill: "forme-algebrique",
       type: "single_choice",
       difficulty: 2,
       prompt: { fr: "(1 + i)² = ?", en: "(1 + i)² = ?" },
       options: [
         ["2i", "2i", true],
         ["2", "2"],
-        ["2 + 2i", "2 + 2i"],
+        ["2 + 2i", "2 + 2i", false, SIGN_I2],
         ["0", "0"],
       ],
+      hint: { fr: "Utilise (a + b)² = a² + 2ab + b².", en: "Use (a + b)² = a² + 2ab + b²." },
       explanation: { fr: "1 + 2i + i² = 1 + 2i − 1 = 2i.", en: "1 + 2i + i² = 1 + 2i − 1 = 2i." },
     },
     {
+      key: "fa5",
+      skill: "forme-algebrique",
+      type: "single_choice",
+      difficulty: 3,
+      prompt: { fr: "i³ = ?", en: "i³ = ?" },
+      options: [
+        ["−i", "−i", true],
+        ["i", "i", false, SIGN_I2],
+        ["−1", "−1"],
+        ["1", "1"],
+      ],
+      hint: { fr: "i³ = i² · i.", en: "i³ = i² · i." },
+      explanation: { fr: "i³ = i² · i = −1 · i = −i.", en: "i³ = i² · i = −1 · i = −i." },
+    },
+
+    // --- Practice: conjugate ---
+    {
+      key: "q2",
+      skill: "conjugue",
+      type: "single_choice",
+      difficulty: 1,
+      prompt: { fr: "Conjugué de 2 − 5i :", en: "Conjugate of 2 − 5i:" },
+      options: [
+        ["2 + 5i", "2 + 5i", true],
+        ["−2 + 5i", "−2 + 5i", false, { fr: "On a aussi changé le signe de la partie réelle", en: "The real part's sign was changed too" }],
+        ["−2 − 5i", "−2 − 5i", false, { fr: "C'est l'opposé de z, pas son conjugué", en: "That is −z, not the conjugate" }],
+        ["5 − 2i", "5 − 2i"],
+      ],
+      hint: { fr: "Ne change que le signe de la partie imaginaire.", en: "Only change the sign of the imaginary part." },
+      explanation: { fr: "On change le signe de la partie imaginaire : 2 + 5i.", en: "Change the sign of the imaginary part: 2 + 5i." },
+    },
+    {
+      key: "cj2",
+      skill: "conjugue",
+      type: "numeric",
+      difficulty: 2,
+      prompt: { fr: "Pour z = 3 + 4i, calcule z · z̄.", en: "For z = 3 + 4i, work out z · z̄." },
+      numeric: [25, 0],
+      hint: { fr: "z · z̄ = a² + b².", en: "z · z̄ = a² + b²." },
+      explanation: { fr: "z · z̄ = 3² + 4² = 9 + 16 = 25.", en: "z · z̄ = 3² + 4² = 9 + 16 = 25." },
+    },
+    {
+      key: "cj3",
+      skill: "conjugue",
+      type: "single_choice",
+      difficulty: 2,
+      prompt: { fr: "Conjugué de (1 + i)(2 − i) :", en: "Conjugate of (1 + i)(2 − i):" },
+      options: [
+        ["3 − i", "3 − i", true],
+        ["3 + i", "3 + i", false, { fr: "Le produit est juste, mais le conjugué n'a pas été pris", en: "The product is right, but the conjugate wasn't taken" }],
+        ["1 − i", "1 − i", false, SIGN_I2],
+        ["−3 − i", "−3 − i"],
+      ],
+      hint: { fr: "Calcule d'abord le produit, puis prends son conjugué.", en: "Work out the product first, then take its conjugate." },
+      explanation: { fr: "(1 + i)(2 − i) = 2 − i + 2i − i² = 3 + i, donc le conjugué est 3 − i.", en: "(1 + i)(2 − i) = 2 − i + 2i − i² = 3 + i, so the conjugate is 3 − i." },
+    },
+    {
+      key: "cj4",
+      skill: "conjugue",
+      type: "single_choice",
+      difficulty: 3,
+      prompt: { fr: "Forme algébrique de 1/(1 + i) :", en: "Algebraic form of 1/(1 + i):" },
+      options: [
+        ["1/2 − (1/2)i", "1/2 − (1/2)i", true],
+        ["1 − i", "1 − i", false, { fr: "Le dénominateur (1 + i)(1 − i) = 2 a été oublié", en: "The denominator (1 + i)(1 − i) = 2 was forgotten" }],
+        ["1/2 + (1/2)i", "1/2 + (1/2)i", false, { fr: "Erreur de signe : le conjugué de 1 + i est 1 − i", en: "Sign error: the conjugate of 1 + i is 1 − i" }],
+        ["1 + i", "1 + i"],
+      ],
+      hint: { fr: "Multiplie en haut et en bas par 1 − i.", en: "Multiply top and bottom by 1 − i." },
+      explanation: { fr: "(1 − i)/((1 + i)(1 − i)) = (1 − i)/2 = 1/2 − (1/2)i.", en: "(1 − i)/((1 + i)(1 − i)) = (1 − i)/2 = 1/2 − (1/2)i." },
+    },
+
+    // --- Practice: modulus and argument ---
+    {
+      key: "q1",
+      skill: "module-argument",
+      type: "numeric",
+      difficulty: 1,
+      prompt: { fr: "Module de z = 3 + 4i ?", en: "Modulus of z = 3 + 4i?" },
+      numeric: [5, 0],
+      hint: { fr: "|z| = √(a² + b²).", en: "|z| = √(a² + b²)." },
+      explanation: { fr: "|z| = √(9 + 16) = 5.", en: "|z| = √(9 + 16) = 5." },
+    },
+    {
       key: "q4",
+      skill: "module-argument",
       type: "single_choice",
       difficulty: 2,
       prompt: { fr: "Un argument de i est :", en: "An argument of i is:" },
@@ -828,9 +1066,50 @@ With **i² = −1**, every complex number is **z = a + ib**.
         ["π/2", "π/2", true],
         ["π", "π"],
         ["0", "0"],
+        ["−π/2", "−π/2", false, { fr: "Confusion entre i et −i", en: "Mixing up i and −i" }],
+      ],
+      hint: { fr: "Place i dans le plan : sur quel axe se trouve-t-il ?", en: "Plot i in the plane: which axis is it on?" },
+      explanation: { fr: "i = cos(π/2) + i sin(π/2).", en: "i = cos(π/2) + i sin(π/2)." },
+    },
+    {
+      key: "ma3",
+      skill: "module-argument",
+      type: "numeric",
+      difficulty: 2,
+      prompt: { fr: "Module de z = −5 + 12i ?", en: "Modulus of z = −5 + 12i?" },
+      numeric: [13, 0],
+      hint: { fr: "Le signe disparaît au carré : √(25 + 144).", en: "The sign disappears when squared: √(25 + 144)." },
+      explanation: { fr: "|z| = √(25 + 144) = √169 = 13.", en: "|z| = √(25 + 144) = √169 = 13." },
+    },
+    {
+      key: "ma4",
+      skill: "module-argument",
+      type: "single_choice",
+      difficulty: 2,
+      prompt: { fr: "Module de z = 1 + i :", en: "Modulus of z = 1 + i:" },
+      options: [
+        ["√2", "√2", true],
+        ["2", "2", false, NO_ROOT],
+        ["1", "1"],
+        ["0", "0"],
+      ],
+      hint: { fr: "|z| = √(1² + 1²).", en: "|z| = √(1² + 1²)." },
+      explanation: { fr: "|1 + i| = √(1 + 1) = √2.", en: "|1 + i| = √(1 + 1) = √2." },
+    },
+    {
+      key: "ma5",
+      skill: "module-argument",
+      type: "single_choice",
+      difficulty: 3,
+      prompt: { fr: "Un argument de z = −2 :", en: "An argument of z = −2:" },
+      options: [
+        ["π", "π", true],
+        ["0", "0", false, { fr: "Un réel négatif a pour argument π, pas 0", en: "A negative real number has argument π, not 0" }],
+        ["π/2", "π/2"],
         ["−π/2", "−π/2"],
       ],
-      explanation: { fr: "i = cos(π/2) + i sin(π/2).", en: "i = cos(π/2) + i sin(π/2)." },
+      hint: { fr: "Où se trouve −2 dans le plan complexe ?", en: "Where is −2 in the complex plane?" },
+      explanation: { fr: "−2 = 2(cos π + i sin π), donc arg(−2) = π.", en: "−2 = 2(cos π + i sin π), so arg(−2) = π." },
     },
   ],
 };

@@ -612,6 +612,7 @@
     "fr": "Équations du second degré"
    },
    "orderIndex": 0,
+   "skills": [],
    "lessons": [
     {
      "id": "1ac738da-e6b4-5537-9ef5-d4a070466c1d",
@@ -623,7 +624,8 @@
       "en": "# Quadratic equations\n\nA quadratic equation has the form **ax² + bx + c = 0**, where a ≠ 0.\n\n## 1. Solving by factorisation\n\nIf the expression factorises, set each factor to zero:\n\nx² − 5x + 6 = 0 → (x − 2)(x − 3) = 0 → **x = 2 or x = 3**\n\n## 2. The quadratic formula\n\nWhen factorising is hard, use:\n\n**x = (−b ± √(b² − 4ac)) / 2a**\n\n## 3. The discriminant Δ = b² − 4ac\n\n- Δ > 0: two distinct real roots\n- Δ = 0: one repeated root\n- Δ < 0: no real roots\n\n## Worked example\n\nSolve 2x² + 3x − 2 = 0.\n\na = 2, b = 3, c = −2, so Δ = 9 + 16 = 25 and √Δ = 5.\n\nx = (−3 + 5)/4 = **1/2** or x = (−3 − 5)/4 = **−2**.\n\n## Useful facts\n\nFor roots x₁ and x₂: **x₁ + x₂ = −b/a** and **x₁ · x₂ = c/a**.\n\n> Exam tip: always check your roots by substituting them back into the equation.",
       "fr": "# Équations du second degré\n\nUne équation du second degré s'écrit **ax² + bx + c = 0**, avec a ≠ 0.\n\n## 1. Résolution par factorisation\n\nSi l'expression se factorise, on annule chaque facteur :\n\nx² − 5x + 6 = 0 → (x − 2)(x − 3) = 0 → **x = 2 ou x = 3**\n\n## 2. La formule générale\n\n**x = (−b ± √(b² − 4ac)) / 2a**\n\n## 3. Le discriminant Δ = b² − 4ac\n\n- Δ > 0 : deux racines réelles distinctes\n- Δ = 0 : une racine double\n- Δ < 0 : aucune racine réelle\n\n## Exemple corrigé\n\nRésoudre 2x² + 3x − 2 = 0.\n\na = 2, b = 3, c = −2, donc Δ = 9 + 16 = 25 et √Δ = 5.\n\nx = (−3 + 5)/4 = **1/2** ou x = (−3 − 5)/4 = **−2**.\n\n## À retenir\n\nPour les racines x₁ et x₂ : **x₁ + x₂ = −b/a** et **x₁ · x₂ = c/a**.\n\n> Conseil d'examen : vérifiez toujours vos racines en les remplaçant dans l'équation."
      },
-     "estimatedMinutes": 12
+     "estimatedMinutes": 12,
+     "checkpoints": []
     }
    ],
    "questions": [
@@ -635,6 +637,9 @@
       "fr": "Résoudre x² − 7x + 12 = 0."
      },
      "difficulty": 1,
+     "skillId": null,
+     "purpose": "practice",
+     "version": 1,
      "options": [
       {
        "id": "38511f8b-020b-559c-97ff-55d170306520",
@@ -642,7 +647,8 @@
         "en": "x = 3 or x = 4",
         "fr": "x = 3 ou x = 4"
        },
-       "isCorrect": true
+       "isCorrect": true,
+       "misconception": null
       },
       {
        "id": "7b524195-f6bc-5082-a230-fcc85f0d854f",
@@ -650,7 +656,8 @@
         "en": "x = −3 or x = −4",
         "fr": "x = −3 ou x = −4"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       },
       {
        "id": "5b58043d-7c53-5917-b71c-5a54ac9e6ad7",
@@ -658,7 +665,8 @@
         "en": "x = 2 or x = 6",
         "fr": "x = 2 ou x = 6"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       },
       {
        "id": "bc14307c-c9e6-5bac-a47a-b05519af2530",
@@ -666,7 +674,8 @@
         "en": "x = 1 or x = 12",
         "fr": "x = 1 ou x = 12"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       }
      ],
      "numericAnswer": null,
@@ -674,7 +683,8 @@
      "explanation": {
       "en": "x² − 7x + 12 = (x − 3)(x − 4). Check: 3 + 4 = 7 and 3 × 4 = 12.",
       "fr": "x² − 7x + 12 = (x − 3)(x − 4). Vérification : 3 + 4 = 7 et 3 × 4 = 12."
-     }
+     },
+     "hint": null
     },
     {
      "id": "44242d03-659f-55af-8ce8-b35deb34ba74",
@@ -684,13 +694,17 @@
       "fr": "Calculer le discriminant de x² + 2x + 5."
      },
      "difficulty": 2,
+     "skillId": null,
+     "purpose": "practice",
+     "version": 1,
      "options": [],
      "numericAnswer": -16,
      "numericTolerance": 0,
      "explanation": {
       "en": "Δ = b² − 4ac = 4 − 20 = −16.",
       "fr": "Δ = b² − 4ac = 4 − 20 = −16."
-     }
+     },
+     "hint": null
     },
     {
      "id": "1b8bd767-cfa9-5ca5-87d9-27ec2b97b121",
@@ -700,6 +714,9 @@
       "fr": "Si Δ < 0, l'équation ax² + bx + c = 0 admet…"
      },
      "difficulty": 1,
+     "skillId": null,
+     "purpose": "practice",
+     "version": 1,
      "options": [
       {
        "id": "815113cc-318a-5805-b705-880a92f43f4e",
@@ -707,7 +724,8 @@
         "en": "no real roots",
         "fr": "aucune racine réelle"
        },
-       "isCorrect": true
+       "isCorrect": true,
+       "misconception": null
       },
       {
        "id": "7c7600b5-e285-523c-8d99-ffb88657c339",
@@ -715,7 +733,8 @@
         "en": "one repeated root",
         "fr": "une racine double"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       },
       {
        "id": "e33bcc86-7213-590b-ba76-1600f97c6a10",
@@ -723,7 +742,8 @@
         "en": "two distinct real roots",
         "fr": "deux racines réelles distinctes"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       },
       {
        "id": "3ef3f1f0-43ee-5c22-aa2a-2f98941b089f",
@@ -731,7 +751,8 @@
         "en": "infinitely many roots",
         "fr": "une infinité de racines"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       }
      ],
      "numericAnswer": null,
@@ -739,7 +760,8 @@
      "explanation": {
       "en": "The square root of a negative number is not real, so there are no real solutions.",
       "fr": "La racine carrée d'un nombre négatif n'est pas réelle : il n'y a pas de solution réelle."
-     }
+     },
+     "hint": null
     },
     {
      "id": "0ee6b337-7505-5bf5-b62e-1713d4fd0feb",
@@ -749,13 +771,17 @@
       "fr": "Quelle est la somme des racines de 2x² − 8x + 3 = 0 ?"
      },
      "difficulty": 3,
+     "skillId": null,
+     "purpose": "practice",
+     "version": 1,
      "options": [],
      "numericAnswer": 4,
      "numericTolerance": 0,
      "explanation": {
       "en": "Sum of roots = −b/a = 8/2 = 4.",
       "fr": "Somme des racines = −b/a = 8/2 = 4."
-     }
+     },
+     "hint": null
     },
     {
      "id": "66b29408-80e4-59be-87b4-f9a1dc1d9e7a",
@@ -765,6 +791,9 @@
       "fr": "Quelles équations admettent x = 2 comme racine ? Cochez toutes les bonnes réponses."
      },
      "difficulty": 3,
+     "skillId": null,
+     "purpose": "practice",
+     "version": 1,
      "options": [
       {
        "id": "abc00e4c-c13a-568f-bb3b-1ea0f67e7d59",
@@ -772,7 +801,8 @@
         "en": "x² − 4 = 0",
         "fr": "x² − 4 = 0"
        },
-       "isCorrect": true
+       "isCorrect": true,
+       "misconception": null
       },
       {
        "id": "64d5d09c-8d75-5d01-acac-710947588342",
@@ -780,7 +810,8 @@
         "en": "x² − 5x + 6 = 0",
         "fr": "x² − 5x + 6 = 0"
        },
-       "isCorrect": true
+       "isCorrect": true,
+       "misconception": null
       },
       {
        "id": "2175d81c-61ca-562a-866a-2e9a9ffd3894",
@@ -788,7 +819,8 @@
         "en": "x² + 4 = 0",
         "fr": "x² + 4 = 0"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       },
       {
        "id": "caeb0dfe-de70-5215-82ad-4b5565547a8e",
@@ -796,7 +828,8 @@
         "en": "x² − 2x = 0",
         "fr": "x² − 2x = 0"
        },
-       "isCorrect": true
+       "isCorrect": true,
+       "misconception": null
       }
      ],
      "numericAnswer": null,
@@ -804,7 +837,8 @@
      "explanation": {
       "en": "Substitute x = 2: 4 − 4 = 0, 4 − 10 + 6 = 0 and 4 − 4 = 0 all work; 4 + 4 = 8 ≠ 0.",
       "fr": "En remplaçant x par 2 : 4 − 4 = 0, 4 − 10 + 6 = 0 et 4 − 4 = 0 ; mais 4 + 4 = 8 ≠ 0."
-     }
+     },
+     "hint": null
     }
    ]
   },
@@ -817,6 +851,7 @@
     "fr": "Vitesse et accélération"
    },
    "orderIndex": 1,
+   "skills": [],
    "lessons": [
     {
      "id": "2cae5e02-6fdb-5f8e-8079-116e433182db",
@@ -828,7 +863,8 @@
       "en": "# Describing motion\n\n## Speed and velocity\n\n- **Speed** = distance ÷ time (a scalar, unit m/s).\n- **Velocity** is speed in a given direction (a vector).\n\n## Acceleration\n\nAcceleration is the rate of change of velocity:\n\n**a = (v − u) / t**, measured in **m/s²**.\n\n## Equations of uniformly accelerated motion\n\n- v = u + at\n- s = ut + ½at²\n- v² = u² + 2as\n\nwhere u is the initial velocity, v the final velocity, s the displacement and t the time.\n\n## Worked example\n\nA cyclist starts from rest and accelerates at 2 m/s² for 3 s.\nDistance: s = 0 × 3 + ½ × 2 × 3² = **9 m**.",
       "fr": "# Décrire un mouvement\n\n## Vitesse\n\n- **Vitesse moyenne** = distance ÷ durée (en m/s).\n- Le **vecteur vitesse** possède en plus une direction et un sens.\n\n## Accélération\n\n**a = (v − u) / t**, en **m/s²**.\n\n## Mouvement uniformément accéléré\n\n- v = u + at\n- s = ut + ½at²\n- v² = u² + 2as\n\n## Exemple\n\nUn cycliste part du repos avec a = 2 m/s² pendant 3 s : s = ½ × 2 × 3² = **9 m**."
      },
-     "estimatedMinutes": 10
+     "estimatedMinutes": 10,
+     "checkpoints": []
     }
    ],
    "questions": [
@@ -840,13 +876,17 @@
       "fr": "Un bus parcourt 150 km en 2,5 heures. Quelle est sa vitesse moyenne en km/h ?"
      },
      "difficulty": 1,
+     "skillId": null,
+     "purpose": "practice",
+     "version": 1,
      "options": [],
      "numericAnswer": 60,
      "numericTolerance": 0,
      "explanation": {
       "en": "150 ÷ 2.5 = 60 km/h.",
       "fr": "150 ÷ 2,5 = 60 km/h."
-     }
+     },
+     "hint": null
     },
     {
      "id": "1a37701b-d38a-50d1-844a-a580616a8d0d",
@@ -856,13 +896,17 @@
       "fr": "Une voiture passe du repos à 20 m/s en 5 s. Calculer son accélération en m/s²."
      },
      "difficulty": 2,
+     "skillId": null,
+     "purpose": "practice",
+     "version": 1,
      "options": [],
      "numericAnswer": 4,
      "numericTolerance": 0,
      "explanation": {
       "en": "a = (20 − 0) / 5 = 4 m/s².",
       "fr": "a = (20 − 0) / 5 = 4 m/s²."
-     }
+     },
+     "hint": null
     },
     {
      "id": "8eac88c7-d316-50fe-a6ba-4d507c8af67c",
@@ -872,6 +916,9 @@
       "fr": "Quelle est l'unité SI de l'accélération ?"
      },
      "difficulty": 1,
+     "skillId": null,
+     "purpose": "practice",
+     "version": 1,
      "options": [
       {
        "id": "ccd9171f-ce30-59b3-879f-66f9de71dc0a",
@@ -879,7 +926,8 @@
         "en": "m/s²",
         "fr": "m/s²"
        },
-       "isCorrect": true
+       "isCorrect": true,
+       "misconception": null
       },
       {
        "id": "e099cb0c-bc5f-5da0-8755-06fa729dda76",
@@ -887,7 +935,8 @@
         "en": "m/s",
         "fr": "m/s"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       },
       {
        "id": "c37c05d8-0643-56f4-a3a0-40db939006ba",
@@ -895,7 +944,8 @@
         "en": "N",
         "fr": "N"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       },
       {
        "id": "f2d06108-af89-5498-a003-82d6435e43e1",
@@ -903,7 +953,8 @@
         "en": "km/h",
         "fr": "km/h"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       }
      ],
      "numericAnswer": null,
@@ -911,7 +962,8 @@
      "explanation": {
       "en": "Acceleration is change of velocity (m/s) per second, so m/s².",
       "fr": "C'est une variation de vitesse (m/s) par seconde, donc m/s²."
-     }
+     },
+     "hint": null
     },
     {
      "id": "6445dd0b-c896-5e10-a6b9-b833977f3ddb",
@@ -921,6 +973,9 @@
       "fr": "Vrai ou faux : la vitesse vectorielle possède une valeur et une direction."
      },
      "difficulty": 1,
+     "skillId": null,
+     "purpose": "practice",
+     "version": 1,
      "options": [
       {
        "id": "9d9c3245-0a4f-5920-bc16-13a8335583b9",
@@ -928,7 +983,8 @@
         "en": "True",
         "fr": "Vrai"
        },
-       "isCorrect": true
+       "isCorrect": true,
+       "misconception": null
       },
       {
        "id": "4779f47a-9ec1-58af-b0a5-7044059c854f",
@@ -936,7 +992,8 @@
         "en": "False",
         "fr": "Faux"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       }
      ],
      "numericAnswer": null,
@@ -944,7 +1001,8 @@
      "explanation": {
       "en": "Velocity is a vector quantity.",
       "fr": "La vitesse vectorielle est un vecteur."
-     }
+     },
+     "hint": null
     },
     {
      "id": "929f1a34-3f92-55d4-a716-c166fd17ad9d",
@@ -954,13 +1012,17 @@
       "fr": "Un objet part du repos avec a = 2 m/s². Quelle distance (en m) parcourt-il en 3 s ?"
      },
      "difficulty": 3,
+     "skillId": null,
+     "purpose": "practice",
+     "version": 1,
      "options": [],
      "numericAnswer": 9,
      "numericTolerance": 0,
      "explanation": {
       "en": "s = ½ × 2 × 3² = 9 m.",
       "fr": "s = ½ × 2 × 3² = 9 m."
-     }
+     },
+     "hint": null
     }
    ]
   },
@@ -973,6 +1035,7 @@
     "fr": "Dérivation"
    },
    "orderIndex": 0,
+   "skills": [],
    "lessons": [
     {
      "id": "3ffe1c38-9d82-5e84-9884-4881fc864991",
@@ -984,7 +1047,8 @@
       "en": "# Rules of differentiation\n\nThe derivative f'(x) measures the rate of change (gradient) of f at x.\n\n## Standard results\n\n| f(x) | f'(x) |\n|---|---|\n| xⁿ | n·xⁿ⁻¹ |\n| sin x | cos x |\n| cos x | −sin x |\n| eˣ | eˣ |\n| ln x | 1/x |\n\n## Rules\n\n- **Product:** (uv)' = u'v + uv'\n- **Quotient:** (u/v)' = (u'v − uv') / v²\n- **Chain:** d/dx f(g(x)) = f'(g(x)) · g'(x)\n\n## Stationary points\n\nSolve f'(x) = 0. Then use f''(x): positive → minimum, negative → maximum.\n\n## Example\n\ny = x² − 6x + 1 → y' = 2x − 6 = 0 → x = 3, and y'' = 2 > 0, so it is a **minimum**.",
       "fr": "# Règles de dérivation\n\n| f(x) | f'(x) |\n|---|---|\n| xⁿ | n·xⁿ⁻¹ |\n| sin x | cos x |\n| cos x | −sin x |\n| eˣ | eˣ |\n| ln x | 1/x |\n\n- **Produit :** (uv)' = u'v + uv'\n- **Quotient :** (u/v)' = (u'v − uv') / v²\n- **Composée :** (f∘g)' = (f'∘g) · g'\n\n## Points stationnaires\n\nOn résout f'(x) = 0, puis on étudie le signe de f''(x)."
      },
-     "estimatedMinutes": 15
+     "estimatedMinutes": 15,
+     "checkpoints": []
     }
    ],
    "questions": [
@@ -996,6 +1060,9 @@
       "fr": "Dériver x³ par rapport à x."
      },
      "difficulty": 1,
+     "skillId": null,
+     "purpose": "practice",
+     "version": 1,
      "options": [
       {
        "id": "bb724cc7-cb85-5b1c-9d1b-8ce556edf518",
@@ -1003,7 +1070,8 @@
         "en": "3x²",
         "fr": "3x²"
        },
-       "isCorrect": true
+       "isCorrect": true,
+       "misconception": null
       },
       {
        "id": "7d844b9b-0c07-5689-8ab4-7492a37da187",
@@ -1011,7 +1079,8 @@
         "en": "x²",
         "fr": "x²"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       },
       {
        "id": "eb665e9e-1358-591f-8d58-87cc37428318",
@@ -1019,7 +1088,8 @@
         "en": "3x³",
         "fr": "3x³"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       },
       {
        "id": "9359242f-18bd-5585-87d7-12a0d3eac70a",
@@ -1027,7 +1097,8 @@
         "en": "x⁴/4",
         "fr": "x⁴/4"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       }
      ],
      "numericAnswer": null,
@@ -1035,7 +1106,8 @@
      "explanation": {
       "en": "Power rule: n·xⁿ⁻¹ = 3x².",
       "fr": "Règle de la puissance : n·xⁿ⁻¹ = 3x²."
-     }
+     },
+     "hint": null
     },
     {
      "id": "a65b9356-4f4c-582d-b26d-a62c144be5e7",
@@ -1045,13 +1117,17 @@
       "fr": "Si f(x) = 5x² − 3x, calculer f'(2)."
      },
      "difficulty": 2,
+     "skillId": null,
+     "purpose": "practice",
+     "version": 1,
      "options": [],
      "numericAnswer": 17,
      "numericTolerance": 0,
      "explanation": {
       "en": "f'(x) = 10x − 3, so f'(2) = 17.",
       "fr": "f'(x) = 10x − 3, donc f'(2) = 17."
-     }
+     },
+     "hint": null
     },
     {
      "id": "ff1533e3-b1fa-5b02-903b-8ee853846f96",
@@ -1061,6 +1137,9 @@
       "fr": "Dériver sin(2x)."
      },
      "difficulty": 3,
+     "skillId": null,
+     "purpose": "practice",
+     "version": 1,
      "options": [
       {
        "id": "817166f9-42d5-576b-9c31-0b05ecf5e6f6",
@@ -1068,7 +1147,8 @@
         "en": "2cos(2x)",
         "fr": "2cos(2x)"
        },
-       "isCorrect": true
+       "isCorrect": true,
+       "misconception": null
       },
       {
        "id": "6bd99f1c-c405-5401-9357-758242429048",
@@ -1076,7 +1156,8 @@
         "en": "cos(2x)",
         "fr": "cos(2x)"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       },
       {
        "id": "284d692d-195f-5d22-92bd-74fb3ac16e02",
@@ -1084,7 +1165,8 @@
         "en": "−2cos(2x)",
         "fr": "−2cos(2x)"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       },
       {
        "id": "e19e5cf3-037a-5493-9aaf-baa0fb1c4915",
@@ -1092,7 +1174,8 @@
         "en": "2sin(2x)",
         "fr": "2sin(2x)"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       }
      ],
      "numericAnswer": null,
@@ -1100,7 +1183,8 @@
      "explanation": {
       "en": "Chain rule: cos(2x) × d/dx(2x) = 2cos(2x).",
       "fr": "Dérivée d'une composée : cos(2x) × 2 = 2cos(2x)."
-     }
+     },
+     "hint": null
     },
     {
      "id": "48ea5262-94cc-5102-a7ac-78c0c410c714",
@@ -1110,13 +1194,17 @@
       "fr": "Pour quelle valeur de x la fonction y = x² − 6x + 1 a-t-elle un point stationnaire ?"
      },
      "difficulty": 2,
+     "skillId": null,
+     "purpose": "practice",
+     "version": 1,
      "options": [],
      "numericAnswer": 3,
      "numericTolerance": 0,
      "explanation": {
       "en": "y' = 2x − 6 = 0 gives x = 3.",
       "fr": "y' = 2x − 6 = 0 donne x = 3."
-     }
+     },
+     "hint": null
     }
    ]
   },
@@ -1129,6 +1217,7 @@
     "fr": "La notion de mole"
    },
    "orderIndex": 1,
+   "skills": [],
    "lessons": [
     {
      "id": "eb0a95f0-5244-5658-93ee-419c7116e57f",
@@ -1140,7 +1229,8 @@
       "en": "# The mole concept\n\nOne **mole** contains Avogadro's number of particles: **L ≈ 6.02 × 10²³ mol⁻¹**.\n\n## Key relationships\n\n- **n = m / M** (moles = mass ÷ molar mass)\n- **c = n / V** (concentration in mol/dm³, with V in dm³)\n- Number of particles = n × L\n\n## Molar mass\n\nAdd the relative atomic masses: M(CO₂) = 12 + 2 × 16 = **44 g/mol**.\n\n## Worked example\n\nHow many moles are in 36 g of water (M = 18 g/mol)? n = 36 / 18 = **2 mol**.\n\n> Remember: 1 dm³ = 1000 cm³.",
       "fr": "# La mole\n\nUne **mole** contient **N_A ≈ 6,02 × 10²³** entités.\n\n- **n = m / M**\n- **C = n / V** (en mol/L)\n\nExemple : 36 g d'eau (M = 18 g/mol) → n = **2 mol**."
      },
-     "estimatedMinutes": 12
+     "estimatedMinutes": 12,
+     "checkpoints": []
     }
    ],
    "questions": [
@@ -1152,13 +1242,17 @@
       "fr": "Combien de moles y a-t-il dans 36 g d'eau ? (M = 18 g/mol)"
      },
      "difficulty": 1,
+     "skillId": null,
+     "purpose": "practice",
+     "version": 1,
      "options": [],
      "numericAnswer": 2,
      "numericTolerance": 0,
      "explanation": {
       "en": "n = m/M = 36/18 = 2 mol.",
       "fr": "n = m/M = 36/18 = 2 mol."
-     }
+     },
+     "hint": null
     },
     {
      "id": "d24c5f05-8f5e-58e6-b390-2272716736ed",
@@ -1168,13 +1262,17 @@
       "fr": "Calculer la masse molaire de CO₂ en g/mol. (C = 12, O = 16)"
      },
      "difficulty": 1,
+     "skillId": null,
+     "purpose": "practice",
+     "version": 1,
      "options": [],
      "numericAnswer": 44,
      "numericTolerance": 0,
      "explanation": {
       "en": "12 + 2 × 16 = 44 g/mol.",
       "fr": "12 + 2 × 16 = 44 g/mol."
-     }
+     },
+     "hint": null
     },
     {
      "id": "61e73cbb-4bee-5c1a-8c5b-b91228bf52ed",
@@ -1184,6 +1282,9 @@
       "fr": "Quelle est la valeur approchée de la constante d'Avogadro ?"
      },
      "difficulty": 1,
+     "skillId": null,
+     "purpose": "practice",
+     "version": 1,
      "options": [
       {
        "id": "ea4c02ba-481b-5d85-a023-b617240ffe7e",
@@ -1191,7 +1292,8 @@
         "en": "6.02 × 10²³ mol⁻¹",
         "fr": "6,02 × 10²³ mol⁻¹"
        },
-       "isCorrect": true
+       "isCorrect": true,
+       "misconception": null
       },
       {
        "id": "8cd23c91-d7d5-5fc2-9ff1-88b72ace44b2",
@@ -1199,7 +1301,8 @@
         "en": "6.02 × 10⁻²³ mol⁻¹",
         "fr": "6,02 × 10⁻²³ mol⁻¹"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       },
       {
        "id": "f475c9ed-5f8d-5f87-8841-cb745e233379",
@@ -1207,7 +1310,8 @@
         "en": "3.00 × 10⁸ mol⁻¹",
         "fr": "3,00 × 10⁸ mol⁻¹"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       },
       {
        "id": "6f230fe3-757b-5fb7-9737-19c16a7f840a",
@@ -1215,7 +1319,8 @@
         "en": "1.60 × 10⁻¹⁹ mol⁻¹",
         "fr": "1,60 × 10⁻¹⁹ mol⁻¹"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       }
      ],
      "numericAnswer": null,
@@ -1223,7 +1328,8 @@
      "explanation": {
       "en": "L ≈ 6.02 × 10²³ particles per mole.",
       "fr": "N_A ≈ 6,02 × 10²³ entités par mole."
-     }
+     },
+     "hint": null
     },
     {
      "id": "186dba5b-30f4-54c9-86d5-91fdb6a8e9c7",
@@ -1233,13 +1339,17 @@
       "fr": "On dissout 0,5 mol de NaCl pour obtenir 250 mL de solution. Quelle est la concentration en mol/L ?"
      },
      "difficulty": 3,
+     "skillId": null,
+     "purpose": "practice",
+     "version": 1,
      "options": [],
      "numericAnswer": 2,
      "numericTolerance": 0,
      "explanation": {
       "en": "250 cm³ = 0.25 dm³, so c = 0.5 / 0.25 = 2 mol/dm³.",
       "fr": "250 mL = 0,25 L, donc C = 0,5 / 0,25 = 2 mol/L."
-     }
+     },
+     "hint": null
     }
    ]
   },
@@ -1252,6 +1362,7 @@
     "en": "Second-degree polynomials"
    },
    "orderIndex": 0,
+   "skills": [],
    "lessons": [
     {
      "id": "32f9be4f-7d97-56b5-81a6-02b467f44d65",
@@ -1263,7 +1374,8 @@
       "fr": "# Polynômes du second degré\n\nUn trinôme s'écrit **P(x) = ax² + bx + c**, avec a ≠ 0.\n\n## Forme canonique\n\n**P(x) = a[(x + b/2a)² − Δ/4a²]** où **Δ = b² − 4ac**.\n\nExemple : x² + 4x + 1 = (x + 2)² − 3.\n\n## Racines\n\n- Δ > 0 : x₁ = (−b − √Δ)/2a et x₂ = (−b + √Δ)/2a\n- Δ = 0 : racine double x₀ = −b/2a\n- Δ < 0 : pas de racine réelle\n\n## Somme et produit\n\n**S = x₁ + x₂ = −b/a** et **P = x₁ · x₂ = c/a**.\n\n## Signe du trinôme\n\n- Si Δ < 0, P(x) est toujours du **signe de a**.\n- Si Δ > 0, P(x) est du signe de a **à l'extérieur** des racines, du signe contraire **entre** les racines.",
       "en": "# Second-degree polynomials\n\n**P(x) = ax² + bx + c**, a ≠ 0, with discriminant **Δ = b² − 4ac**.\n\n- Canonical form: x² + 4x + 1 = (x + 2)² − 3.\n- Sum of roots −b/a, product c/a.\n- If Δ < 0, P(x) always has the **sign of a**.\n- If Δ > 0, P(x) has the sign of a outside the roots and the opposite sign between them."
      },
-     "estimatedMinutes": 15
+     "estimatedMinutes": 15,
+     "checkpoints": []
     }
    ],
    "questions": [
@@ -1275,6 +1387,9 @@
       "en": "Solve x² − x − 6 = 0."
      },
      "difficulty": 1,
+     "skillId": null,
+     "purpose": "practice",
+     "version": 1,
      "options": [
       {
        "id": "fde07307-42eb-51ac-8a19-b19fce31df44",
@@ -1282,7 +1397,8 @@
         "en": "x = −2 or x = 3",
         "fr": "x = −2 ou x = 3"
        },
-       "isCorrect": true
+       "isCorrect": true,
+       "misconception": null
       },
       {
        "id": "641802c1-84b6-5673-b12d-72b369110c85",
@@ -1290,7 +1406,8 @@
         "en": "x = 2 or x = −3",
         "fr": "x = 2 ou x = −3"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       },
       {
        "id": "413c9977-24fc-513f-a8db-b35af0a9338d",
@@ -1298,7 +1415,8 @@
         "en": "x = 1 or x = 6",
         "fr": "x = 1 ou x = 6"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       },
       {
        "id": "8da48101-c969-5d66-aa87-3c2b30cfa020",
@@ -1306,7 +1424,8 @@
         "en": "No real root",
         "fr": "Pas de racine réelle"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       }
      ],
      "numericAnswer": null,
@@ -1314,7 +1433,8 @@
      "explanation": {
       "fr": "Δ = 1 + 24 = 25, donc x = (1 ± 5)/2, soit −2 ou 3.",
       "en": "Δ = 1 + 24 = 25, so x = (1 ± 5)/2, giving −2 or 3."
-     }
+     },
+     "hint": null
     },
     {
      "id": "f157ea7d-47f5-5ebe-a668-62c8a998eb42",
@@ -1324,6 +1444,9 @@
       "en": "What is the sign of P(x) = 2x² + x + 1?"
      },
      "difficulty": 2,
+     "skillId": null,
+     "purpose": "practice",
+     "version": 1,
      "options": [
       {
        "id": "857ac4db-b340-5bde-a6a5-ec4577701cb7",
@@ -1331,7 +1454,8 @@
         "en": "Always strictly positive",
         "fr": "Toujours strictement positif"
        },
-       "isCorrect": true
+       "isCorrect": true,
+       "misconception": null
       },
       {
        "id": "2d6b586c-d2eb-5188-938a-7914f634ce3b",
@@ -1339,7 +1463,8 @@
         "en": "Always negative",
         "fr": "Toujours négatif"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       },
       {
        "id": "b13219fc-c914-5d47-a504-cba46c81908c",
@@ -1347,7 +1472,8 @@
         "en": "Changes sign",
         "fr": "Change de signe"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       },
       {
        "id": "6d0a544e-5c29-540b-ab62-9ce761685d6a",
@@ -1355,7 +1481,8 @@
         "en": "Zero at x = 1",
         "fr": "S'annule en x = 1"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       }
      ],
      "numericAnswer": null,
@@ -1363,7 +1490,8 @@
      "explanation": {
       "fr": "Δ = 1 − 8 = −7 < 0 : P(x) est toujours du signe de a = 2 > 0.",
       "en": "Δ = 1 − 8 = −7 < 0, so P(x) always has the sign of a = 2 > 0."
-     }
+     },
+     "hint": null
     },
     {
      "id": "ea0cf01d-e2a8-5012-9d2b-dc3658bafdd7",
@@ -1373,6 +1501,9 @@
       "en": "Canonical form of x² + 4x + 1:"
      },
      "difficulty": 2,
+     "skillId": null,
+     "purpose": "practice",
+     "version": 1,
      "options": [
       {
        "id": "94e82ba5-d69e-5a04-a8bb-63591414b023",
@@ -1380,7 +1511,8 @@
         "en": "(x + 2)² − 3",
         "fr": "(x + 2)² − 3"
        },
-       "isCorrect": true
+       "isCorrect": true,
+       "misconception": null
       },
       {
        "id": "206e72f0-0b51-564a-b9fd-60714ad2e6c1",
@@ -1388,7 +1520,8 @@
         "en": "(x + 2)² + 1",
         "fr": "(x + 2)² + 1"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       },
       {
        "id": "cc098b7b-ad5c-5d62-8825-6004d6b8bac5",
@@ -1396,7 +1529,8 @@
         "en": "(x − 2)² − 3",
         "fr": "(x − 2)² − 3"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       },
       {
        "id": "3e81fcb3-5eba-5784-b667-6f9c3b3db727",
@@ -1404,7 +1538,8 @@
         "en": "(x + 4)² − 15",
         "fr": "(x + 4)² − 15"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       }
      ],
      "numericAnswer": null,
@@ -1412,7 +1547,8 @@
      "explanation": {
       "fr": "(x + 2)² = x² + 4x + 4, donc x² + 4x + 1 = (x + 2)² − 3.",
       "en": "(x + 2)² = x² + 4x + 4, so subtract 3."
-     }
+     },
+     "hint": null
     },
     {
      "id": "95ecdcb3-475f-5e29-b2e6-19bd2a97a0c2",
@@ -1422,13 +1558,17 @@
       "en": "Product of the roots of 3x² − 12x + 9 = 0?"
      },
      "difficulty": 2,
+     "skillId": null,
+     "purpose": "practice",
+     "version": 1,
      "options": [],
      "numericAnswer": 3,
      "numericTolerance": 0,
      "explanation": {
       "fr": "P = c/a = 9/3 = 3 (racines 1 et 3).",
       "en": "Product = c/a = 9/3 = 3 (roots 1 and 3)."
-     }
+     },
+     "hint": null
     }
    ]
   },
@@ -1441,6 +1581,7 @@
     "en": "Work and power"
    },
    "orderIndex": 1,
+   "skills": [],
    "lessons": [
     {
      "id": "8bc2d5cb-8d5b-58bf-af4f-414cd3b72719",
@@ -1452,7 +1593,8 @@
       "fr": "# Travail et puissance\n\n## Travail d'une force constante\n\n**W = F × d × cos α**, en **joules (J)**, où α est l'angle entre la force et le déplacement.\n\n- α = 0 : travail moteur maximal, W = F·d\n- α = 90° : **travail nul**\n- α > 90° : travail résistant (négatif)\n\n## Travail du poids\n\n**W = m × g × h** (h : dénivellation), positif à la descente.\n\n## Puissance\n\n**P = W / t**, en **watts (W)**.",
       "en": "# Work and power\n\n- **W = F × d × cos α** (joules). A force perpendicular to the motion does **no work**.\n- Work done by weight: **W = m g h**.\n- Power: **P = W / t** (watts)."
      },
-     "estimatedMinutes": 12
+     "estimatedMinutes": 12,
+     "checkpoints": []
     }
    ],
    "questions": [
@@ -1464,13 +1606,17 @@
       "en": "A 50 N force moves an object 4 m in its own direction. Work done in J?"
      },
      "difficulty": 1,
+     "skillId": null,
+     "purpose": "practice",
+     "version": 1,
      "options": [],
      "numericAnswer": 200,
      "numericTolerance": 0,
      "explanation": {
       "fr": "W = 50 × 4 × cos 0 = 200 J.",
       "en": "W = 50 × 4 × cos 0 = 200 J."
-     }
+     },
+     "hint": null
     },
     {
      "id": "4a70e8f7-03d7-5f17-89bf-2c1893eb4283",
@@ -1480,6 +1626,9 @@
       "en": "The work done by a force perpendicular to the displacement is:"
      },
      "difficulty": 1,
+     "skillId": null,
+     "purpose": "practice",
+     "version": 1,
      "options": [
       {
        "id": "c884c7d1-b7d7-590f-bb54-748a362e99d3",
@@ -1487,7 +1636,8 @@
         "en": "Zero",
         "fr": "Nul"
        },
-       "isCorrect": true
+       "isCorrect": true,
+       "misconception": null
       },
       {
        "id": "884840c7-a9e9-50c2-a002-cee0a967c188",
@@ -1495,7 +1645,8 @@
         "en": "Maximal",
         "fr": "Maximal"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       },
       {
        "id": "15d2ffd8-230e-580b-a38e-e284dcd9c530",
@@ -1503,7 +1654,8 @@
         "en": "Negative",
         "fr": "Négatif"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       },
       {
        "id": "2e272366-1dcc-56d1-95f1-2dd875a8b9e9",
@@ -1511,7 +1663,8 @@
         "en": "Equal to F × d",
         "fr": "Égal à F × d"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       }
      ],
      "numericAnswer": null,
@@ -1519,7 +1672,8 @@
      "explanation": {
       "fr": "cos 90° = 0, donc W = 0.",
       "en": "cos 90° = 0, so W = 0."
-     }
+     },
+     "hint": null
     },
     {
      "id": "64d8712f-399c-5ab4-8087-170eb89eb809",
@@ -1529,13 +1683,17 @@
       "en": "A motor does 1200 J of work in 4 s. Power in W?"
      },
      "difficulty": 2,
+     "skillId": null,
+     "purpose": "practice",
+     "version": 1,
      "options": [],
      "numericAnswer": 300,
      "numericTolerance": 0,
      "explanation": {
       "fr": "P = 1200 / 4 = 300 W.",
       "en": "P = 1200 / 4 = 300 W."
-     }
+     },
+     "hint": null
     }
    ]
   },
@@ -1548,6 +1706,7 @@
     "en": "Sequences"
    },
    "orderIndex": 0,
+   "skills": [],
    "lessons": [
     {
      "id": "863747c5-bfb7-55de-b406-f70c67c8741c",
@@ -1559,7 +1718,8 @@
       "fr": "# Suites arithmétiques et géométriques\n\n## Suite arithmétique de raison r\n\n- **uₙ = u₀ + n·r**\n- Somme de termes consécutifs : (nombre de termes) × (premier + dernier) / 2\n\n## Suite géométrique de raison q\n\n- **uₙ = u₀ · qⁿ**\n- Somme : u₀ (1 − qⁿ⁺¹)/(1 − q) si q ≠ 1\n\n## Convergence\n\nSi **|q| < 1**, alors qⁿ → 0 : la suite géométrique converge vers **0**.",
       "en": "# Arithmetic and geometric sequences\n\n- Arithmetic: **uₙ = u₀ + n·r**\n- Geometric: **uₙ = u₀ · qⁿ**\n- If |q| < 1, a geometric sequence converges to 0."
      },
-     "estimatedMinutes": 15
+     "estimatedMinutes": 15,
+     "checkpoints": []
     }
    ],
    "questions": [
@@ -1571,13 +1731,17 @@
       "en": "(uₙ) is arithmetic with u₀ = 3 and r = 4. Find u₁₀."
      },
      "difficulty": 1,
+     "skillId": null,
+     "purpose": "practice",
+     "version": 1,
      "options": [],
      "numericAnswer": 43,
      "numericTolerance": 0,
      "explanation": {
       "fr": "u₁₀ = 3 + 10 × 4 = 43.",
       "en": "u₁₀ = 3 + 10 × 4 = 43."
-     }
+     },
+     "hint": null
     },
     {
      "id": "af9a959b-9e12-59a3-8efb-41336defcc33",
@@ -1587,13 +1751,17 @@
       "en": "(vₙ) is geometric with v₀ = 2 and q = 3. Find v₄."
      },
      "difficulty": 2,
+     "skillId": null,
+     "purpose": "practice",
+     "version": 1,
      "options": [],
      "numericAnswer": 162,
      "numericTolerance": 0,
      "explanation": {
       "fr": "v₄ = 2 × 3⁴ = 162.",
       "en": "v₄ = 2 × 3⁴ = 162."
-     }
+     },
+     "hint": null
     },
     {
      "id": "aed1c5b5-79e7-534c-af39-26b23ced5a55",
@@ -1603,6 +1771,9 @@
       "en": "A geometric sequence with q = 0.5 and first term 8:"
      },
      "difficulty": 2,
+     "skillId": null,
+     "purpose": "practice",
+     "version": 1,
      "options": [
       {
        "id": "2ddefcc6-aa45-5bf7-8fef-bebe02d43b6e",
@@ -1610,7 +1781,8 @@
         "en": "Converges to 0",
         "fr": "Converge vers 0"
        },
-       "isCorrect": true
+       "isCorrect": true,
+       "misconception": null
       },
       {
        "id": "46621dce-c251-5e45-a2fe-0d3fd4892760",
@@ -1618,7 +1790,8 @@
         "en": "Converges to 8",
         "fr": "Converge vers 8"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       },
       {
        "id": "ba660bcf-5411-53eb-9dd6-3d8f39d5a1f5",
@@ -1626,7 +1799,8 @@
         "en": "Diverges to +∞",
         "fr": "Diverge vers +∞"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       },
       {
        "id": "fabdcbba-9f1a-5740-9c7e-3cc51cc47a91",
@@ -1634,7 +1808,8 @@
         "en": "Converges to 16",
         "fr": "Converge vers 16"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       }
      ],
      "numericAnswer": null,
@@ -1642,7 +1817,8 @@
      "explanation": {
       "fr": "|q| < 1 donc qⁿ → 0 et vₙ → 0.",
       "en": "|q| < 1 so qⁿ → 0."
-     }
+     },
+     "hint": null
     }
    ]
   },
@@ -1655,6 +1831,29 @@
     "en": "Complex numbers"
    },
    "orderIndex": 0,
+   "skills": [
+    {
+     "id": "e7d99c87-a1a2-5eb5-b6d1-9aba581c5619",
+     "name": {
+      "fr": "Forme algébrique et calculs",
+      "en": "Algebraic form and arithmetic"
+     }
+    },
+    {
+     "id": "62560838-4bec-57b3-830b-847d0889d24b",
+     "name": {
+      "fr": "Conjugué",
+      "en": "Conjugate"
+     }
+    },
+    {
+     "id": "235f0027-f534-5a89-8505-1ae208abd4b6",
+     "name": {
+      "fr": "Module et argument",
+      "en": "Modulus and argument"
+     }
+    }
+   ],
    "lessons": [
     {
      "id": "18eb21e8-812f-539d-a3b4-5f24627839f9",
@@ -1663,76 +1862,378 @@
       "en": "Algebraic form, modulus and conjugate"
      },
      "body": {
-      "fr": "# Nombres complexes\n\nOn pose **i² = −1**. Tout complexe s'écrit **z = a + ib** (a = Re z, b = Im z).\n\n## Conjugué\n\n**z̄ = a − ib**, et z · z̄ = a² + b².\n\n## Module et argument\n\n- **|z| = √(a² + b²)**\n- Si z ≠ 0, un argument θ vérifie cos θ = a/|z| et sin θ = b/|z|.\n- Forme trigonométrique : **z = |z|(cos θ + i sin θ)**.\n\n## Exemples\n\n- |3 + 4i| = √(9 + 16) = **5**\n- (1 + i)² = 1 + 2i + i² = **2i**\n- arg(i) = **π/2**",
-      "en": "# Complex numbers\n\nWith **i² = −1**, every complex number is **z = a + ib**.\n\n- Conjugate: z̄ = a − ib.\n- Modulus: |z| = √(a² + b²), e.g. |3 + 4i| = 5.\n- (1 + i)² = 2i, and arg(i) = π/2."
+      "fr": "# Nombres complexes\n\nOn pose **i² = −1**. Tout nombre complexe s'écrit de façon unique **z = a + ib**, avec a et b réels :\na est la **partie réelle** (Re z) et b la **partie imaginaire** (Im z). Attention : Im z est le réel b, pas ib.\n\n## Calculer avec la forme algébrique\n\nOn calcule comme avec des polynômes en i, puis on remplace **i² par −1**.\n\n- Somme : (a + ib) + (c + id) = (a + c) + i(b + d)\n- Produit : on développe **tous** les termes.\n\nExemple : (2 + 3i)(4 − i) = 8 − 2i + 12i − 3i² = 8 + 10i + 3 = **11 + 10i**.\n\n## Le conjugué\n\nLe conjugué de z = a + ib est **z̄ = a − ib** : seule la partie imaginaire change de signe.\n\n- z · z̄ = a² + b², un réel positif.\n- Pour écrire un quotient sous forme algébrique, on multiplie en haut et en bas par le conjugué du dénominateur.\n\nExemple : 1/(2 − i) = (2 + i)/((2 − i)(2 + i)) = (2 + i)/5 = **2/5 + (1/5)i**.\n\n## Module et argument\n\n- Module : **|z| = √(a² + b²)**, la distance de l'origine au point d'affixe z.\n- Si z ≠ 0, un argument θ vérifie cos θ = a/|z| et sin θ = b/|z|.\n\nExemples : |3 + 4i| = √(9 + 16) = **5** ; arg(i) = **π/2** ; arg(−1) = **π**.\n\n## À retenir\n\n- i² = −1 : à appliquer après chaque développement.\n- Conjugué : on change seulement le signe de la partie imaginaire.\n- Module : n'oublie pas la racine carrée.",
+      "en": "# Complex numbers\n\nWe set **i² = −1**. Every complex number can be written in exactly one way as **z = a + ib**, with a and b real:\na is the **real part** (Re z) and b the **imaginary part** (Im z). Careful: Im z is the real number b, not ib.\n\n## Calculating in algebraic form\n\nCalculate as with polynomials in i, then replace **i² with −1**.\n\n- Sum: (a + ib) + (c + id) = (a + c) + i(b + d)\n- Product: expand **every** term.\n\nExample: (2 + 3i)(4 − i) = 8 − 2i + 12i − 3i² = 8 + 10i + 3 = **11 + 10i**.\n\n## The conjugate\n\nThe conjugate of z = a + ib is **z̄ = a − ib**: only the imaginary part changes sign.\n\n- z · z̄ = a² + b², a non-negative real number.\n- To write a quotient in algebraic form, multiply top and bottom by the conjugate of the denominator.\n\nExample: 1/(2 − i) = (2 + i)/((2 − i)(2 + i)) = (2 + i)/5 = **2/5 + (1/5)i**.\n\n## Modulus and argument\n\n- Modulus: **|z| = √(a² + b²)**, the distance from the origin to the point z.\n- If z ≠ 0, an argument θ satisfies cos θ = a/|z| and sin θ = b/|z|.\n\nExamples: |3 + 4i| = √(9 + 16) = **5**; arg(i) = **π/2**; arg(−1) = **π**.\n\n## Key points\n\n- i² = −1: apply it after every expansion.\n- Conjugate: change only the sign of the imaginary part.\n- Modulus: don't forget the square root."
      },
-     "estimatedMinutes": 15
+     "estimatedMinutes": 15,
+     "checkpoints": [
+      {
+       "questionId": "ec60ac75-6acc-52fd-8350-573d94cfed6e",
+       "afterBlock": 1
+      },
+      {
+       "questionId": "8530303d-adbb-515b-979b-61cf2caf722e",
+       "afterBlock": 2
+      },
+      {
+       "questionId": "a04cd07d-e524-556e-a9a1-964beaf1bf55",
+       "afterBlock": 3
+      }
+     ]
     }
    ],
    "questions": [
     {
-     "id": "aadba20f-b8d1-5d3e-87f6-890850fd9b26",
-     "type": "numeric",
-     "prompt": {
-      "fr": "Module de z = 3 + 4i ?",
-      "en": "Modulus of z = 3 + 4i?"
-     },
-     "difficulty": 1,
-     "options": [],
-     "numericAnswer": 5,
-     "numericTolerance": 0,
-     "explanation": {
-      "fr": "|z| = √(9 + 16) = 5.",
-      "en": "|z| = √(9 + 16) = 5."
-     }
-    },
-    {
-     "id": "580545b2-00fd-5504-bb0c-455a0f974f0b",
+     "id": "ec60ac75-6acc-52fd-8350-573d94cfed6e",
      "type": "single_choice",
      "prompt": {
-      "fr": "Conjugué de 2 − 5i :",
-      "en": "Conjugate of 2 − 5i:"
+      "fr": "(2 + 3i)(1 − i) = ?",
+      "en": "(2 + 3i)(1 − i) = ?"
      },
      "difficulty": 1,
+     "skillId": "e7d99c87-a1a2-5eb5-b6d1-9aba581c5619",
+     "purpose": "checkpoint",
+     "version": 1,
      "options": [
       {
-       "id": "191bb098-41fa-58ec-8aa6-5c8ac4a2f3b8",
+       "id": "417a6a1f-55fa-5c3a-a511-40bec7a42ab9",
        "text": {
-        "en": "2 + 5i",
-        "fr": "2 + 5i"
+        "en": "5 + i",
+        "fr": "5 + i"
        },
-       "isCorrect": true
+       "isCorrect": true,
+       "misconception": null
       },
       {
-       "id": "00248b1b-5126-55da-9447-9fa6b79de568",
+       "id": "3a347670-a2dc-5615-bb2c-b69891174aca",
        "text": {
-        "en": "−2 + 5i",
-        "fr": "−2 + 5i"
+        "en": "−1 + i",
+        "fr": "−1 + i"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": {
+        "fr": "Oubli que i² = −1",
+        "en": "Forgetting that i² = −1"
+       }
       },
       {
-       "id": "5823e9ad-4af0-5622-95c5-748ed44a42a2",
+       "id": "e441e423-efd2-5d2d-b9db-487059fae894",
        "text": {
-        "en": "−2 − 5i",
-        "fr": "−2 − 5i"
+        "en": "2 − 3i",
+        "fr": "2 − 3i"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": {
+        "fr": "Seuls les termes « face à face » ont été multipliés : il faut développer tous les produits",
+        "en": "Only the matching terms were multiplied: expand every product"
+       }
       },
       {
-       "id": "1437580d-6cd6-5e11-8e70-645aa80f36b7",
+       "id": "e6f39e32-65fe-5e12-818f-a15ef6c0d9f3",
        "text": {
-        "en": "5 − 2i",
-        "fr": "5 − 2i"
+        "en": "5 − i",
+        "fr": "5 − i"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       }
      ],
      "numericAnswer": null,
      "numericTolerance": null,
      "explanation": {
-      "fr": "On change le signe de la partie imaginaire.",
-      "en": "Change the sign of the imaginary part."
+      "fr": "2 − 2i + 3i − 3i² = 2 + i + 3 = 5 + i.",
+      "en": "2 − 2i + 3i − 3i² = 2 + i + 3 = 5 + i."
+     },
+     "hint": {
+      "fr": "Développe les quatre produits, puis remplace i² par −1.",
+      "en": "Expand all four products, then replace i² with −1."
+     }
+    },
+    {
+     "id": "8530303d-adbb-515b-979b-61cf2caf722e",
+     "type": "single_choice",
+     "prompt": {
+      "fr": "Conjugué de −3 + 2i :",
+      "en": "Conjugate of −3 + 2i:"
+     },
+     "difficulty": 1,
+     "skillId": "62560838-4bec-57b3-830b-847d0889d24b",
+     "purpose": "checkpoint",
+     "version": 1,
+     "options": [
+      {
+       "id": "93212d41-b763-5ddc-ad87-a1650e4a69f7",
+       "text": {
+        "en": "−3 − 2i",
+        "fr": "−3 − 2i"
+       },
+       "isCorrect": true,
+       "misconception": null
+      },
+      {
+       "id": "1c54bf88-9460-58f3-97a3-250a636d01a3",
+       "text": {
+        "en": "3 − 2i",
+        "fr": "3 − 2i"
+       },
+       "isCorrect": false,
+       "misconception": {
+        "fr": "On a aussi changé le signe de la partie réelle",
+        "en": "The real part's sign was changed too"
+       }
+      },
+      {
+       "id": "3a236fdb-3200-5c7b-ab52-51be2e56b46c",
+       "text": {
+        "en": "3 + 2i",
+        "fr": "3 + 2i"
+       },
+       "isCorrect": false,
+       "misconception": {
+        "fr": "Seule la partie réelle a changé de signe",
+        "en": "Only the real part's sign was changed"
+       }
+      },
+      {
+       "id": "d38bf881-a374-5077-ad16-b3e176bd98bd",
+       "text": {
+        "en": "−3 + 2i",
+        "fr": "−3 + 2i"
+       },
+       "isCorrect": false,
+       "misconception": null
+      }
+     ],
+     "numericAnswer": null,
+     "numericTolerance": null,
+     "explanation": {
+      "fr": "z̄ = a − ib : −3 + 2i devient −3 − 2i.",
+      "en": "z̄ = a − ib: −3 + 2i becomes −3 − 2i."
+     },
+     "hint": {
+      "fr": "Le conjugué ne change que le signe de la partie imaginaire.",
+      "en": "The conjugate only changes the sign of the imaginary part."
+     }
+    },
+    {
+     "id": "a04cd07d-e524-556e-a9a1-964beaf1bf55",
+     "type": "numeric",
+     "prompt": {
+      "fr": "Module de z = 6 − 8i ?",
+      "en": "Modulus of z = 6 − 8i?"
+     },
+     "difficulty": 1,
+     "skillId": "235f0027-f534-5a89-8505-1ae208abd4b6",
+     "purpose": "checkpoint",
+     "version": 1,
+     "options": [],
+     "numericAnswer": 10,
+     "numericTolerance": 0,
+     "explanation": {
+      "fr": "|z| = √(36 + 64) = √100 = 10.",
+      "en": "|z| = √(36 + 64) = √100 = 10."
+     },
+     "hint": {
+      "fr": "Calcule √(6² + (−8)²).",
+      "en": "Work out √(6² + (−8)²)."
+     }
+    },
+    {
+     "id": "ade3dbe3-3adc-51b7-a83c-a6d6377f2fe9",
+     "type": "single_choice",
+     "prompt": {
+      "fr": "Partie imaginaire de z = 4 − 7i :",
+      "en": "Imaginary part of z = 4 − 7i:"
+     },
+     "difficulty": 1,
+     "skillId": "e7d99c87-a1a2-5eb5-b6d1-9aba581c5619",
+     "purpose": "practice",
+     "version": 1,
+     "options": [
+      {
+       "id": "83ab7446-173f-5668-aadb-87423fbb60e9",
+       "text": {
+        "en": "−7",
+        "fr": "−7"
+       },
+       "isCorrect": true,
+       "misconception": null
+      },
+      {
+       "id": "36b41fd5-f10b-5b77-902d-e8502d886f54",
+       "text": {
+        "en": "7",
+        "fr": "7"
+       },
+       "isCorrect": false,
+       "misconception": {
+        "fr": "Le signe de la partie imaginaire a été oublié",
+        "en": "The sign of the imaginary part was dropped"
+       }
+      },
+      {
+       "id": "5ba04dfc-f9c7-514a-b1a0-6d2ce533bbce",
+       "text": {
+        "en": "−7i",
+        "fr": "−7i"
+       },
+       "isCorrect": false,
+       "misconception": {
+        "fr": "La partie imaginaire est le réel b, pas ib",
+        "en": "The imaginary part is the real number b, not ib"
+       }
+      },
+      {
+       "id": "8a8fa533-7647-519e-b488-b6c66ecd6922",
+       "text": {
+        "en": "4",
+        "fr": "4"
+       },
+       "isCorrect": false,
+       "misconception": null
+      }
+     ],
+     "numericAnswer": null,
+     "numericTolerance": null,
+     "explanation": {
+      "fr": "z = 4 + (−7)i, donc Im z = −7 (un réel).",
+      "en": "z = 4 + (−7)i, so Im z = −7 (a real number)."
+     },
+     "hint": {
+      "fr": "Écris z = a + ib et identifie b.",
+      "en": "Write z = a + ib and read off b."
+     }
+    },
+    {
+     "id": "ad91a062-6643-56f1-bb01-186a2cd4c3bc",
+     "type": "single_choice",
+     "prompt": {
+      "fr": "(3 + 2i) + (1 − 5i) = ?",
+      "en": "(3 + 2i) + (1 − 5i) = ?"
+     },
+     "difficulty": 1,
+     "skillId": "e7d99c87-a1a2-5eb5-b6d1-9aba581c5619",
+     "purpose": "practice",
+     "version": 1,
+     "options": [
+      {
+       "id": "610fc6e3-befc-5fe5-b12e-ab2cb588327a",
+       "text": {
+        "en": "4 − 3i",
+        "fr": "4 − 3i"
+       },
+       "isCorrect": true,
+       "misconception": null
+      },
+      {
+       "id": "f6d4fd31-093f-57e8-9dfa-ccd322772f91",
+       "text": {
+        "en": "4 + 7i",
+        "fr": "4 + 7i"
+       },
+       "isCorrect": false,
+       "misconception": {
+        "fr": "Erreur de signe sur −5i",
+        "en": "Sign error on −5i"
+       }
+      },
+      {
+       "id": "9026286a-da51-5f6f-b279-d420116601c1",
+       "text": {
+        "en": "3 − 10i",
+        "fr": "3 − 10i"
+       },
+       "isCorrect": false,
+       "misconception": {
+        "fr": "Multiplication au lieu d'addition",
+        "en": "Multiplied instead of added"
+       }
+      },
+      {
+       "id": "e287ddfa-943b-5c07-b8c6-c54f16477182",
+       "text": {
+        "en": "2 + 7i",
+        "fr": "2 + 7i"
+       },
+       "isCorrect": false,
+       "misconception": null
+      }
+     ],
+     "numericAnswer": null,
+     "numericTolerance": null,
+     "explanation": {
+      "fr": "(3 + 1) + (2 − 5)i = 4 − 3i.",
+      "en": "(3 + 1) + (2 − 5)i = 4 − 3i."
+     },
+     "hint": {
+      "fr": "Additionne les parties réelles entre elles, puis les parties imaginaires.",
+      "en": "Add the real parts together, then the imaginary parts."
+     }
+    },
+    {
+     "id": "4bec383a-8a46-5200-95d8-f93c8f7e454c",
+     "type": "single_choice",
+     "prompt": {
+      "fr": "(2 + i)(1 + 3i) = ?",
+      "en": "(2 + i)(1 + 3i) = ?"
+     },
+     "difficulty": 2,
+     "skillId": "e7d99c87-a1a2-5eb5-b6d1-9aba581c5619",
+     "purpose": "practice",
+     "version": 1,
+     "options": [
+      {
+       "id": "ac4b47dc-daae-5e6e-ba94-44197bd59f4b",
+       "text": {
+        "en": "−1 + 7i",
+        "fr": "−1 + 7i"
+       },
+       "isCorrect": true,
+       "misconception": null
+      },
+      {
+       "id": "332e8a79-f4bf-501d-9e0f-b3a0ecc31b25",
+       "text": {
+        "en": "5 + 7i",
+        "fr": "5 + 7i"
+       },
+       "isCorrect": false,
+       "misconception": {
+        "fr": "Oubli que i² = −1",
+        "en": "Forgetting that i² = −1"
+       }
+      },
+      {
+       "id": "ef9c1491-4c2c-59a0-aee3-4f5ffa0b9636",
+       "text": {
+        "en": "2 + 3i",
+        "fr": "2 + 3i"
+       },
+       "isCorrect": false,
+       "misconception": {
+        "fr": "Seuls les termes « face à face » ont été multipliés : il faut développer tous les produits",
+        "en": "Only the matching terms were multiplied: expand every product"
+       }
+      },
+      {
+       "id": "24dd1b69-3b57-5a29-b7e9-2b6604964f0b",
+       "text": {
+        "en": "−1 + 3i",
+        "fr": "−1 + 3i"
+       },
+       "isCorrect": false,
+       "misconception": null
+      }
+     ],
+     "numericAnswer": null,
+     "numericTolerance": null,
+     "explanation": {
+      "fr": "2 + 6i + i + 3i² = 2 + 7i − 3 = −1 + 7i.",
+      "en": "2 + 6i + i + 3i² = 2 + 7i − 3 = −1 + 7i."
+     },
+     "hint": {
+      "fr": "Développe : 2·1 + 2·3i + i·1 + i·3i.",
+      "en": "Expand: 2·1 + 2·3i + i·1 + i·3i."
      }
     },
     {
@@ -1743,6 +2244,9 @@
       "en": "(1 + i)² = ?"
      },
      "difficulty": 2,
+     "skillId": "e7d99c87-a1a2-5eb5-b6d1-9aba581c5619",
+     "purpose": "practice",
+     "version": 1,
      "options": [
       {
        "id": "b889dcb3-a4d2-5eae-a3ef-16a829df7f26",
@@ -1750,7 +2254,8 @@
         "en": "2i",
         "fr": "2i"
        },
-       "isCorrect": true
+       "isCorrect": true,
+       "misconception": null
       },
       {
        "id": "2765cf3b-6a7e-522c-bbbf-a62fc5f7eceb",
@@ -1758,7 +2263,8 @@
         "en": "2",
         "fr": "2"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       },
       {
        "id": "4e77c68c-0c2d-5c1f-adc1-194e602e7f86",
@@ -1766,7 +2272,11 @@
         "en": "2 + 2i",
         "fr": "2 + 2i"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": {
+        "fr": "Oubli que i² = −1",
+        "en": "Forgetting that i² = −1"
+       }
       },
       {
        "id": "4d7b0cab-40f7-5f7d-8d0f-9c3b14f154ef",
@@ -1774,7 +2284,8 @@
         "en": "0",
         "fr": "0"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       }
      ],
      "numericAnswer": null,
@@ -1782,6 +2293,317 @@
      "explanation": {
       "fr": "1 + 2i + i² = 1 + 2i − 1 = 2i.",
       "en": "1 + 2i + i² = 1 + 2i − 1 = 2i."
+     },
+     "hint": {
+      "fr": "Utilise (a + b)² = a² + 2ab + b².",
+      "en": "Use (a + b)² = a² + 2ab + b²."
+     }
+    },
+    {
+     "id": "3b624c96-33d5-5859-abcc-6bb5bf99b928",
+     "type": "single_choice",
+     "prompt": {
+      "fr": "i³ = ?",
+      "en": "i³ = ?"
+     },
+     "difficulty": 3,
+     "skillId": "e7d99c87-a1a2-5eb5-b6d1-9aba581c5619",
+     "purpose": "practice",
+     "version": 1,
+     "options": [
+      {
+       "id": "0b7f5cbd-f392-55cc-bdd8-105bfec480db",
+       "text": {
+        "en": "−i",
+        "fr": "−i"
+       },
+       "isCorrect": true,
+       "misconception": null
+      },
+      {
+       "id": "f8016a36-fbd5-55d5-b4de-4512260fd6d6",
+       "text": {
+        "en": "i",
+        "fr": "i"
+       },
+       "isCorrect": false,
+       "misconception": {
+        "fr": "Oubli que i² = −1",
+        "en": "Forgetting that i² = −1"
+       }
+      },
+      {
+       "id": "06d83fae-3e2e-51c2-a294-354fda8cc516",
+       "text": {
+        "en": "−1",
+        "fr": "−1"
+       },
+       "isCorrect": false,
+       "misconception": null
+      },
+      {
+       "id": "bbd767b2-f810-5389-8934-8d6c398af7db",
+       "text": {
+        "en": "1",
+        "fr": "1"
+       },
+       "isCorrect": false,
+       "misconception": null
+      }
+     ],
+     "numericAnswer": null,
+     "numericTolerance": null,
+     "explanation": {
+      "fr": "i³ = i² · i = −1 · i = −i.",
+      "en": "i³ = i² · i = −1 · i = −i."
+     },
+     "hint": {
+      "fr": "i³ = i² · i.",
+      "en": "i³ = i² · i."
+     }
+    },
+    {
+     "id": "580545b2-00fd-5504-bb0c-455a0f974f0b",
+     "type": "single_choice",
+     "prompt": {
+      "fr": "Conjugué de 2 − 5i :",
+      "en": "Conjugate of 2 − 5i:"
+     },
+     "difficulty": 1,
+     "skillId": "62560838-4bec-57b3-830b-847d0889d24b",
+     "purpose": "practice",
+     "version": 1,
+     "options": [
+      {
+       "id": "191bb098-41fa-58ec-8aa6-5c8ac4a2f3b8",
+       "text": {
+        "en": "2 + 5i",
+        "fr": "2 + 5i"
+       },
+       "isCorrect": true,
+       "misconception": null
+      },
+      {
+       "id": "00248b1b-5126-55da-9447-9fa6b79de568",
+       "text": {
+        "en": "−2 + 5i",
+        "fr": "−2 + 5i"
+       },
+       "isCorrect": false,
+       "misconception": {
+        "fr": "On a aussi changé le signe de la partie réelle",
+        "en": "The real part's sign was changed too"
+       }
+      },
+      {
+       "id": "5823e9ad-4af0-5622-95c5-748ed44a42a2",
+       "text": {
+        "en": "−2 − 5i",
+        "fr": "−2 − 5i"
+       },
+       "isCorrect": false,
+       "misconception": {
+        "fr": "C'est l'opposé de z, pas son conjugué",
+        "en": "That is −z, not the conjugate"
+       }
+      },
+      {
+       "id": "1437580d-6cd6-5e11-8e70-645aa80f36b7",
+       "text": {
+        "en": "5 − 2i",
+        "fr": "5 − 2i"
+       },
+       "isCorrect": false,
+       "misconception": null
+      }
+     ],
+     "numericAnswer": null,
+     "numericTolerance": null,
+     "explanation": {
+      "fr": "On change le signe de la partie imaginaire : 2 + 5i.",
+      "en": "Change the sign of the imaginary part: 2 + 5i."
+     },
+     "hint": {
+      "fr": "Ne change que le signe de la partie imaginaire.",
+      "en": "Only change the sign of the imaginary part."
+     }
+    },
+    {
+     "id": "49474db1-8faa-5b33-88d2-0ce5565f08a2",
+     "type": "numeric",
+     "prompt": {
+      "fr": "Pour z = 3 + 4i, calcule z · z̄.",
+      "en": "For z = 3 + 4i, work out z · z̄."
+     },
+     "difficulty": 2,
+     "skillId": "62560838-4bec-57b3-830b-847d0889d24b",
+     "purpose": "practice",
+     "version": 1,
+     "options": [],
+     "numericAnswer": 25,
+     "numericTolerance": 0,
+     "explanation": {
+      "fr": "z · z̄ = 3² + 4² = 9 + 16 = 25.",
+      "en": "z · z̄ = 3² + 4² = 9 + 16 = 25."
+     },
+     "hint": {
+      "fr": "z · z̄ = a² + b².",
+      "en": "z · z̄ = a² + b²."
+     }
+    },
+    {
+     "id": "335fd5cb-a314-5b15-9139-e160b56f70e6",
+     "type": "single_choice",
+     "prompt": {
+      "fr": "Conjugué de (1 + i)(2 − i) :",
+      "en": "Conjugate of (1 + i)(2 − i):"
+     },
+     "difficulty": 2,
+     "skillId": "62560838-4bec-57b3-830b-847d0889d24b",
+     "purpose": "practice",
+     "version": 1,
+     "options": [
+      {
+       "id": "e8ae4aa1-9daa-5017-bff4-547e47a6effa",
+       "text": {
+        "en": "3 − i",
+        "fr": "3 − i"
+       },
+       "isCorrect": true,
+       "misconception": null
+      },
+      {
+       "id": "38b8c496-11e8-5db2-88b4-9224691afccf",
+       "text": {
+        "en": "3 + i",
+        "fr": "3 + i"
+       },
+       "isCorrect": false,
+       "misconception": {
+        "fr": "Le produit est juste, mais le conjugué n'a pas été pris",
+        "en": "The product is right, but the conjugate wasn't taken"
+       }
+      },
+      {
+       "id": "f9ce5968-f869-5bd0-80fc-ce7adbe2fa1e",
+       "text": {
+        "en": "1 − i",
+        "fr": "1 − i"
+       },
+       "isCorrect": false,
+       "misconception": {
+        "fr": "Oubli que i² = −1",
+        "en": "Forgetting that i² = −1"
+       }
+      },
+      {
+       "id": "1fbd06f0-6530-5168-9b73-0f582bf32f32",
+       "text": {
+        "en": "−3 − i",
+        "fr": "−3 − i"
+       },
+       "isCorrect": false,
+       "misconception": null
+      }
+     ],
+     "numericAnswer": null,
+     "numericTolerance": null,
+     "explanation": {
+      "fr": "(1 + i)(2 − i) = 2 − i + 2i − i² = 3 + i, donc le conjugué est 3 − i.",
+      "en": "(1 + i)(2 − i) = 2 − i + 2i − i² = 3 + i, so the conjugate is 3 − i."
+     },
+     "hint": {
+      "fr": "Calcule d'abord le produit, puis prends son conjugué.",
+      "en": "Work out the product first, then take its conjugate."
+     }
+    },
+    {
+     "id": "6b290672-1fc9-58df-a8cc-55439576e1d3",
+     "type": "single_choice",
+     "prompt": {
+      "fr": "Forme algébrique de 1/(1 + i) :",
+      "en": "Algebraic form of 1/(1 + i):"
+     },
+     "difficulty": 3,
+     "skillId": "62560838-4bec-57b3-830b-847d0889d24b",
+     "purpose": "practice",
+     "version": 1,
+     "options": [
+      {
+       "id": "6c94f77a-c2c8-54eb-9c4a-709cc15be671",
+       "text": {
+        "en": "1/2 − (1/2)i",
+        "fr": "1/2 − (1/2)i"
+       },
+       "isCorrect": true,
+       "misconception": null
+      },
+      {
+       "id": "d1146526-cc61-5682-8c4f-b4094ba6f1ad",
+       "text": {
+        "en": "1 − i",
+        "fr": "1 − i"
+       },
+       "isCorrect": false,
+       "misconception": {
+        "fr": "Le dénominateur (1 + i)(1 − i) = 2 a été oublié",
+        "en": "The denominator (1 + i)(1 − i) = 2 was forgotten"
+       }
+      },
+      {
+       "id": "d8ce270e-7cc6-5644-89ce-433b322707c4",
+       "text": {
+        "en": "1/2 + (1/2)i",
+        "fr": "1/2 + (1/2)i"
+       },
+       "isCorrect": false,
+       "misconception": {
+        "fr": "Erreur de signe : le conjugué de 1 + i est 1 − i",
+        "en": "Sign error: the conjugate of 1 + i is 1 − i"
+       }
+      },
+      {
+       "id": "4c2e7714-94dd-5936-828e-e6f7b2836e46",
+       "text": {
+        "en": "1 + i",
+        "fr": "1 + i"
+       },
+       "isCorrect": false,
+       "misconception": null
+      }
+     ],
+     "numericAnswer": null,
+     "numericTolerance": null,
+     "explanation": {
+      "fr": "(1 − i)/((1 + i)(1 − i)) = (1 − i)/2 = 1/2 − (1/2)i.",
+      "en": "(1 − i)/((1 + i)(1 − i)) = (1 − i)/2 = 1/2 − (1/2)i."
+     },
+     "hint": {
+      "fr": "Multiplie en haut et en bas par 1 − i.",
+      "en": "Multiply top and bottom by 1 − i."
+     }
+    },
+    {
+     "id": "aadba20f-b8d1-5d3e-87f6-890850fd9b26",
+     "type": "numeric",
+     "prompt": {
+      "fr": "Module de z = 3 + 4i ?",
+      "en": "Modulus of z = 3 + 4i?"
+     },
+     "difficulty": 1,
+     "skillId": "235f0027-f534-5a89-8505-1ae208abd4b6",
+     "purpose": "practice",
+     "version": 1,
+     "options": [],
+     "numericAnswer": 5,
+     "numericTolerance": 0,
+     "explanation": {
+      "fr": "|z| = √(9 + 16) = 5.",
+      "en": "|z| = √(9 + 16) = 5."
+     },
+     "hint": {
+      "fr": "|z| = √(a² + b²).",
+      "en": "|z| = √(a² + b²)."
      }
     },
     {
@@ -1792,6 +2614,9 @@
       "en": "An argument of i is:"
      },
      "difficulty": 2,
+     "skillId": "235f0027-f534-5a89-8505-1ae208abd4b6",
+     "purpose": "practice",
+     "version": 1,
      "options": [
       {
        "id": "075dbc82-62f7-5c59-b4ab-233fb6c8328e",
@@ -1799,7 +2624,8 @@
         "en": "π/2",
         "fr": "π/2"
        },
-       "isCorrect": true
+       "isCorrect": true,
+       "misconception": null
       },
       {
        "id": "9cfe2602-6aab-54c7-be2d-56f70f41361d",
@@ -1807,7 +2633,8 @@
         "en": "π",
         "fr": "π"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       },
       {
        "id": "3fdff175-41c6-5b14-a180-156d5c0e42d7",
@@ -1815,7 +2642,8 @@
         "en": "0",
         "fr": "0"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       },
       {
        "id": "4db3ba1c-10f8-5b66-b96e-3837c3cd98f0",
@@ -1823,7 +2651,11 @@
         "en": "−π/2",
         "fr": "−π/2"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": {
+        "fr": "Confusion entre i et −i",
+        "en": "Mixing up i and −i"
+       }
       }
      ],
      "numericAnswer": null,
@@ -1831,6 +2663,159 @@
      "explanation": {
       "fr": "i = cos(π/2) + i sin(π/2).",
       "en": "i = cos(π/2) + i sin(π/2)."
+     },
+     "hint": {
+      "fr": "Place i dans le plan : sur quel axe se trouve-t-il ?",
+      "en": "Plot i in the plane: which axis is it on?"
+     }
+    },
+    {
+     "id": "9463642a-5e52-595a-940e-b5875a04af87",
+     "type": "numeric",
+     "prompt": {
+      "fr": "Module de z = −5 + 12i ?",
+      "en": "Modulus of z = −5 + 12i?"
+     },
+     "difficulty": 2,
+     "skillId": "235f0027-f534-5a89-8505-1ae208abd4b6",
+     "purpose": "practice",
+     "version": 1,
+     "options": [],
+     "numericAnswer": 13,
+     "numericTolerance": 0,
+     "explanation": {
+      "fr": "|z| = √(25 + 144) = √169 = 13.",
+      "en": "|z| = √(25 + 144) = √169 = 13."
+     },
+     "hint": {
+      "fr": "Le signe disparaît au carré : √(25 + 144).",
+      "en": "The sign disappears when squared: √(25 + 144)."
+     }
+    },
+    {
+     "id": "df8346de-e98f-5e2e-ac54-8cf8b1dc6ebe",
+     "type": "single_choice",
+     "prompt": {
+      "fr": "Module de z = 1 + i :",
+      "en": "Modulus of z = 1 + i:"
+     },
+     "difficulty": 2,
+     "skillId": "235f0027-f534-5a89-8505-1ae208abd4b6",
+     "purpose": "practice",
+     "version": 1,
+     "options": [
+      {
+       "id": "19f08961-466d-53ba-8076-cc5647713e9f",
+       "text": {
+        "en": "√2",
+        "fr": "√2"
+       },
+       "isCorrect": true,
+       "misconception": null
+      },
+      {
+       "id": "e33a7b40-e93e-5d4d-92d9-0cc3e441a91b",
+       "text": {
+        "en": "2",
+        "fr": "2"
+       },
+       "isCorrect": false,
+       "misconception": {
+        "fr": "Oubli de la racine carrée : |z| = √(a² + b²)",
+        "en": "Forgetting the square root: |z| = √(a² + b²)"
+       }
+      },
+      {
+       "id": "9503e81d-52a7-5781-be6c-1df795c1bb01",
+       "text": {
+        "en": "1",
+        "fr": "1"
+       },
+       "isCorrect": false,
+       "misconception": null
+      },
+      {
+       "id": "292239e2-aee0-56e8-850e-71bbffd78d98",
+       "text": {
+        "en": "0",
+        "fr": "0"
+       },
+       "isCorrect": false,
+       "misconception": null
+      }
+     ],
+     "numericAnswer": null,
+     "numericTolerance": null,
+     "explanation": {
+      "fr": "|1 + i| = √(1 + 1) = √2.",
+      "en": "|1 + i| = √(1 + 1) = √2."
+     },
+     "hint": {
+      "fr": "|z| = √(1² + 1²).",
+      "en": "|z| = √(1² + 1²)."
+     }
+    },
+    {
+     "id": "a5dcfad2-f24f-5a7a-8e65-0248fb96df04",
+     "type": "single_choice",
+     "prompt": {
+      "fr": "Un argument de z = −2 :",
+      "en": "An argument of z = −2:"
+     },
+     "difficulty": 3,
+     "skillId": "235f0027-f534-5a89-8505-1ae208abd4b6",
+     "purpose": "practice",
+     "version": 1,
+     "options": [
+      {
+       "id": "c0b79b35-4485-5498-ab79-21009fa9f82f",
+       "text": {
+        "en": "π",
+        "fr": "π"
+       },
+       "isCorrect": true,
+       "misconception": null
+      },
+      {
+       "id": "12295464-d5d4-5b75-a242-e2a9b7a21410",
+       "text": {
+        "en": "0",
+        "fr": "0"
+       },
+       "isCorrect": false,
+       "misconception": {
+        "fr": "Un réel négatif a pour argument π, pas 0",
+        "en": "A negative real number has argument π, not 0"
+       }
+      },
+      {
+       "id": "264b4911-9c1a-5372-ba64-02e5f944eab7",
+       "text": {
+        "en": "π/2",
+        "fr": "π/2"
+       },
+       "isCorrect": false,
+       "misconception": null
+      },
+      {
+       "id": "b2c06d52-b0ce-57f8-858f-35be4308747d",
+       "text": {
+        "en": "−π/2",
+        "fr": "−π/2"
+       },
+       "isCorrect": false,
+       "misconception": null
+      }
+     ],
+     "numericAnswer": null,
+     "numericTolerance": null,
+     "explanation": {
+      "fr": "−2 = 2(cos π + i sin π), donc arg(−2) = π.",
+      "en": "−2 = 2(cos π + i sin π), so arg(−2) = π."
+     },
+     "hint": {
+      "fr": "Où se trouve −2 dans le plan complexe ?",
+      "en": "Where is −2 in the complex plane?"
      }
     }
    ]
@@ -1844,6 +2829,7 @@
     "en": "Genetics: Mendel's laws"
    },
    "orderIndex": 1,
+   "skills": [],
    "lessons": [
     {
      "id": "4b192392-3fca-5290-b5f2-eccab515ba1b",
@@ -1855,7 +2841,8 @@
       "fr": "# Monohybridisme\n\n- Un **gène** existe sous plusieurs formes : les **allèles**.\n- **Homozygote** : deux allèles identiques (AA ou aa). **Hétérozygote** : deux allèles différents (Aa).\n- Un allèle **dominant** (A) s'exprime même en un seul exemplaire ; un allèle **récessif** (a) seulement chez aa.\n\n## Première loi : uniformité de la F1\n\nLe croisement de deux lignées pures différant par un caractère donne une F1 **uniforme** (tous Aa).\n\n## Deuxième loi : ségrégation\n\nF1 × F1 (Aa × Aa) donne en F2 : ¼ AA, ½ Aa, ¼ aa, soit **3/4 phénotype dominant et 1/4 récessif**.",
       "en": "# Monohybrid crosses\n\n- **Homozygous**: two identical alleles; **heterozygous**: two different alleles.\n- Crossing two pure lines gives a **uniform F1** (all Aa).\n- Aa × Aa gives **3 dominant : 1 recessive** phenotypes in F2."
      },
-     "estimatedMinutes": 12
+     "estimatedMinutes": 12,
+     "checkpoints": []
     }
    ],
    "questions": [
@@ -1867,6 +2854,9 @@
       "en": "Aa × Aa: what proportion of offspring show the recessive phenotype?"
      },
      "difficulty": 2,
+     "skillId": null,
+     "purpose": "practice",
+     "version": 1,
      "options": [
       {
        "id": "1045450c-4612-53f9-9728-9575e30effba",
@@ -1874,7 +2864,8 @@
         "en": "1/4",
         "fr": "1/4"
        },
-       "isCorrect": true
+       "isCorrect": true,
+       "misconception": null
       },
       {
        "id": "32a5dc06-136b-588d-830d-a62374077699",
@@ -1882,7 +2873,8 @@
         "en": "1/2",
         "fr": "1/2"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       },
       {
        "id": "00a24619-2ce3-541f-beb1-ecfbfd852306",
@@ -1890,7 +2882,8 @@
         "en": "3/4",
         "fr": "3/4"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       },
       {
        "id": "bd6f8a93-b64e-5fe5-9fdb-65b09a8d09b8",
@@ -1898,7 +2891,8 @@
         "en": "0",
         "fr": "0"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       }
      ],
      "numericAnswer": null,
@@ -1906,7 +2900,8 @@
      "explanation": {
       "fr": "Seuls les aa (1/4) expriment le caractère récessif.",
       "en": "Only aa offspring (1/4) show it."
-     }
+     },
+     "hint": null
     },
     {
      "id": "7d33b071-b4d4-50e9-a774-7c85a6b5c3ff",
@@ -1916,6 +2911,9 @@
       "en": "The F1 from crossing two pure lines is:"
      },
      "difficulty": 1,
+     "skillId": null,
+     "purpose": "practice",
+     "version": 1,
      "options": [
       {
        "id": "93e9388f-4ce8-549c-9a4d-07d25f3d7cf2",
@@ -1923,7 +2921,8 @@
         "en": "Uniform",
         "fr": "Uniforme"
        },
-       "isCorrect": true
+       "isCorrect": true,
+       "misconception": null
       },
       {
        "id": "da42e618-9a11-56b7-a1e5-0db988a7972b",
@@ -1931,7 +2930,8 @@
         "en": "3:1 ratio",
         "fr": "En proportions 3:1"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       },
       {
        "id": "662d410d-1078-5523-a8e1-82ca867193b6",
@@ -1939,7 +2939,8 @@
         "en": "1:1 ratio",
         "fr": "En proportions 1:1"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       },
       {
        "id": "52978d72-c5aa-5a86-a6ce-ce64938f0e79",
@@ -1947,7 +2948,8 @@
         "en": "Unpredictable",
         "fr": "Imprévisible"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       }
      ],
      "numericAnswer": null,
@@ -1955,7 +2957,8 @@
      "explanation": {
       "fr": "Première loi de Mendel : uniformité des hybrides de F1.",
       "en": "Mendel's first law: F1 hybrids are uniform."
-     }
+     },
+     "hint": null
     },
     {
      "id": "94d2ab72-4bba-5bb4-b707-581cdbe3e580",
@@ -1965,6 +2968,9 @@
       "en": "Which genotypes are heterozygous? (select all)"
      },
      "difficulty": 2,
+     "skillId": null,
+     "purpose": "practice",
+     "version": 1,
      "options": [
       {
        "id": "4be56469-d70f-5a1b-acb8-dcafa434bb98",
@@ -1972,7 +2978,8 @@
         "en": "Aa",
         "fr": "Aa"
        },
-       "isCorrect": true
+       "isCorrect": true,
+       "misconception": null
       },
       {
        "id": "e98857d0-a2e9-5e0a-957f-98b6fd5bdbcc",
@@ -1980,7 +2987,8 @@
         "en": "Bb",
         "fr": "Bb"
        },
-       "isCorrect": true
+       "isCorrect": true,
+       "misconception": null
       },
       {
        "id": "c195a354-74e1-54c4-83bb-4e86f6dec87b",
@@ -1988,7 +2996,8 @@
         "en": "AA",
         "fr": "AA"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       },
       {
        "id": "a7417255-7f22-54a7-baff-359c3e0d2a77",
@@ -1996,7 +3005,8 @@
         "en": "bb",
         "fr": "bb"
        },
-       "isCorrect": false
+       "isCorrect": false,
+       "misconception": null
       }
      ],
      "numericAnswer": null,
@@ -2004,7 +3014,8 @@
      "explanation": {
       "fr": "Hétérozygote = deux allèles différents.",
       "en": "Heterozygous means two different alleles."
-     }
+     },
+     "hint": null
     }
    ]
   }

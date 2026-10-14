@@ -13,6 +13,7 @@ import { radius, spacing, toneFor, useColors, type TileTone } from "@/lib/theme"
 import { useSession } from "@/providers/session";
 
 const GOALS = [15, 30, 45, 60, 90];
+const DAY_KEYS = ["day0", "day1", "day2", "day3", "day4", "day5", "day6"] as const;
 const EXAMS_CACHE = "cache:public:/exams";
 
 function Choice({
@@ -120,6 +121,7 @@ export default function Onboarding() {
   const [examId, setExamId] = useState<string | null>(profile?.targetExamId ?? null);
   const [trackId, setTrackId] = useState<string | null>(profile?.targetTrackId ?? null);
   const [goal, setGoal] = useState(profile?.dailyGoalMinutes ?? 30);
+  const [days, setDays] = useState<number[]>(profile?.studyDays ?? [1, 2, 3, 4, 5, 6]);
   const [step, setStep] = useState<"exam" | "track" | "program" | "goal">("exam");
   const [programSettings, setProgramSettings] = useState<ProgramSettings>(profile?.programSettings ?? {});
   const [saving, setSaving] = useState(false);
@@ -160,11 +162,13 @@ export default function Onboarding() {
         targetTrackId: trackId,
         programSettings,
         dailyGoalMinutes: goal,
+        studyDays: days.length > 0 ? days : undefined,
         preferredLanguage: locale,
         timezone: getCalendars()[0]?.timeZone ?? undefined,
         onboardingCompleted: true,
       });
-      router.replace("/(tabs)");
+      // A short check of what they already know, so the first plan starts in the right place.
+      router.replace("/diagnostic");
     } catch (err) {
       setError(errorMessage(err, t("offlineNoData")));
     } finally {
@@ -249,14 +253,28 @@ export default function Onboarding() {
 
       {step === "goal" && (
         <>
-          <StepHeader step={stepNumber} total={total} title={t("dailyGoal")} />
+          <StepHeader step={stepNumber} total={total} title={t("sessionLength")} />
           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: spacing.sm + 2 }}>
             {GOALS.map((g) => (
               <GoalPill key={g} label={t("minutesPerDay", { n: g })} selected={goal === g} onPress={() => setGoal(g)} />
             ))}
           </View>
+          <View style={{ gap: 8 }}>
+            <T variant="heading">{t("studyDays")}</T>
+            <View style={{ flexDirection: "row", flexWrap: "wrap", gap: spacing.sm }}>
+              {DAY_KEYS.map((key, i) => (
+                <GoalPill
+                  key={key}
+                  label={t(key)}
+                  selected={days.includes(i)}
+                  onPress={() => setDays((prev) => (prev.includes(i) ? prev.filter((d) => d !== i) : [...prev, i].sort((a, b) => a - b)))}
+                />
+              ))}
+            </View>
+            <T variant="small">{t("studyDaysHint")}</T>
+          </View>
           {error && <T variant="muted">{error}</T>}
-          <Button title={t("startLearning")} loading={saving} disabled={!trackId} onPress={finish} />
+          <Button title={t("startLearning")} loading={saving} disabled={!trackId || days.length === 0} onPress={finish} />
           <Button title={t("back")} variant="ghost" onPress={() => setStep("program")} />
         </>
       )}

@@ -3,6 +3,14 @@ import type { ReactNode } from "react";
 
 export const t = (text: LocalizedText | null | undefined) => localize(text, "en") || "—";
 
+/** Pilot timezone used for "today" and greetings across the CMS. */
+export const TZ = "Africa/Douala";
+
+export function greeting(now: Date) {
+  const hour = Number(new Intl.DateTimeFormat("en-GB", { hour: "numeric", hourCycle: "h23", timeZone: TZ }).format(now));
+  return hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
+}
+
 export const inputClass =
   "w-full rounded-2xl border border-line bg-frame px-4 py-2.5 text-sm text-ink placeholder:text-muted focus:border-ocean focus:outline-none focus:ring-4 focus:ring-ocean-soft";
 
@@ -12,6 +20,9 @@ export const buttonClass =
 export const secondaryButtonClass =
   "inline-flex items-center justify-center gap-2 rounded-full border border-line bg-frame px-4 py-2 text-sm font-medium text-ink transition hover:bg-card";
 
+export const darkButtonClass =
+  "inline-flex items-center justify-center gap-2 rounded-full bg-ink px-4 py-2 text-sm font-semibold text-frame transition hover:opacity-85";
+
 export const iconButtonClass =
   "inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-line bg-frame text-ink transition hover:bg-card";
 
@@ -19,10 +30,10 @@ export function PageHeader({ title, description, actions }: { title: string; des
   return (
     <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
       <div>
-        <div className="mb-2 text-xs text-muted">
+        <div className="mb-1 text-xs text-muted">
           <span className="font-medium text-ink">Portal</span> <span className="mx-1">›</span> {title}
         </div>
-        <h1 className="text-3xl font-medium tracking-tight text-ink">{title}</h1>
+        <h1 className="text-2xl font-semibold tracking-tight text-ink">{title}</h1>
         {description && <p className="mt-1 text-sm text-muted">{description}</p>}
       </div>
       {actions && <div className="flex flex-wrap gap-2">{actions}</div>}
@@ -32,7 +43,7 @@ export function PageHeader({ title, description, actions }: { title: string; des
 
 export function Card({ title, children, actions }: { title?: string; children: ReactNode; actions?: ReactNode }) {
   return (
-    <section className="mb-6 rounded-4xl bg-card p-6">
+    <section className="mb-6 rounded-3xl bg-card p-6">
       {(title || actions) && (
         <div className="mb-4 flex items-center justify-between gap-2">
           {title && <h2 className="text-lg font-medium text-ink">{title}</h2>}
@@ -94,7 +105,7 @@ export function StatusBadge({ status }: { status: ContentStatus }) {
 
 export function Stat({ label, value, hint }: { label: string; value: ReactNode; hint?: string }) {
   return (
-    <div className="rounded-4xl bg-card p-5">
+    <div className="rounded-3xl bg-card p-5">
       <div className="text-sm text-muted">{label}</div>
       <div className="mt-1 text-3xl font-medium tabular-nums text-ink">{value}</div>
       {hint && <div className="mt-1 text-xs text-muted">{hint}</div>}

@@ -3,13 +3,15 @@ import { Ionicons } from "@expo/vector-icons";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import { ActivityIndicator, Pressable, Text, View } from "react-native";
-import { ProgressRing } from "@/components/dashboard/progress-ring";
 import { subjectIcon, TileIcon } from "@/components/dashboard/tile-icon";
+import { SkillRow, StatusChip } from "@/components/learning";
+import { PackControl } from "@/components/pack-control";
 import { Button, IconCircle, OfflineNotice, Screen, StateView, T } from "@/components/ui";
 import { useApi } from "@/hooks/use-api";
 import { errorMessage } from "@/lib/api";
 import { notify } from "@/lib/dialog";
-import { downloadLessons, startQuiz } from "@/lib/learning";
+import { startQuiz, type QuizScope } from "@/lib/learning";
+import { usePackIndex } from "@/lib/packs";
 import { spacing, toneFor, useColors } from "@/lib/theme";
 import { useSession } from "@/providers/session";
 
@@ -18,21 +20,37 @@ interface ChaptersResponse {
   chapters: ChapterDto[];
 }
 
-function ChapterCard({ chapter, busy, onPractise }: { chapter: ChapterDto; busy: boolean; onPractise: () => void }) {
+function ChapterCard({ chapter, busy, onPractise }: { chapter: ChapterDto; busy: string | null; onPractise: (key: string, scope: QuizScope) => void }) {
   const c = useColors();
-  const { t, locale } = useSession();
+  const { t, locale, userId } = useSession();
+  const packs = usePackIndex(userId);
+  const lessonsRead = chapter.lessons.filter((l) => l.completed).length;
   return (
     <View style={{ backgroundColor: c.card, borderRadius: 22, padding: 18, gap: 14 }}>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
         <View style={{ width: 34, height: 34, borderRadius: 17, backgroundColor: c.strong, alignItems: "center", justifyContent: "center" }}>
           <Text style={{ color: c.primary, fontWeight: "800" }}>{chapter.orderIndex + 1}</Text>
         </View>
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, gap: 4 }}>
           <T variant="heading">{localize(chapter.title, locale)}</T>
-          {chapter.questionCount > 0 && <T variant="small">{t("questions", { n: chapter.questionCount })}</T>}
+          <View style={{ flexDirection: "row", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
+            {chapter.questionCount > 0 && <StatusChip status={chapter.status} />}
+            {chapter.lessons.length > 0 && <T variant="small">{t("lessonsReadOf", { n: lessonsRead, total: chapter.lessons.length })}</T>}
+          </View>
         </View>
-        {chapter.questionCount > 0 && <ProgressRing value={chapter.mastery} />}
       </View>
+
+      {chapter.openMistakes > 0 && (
+        <Pressable
+          onPress={() => router.navigate({ pathname: "/(tabs)/practice", params: { chapterId: chapter.id } })}
+          accessibilityRole="button"
+          style={{ flexDirection: "row", alignItems: "center", gap: 8, backgroundColor: c.tiles.peach.bg, borderRadius: 14, padding: 10 }}
+        >
+          <Ionicons name="alert-circle-outline" size={16} color={c.tiles.peach.ink} />
+          <Text style={{ flex: 1, color: c.tiles.peach.ink, fontWeight: "700", fontSize: 13 }}>{t("openMistakesShort", { n: chapter.openMistakes })}</Text>
+          <Ionicons name="chevron-forward" size={16} color={c.tiles.peach.ink} />
+        </Pressable>
+      )}
 
       {chapter.lessons.length > 0 && (
         <View style={{ gap: 6 }}>
@@ -41,22 +59,14 @@ function ChapterCard({ chapter, busy, onPractise }: { chapter: ChapterDto; busy:
               key={lesson.id}
               onPress={() => router.push(`/lesson/${lesson.id}`)}
               accessibilityRole="button"
-              style={({ pressed }) => ({
-                flexDirection: "row",
-                alignItems: "center",
-                gap: 12,
-                padding: 10,
-                borderRadius: 16,
-                backgroundColor: c.background,
-                opacity: pressed ? 0.7 : 1,
-              })}
+              style={({ pressed }) => ({ flexDirection: "row", alignItems: "center", gap: 12, padding: 10, borderRadius: 16, backgroundColor: c.background, opacity: pressed ? 0.7 : 1 })}
             >
               <TileIcon name={lesson.completed ? "checkmark-done-outline" : "book-outline"} tone={lesson.completed ? "mint" : "lavender"} size={34} />
               <View style={{ flex: 1 }}>
                 <T style={{ fontSize: 14, fontWeight: "600" }} numberOfLines={2}>
                   {localize(lesson.title, locale)}
                 </T>
-                <T variant="small">{lesson.completed ? t("completed") : t("minutes", { n: lesson.estimatedMinutes })}</T>
+                <T variant="small">{lesson.completed ? t("lessonRead") : t("minutes", { n: lesson.estimatedMinutes })}</T>
               </View>
               <IconCircle name="chevron-forward" />
             </Pressable>
@@ -64,7 +74,21 @@ function ChapterCard({ chapter, busy, onPractise }: { chapter: ChapterDto; busy:
         </View>
       )}
 
-      {chapter.questionCount > 0 && <Button title={t("practiceChapter")} variant="dark" icon="play" loading={busy} onPress={onPractise} />}
+      {chapter.questionCount > 0 && chapter.skills.length > 0 && (
+        <View>
+          <T variant="small" style={{ fontWeight: "700", marginBottom: 2 }}>
+            {t("skillsTitle")}
+          </T>
+          {chapter.skills.map((s) => (
+            <SkillRow key={s.key} skill={s} onPractise={s.skillId ? () => onPractise(`skill:${s.skillId}`, { skillId: s.skillId! }) : undefined} />
+          ))}
+        </View>
+      )}
+
+      {chapter.questionCount > 0 && (
+        <Button title={t("practiceChapter")} variant="dark" icon="play" loading={busy === chapter.id} onPress={() => onPractise(chapter.id, { chapterId: chapter.id })} />
+      )}
+      {(chapter.lessons.length > 0 || chapter.questionCount > 0) && <PackControl chapterId={chapter.id} chapter={chapter} status={packs[chapter.id]} />}
     </View>
   );
 }
@@ -77,8 +101,8 @@ export default function SubjectScreen() {
   const { data, error, loading, offline, refresh } = useApi<ChaptersResponse>(trackId && id ? `/tracks/${trackId}/subjects/${id}/chapters` : null);
   const [busy, setBusy] = useState<string | null>(null);
 
-  async function start(key: string, scope: { chapterId?: string; subjectId?: string }, mode: AttemptMode) {
-    if (!userId) return;
+  async function start(key: string, scope: QuizScope, mode: AttemptMode = "practice") {
+    if (!userId || busy) return;
     setBusy(key);
     try {
       const attemptId = await startQuiz(userId, scope, mode);
@@ -90,26 +114,10 @@ export default function SubjectScreen() {
     }
   }
 
-  async function download() {
-    if (!userId || !data) return;
-    setBusy("download");
-    try {
-      const n = await downloadLessons(userId, data.chapters);
-      notify(t("downloaded", { n }));
-    } catch (err) {
-      notify(errorMessage(err, t("offlineNoData")));
-    } finally {
-      setBusy(null);
-    }
-  }
-
   if (!data) return <StateView loading={loading || !error} error={error} onRetry={refresh} />;
 
   const title = data.subject ? localize(data.subject.name, locale) : "";
   const hasQuestions = data.chapters.some((ch) => ch.questionCount > 0);
-  const hasLessons = data.chapters.some((ch) => ch.lessons.length > 0);
-  const practicable = data.chapters.filter((ch) => ch.questionCount > 0);
-  const mastery = practicable.length ? practicable.reduce((s, ch) => s + ch.mastery, 0) / practicable.length : 0;
 
   return (
     <Screen refreshing={loading} onRefresh={refresh} edges={["left", "right", "bottom"]} maxWidth={860}>
@@ -124,10 +132,7 @@ export default function SubjectScreen() {
             <Text style={{ color: c.strongText, fontSize: 22, fontWeight: "700", letterSpacing: -0.4 }} accessibilityRole="header">
               {title}
             </Text>
-            <Text style={{ color: c.strongMuted, fontSize: 13, marginTop: 2 }}>
-              {t("chapters", { n: data.chapters.length })}
-              {hasQuestions ? ` · ${t("mastery")} ${Math.round(mastery * 100)}%` : ""}
-            </Text>
+            <Text style={{ color: c.strongMuted, fontSize: 13, marginTop: 2 }}>{t("chapters", { n: data.chapters.length })}</Text>
           </View>
         </View>
         {hasQuestions && (
@@ -147,12 +152,9 @@ export default function SubjectScreen() {
       </View>
 
       {data.chapters.length === 0 && <T variant="muted">{t("noContentYet")}</T>}
-
       {data.chapters.map((ch) => (
-        <ChapterCard key={ch.id} chapter={ch} busy={busy === ch.id} onPractise={() => start(ch.id, { chapterId: ch.id }, "practice")} />
+        <ChapterCard key={ch.id} chapter={ch} busy={busy} onPractise={(key, scope) => void start(key, scope)} />
       ))}
-
-      {hasLessons && <Button title={t("downloadForOffline")} variant="light" icon="cloud-download-outline" loading={busy === "download"} onPress={download} />}
     </Screen>
   );
 }

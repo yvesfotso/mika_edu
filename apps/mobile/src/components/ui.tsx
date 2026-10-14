@@ -13,6 +13,7 @@ import {
   type ViewStyle,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Mascot } from "@/components/mascot/mascot";
 import { radius, spacing, useColors, type TileTone } from "@/lib/theme";
 import { useSession } from "@/providers/session";
 
@@ -237,17 +238,15 @@ export function StateView({ loading, error, onRetry }: { loading?: boolean; erro
   const { t } = useSession();
   if (loading && !error) {
     return (
-      <View style={[styles.center, { backgroundColor: c.background }]}>
-        <ActivityIndicator color={c.text} />
+      <View style={[styles.center, { backgroundColor: c.background }]} accessibilityRole="progressbar" accessibilityState={{ busy: true }}>
+        <Mascot size={130} mood="look" accessories={["book"]} />
         <T variant="muted">{t("loading")}</T>
       </View>
     );
   }
   return (
     <View style={[styles.center, { backgroundColor: c.background }]}>
-      <View style={{ width: 52, height: 52, borderRadius: 16, backgroundColor: c.tiles.peach.bg, alignItems: "center", justifyContent: "center" }}>
-        <Ionicons name="alert-circle-outline" size={26} color={c.tiles.peach.ink} />
-      </View>
+      <Mascot size={130} mood="error" />
       <T variant="muted" style={{ textAlign: "center", maxWidth: 320 }}>
         {error}
       </T>

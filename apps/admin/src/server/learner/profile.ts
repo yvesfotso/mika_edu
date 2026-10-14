@@ -107,6 +107,9 @@ export async function updateProfile(db: Db, userId: string, input: UpdateProfile
   if (input.timezone !== undefined) patch.timezone = input.timezone;
   if (input.dailyGoalMinutes !== undefined) patch.daily_goal_minutes = input.dailyGoalMinutes;
   if (input.onboardingCompleted !== undefined) patch.onboarding_completed = input.onboardingCompleted;
+  if (input.studyDays !== undefined) patch.study_days = [...input.studyDays].sort((a, b) => a - b);
+  // A completed diagnostic stays completed; learners can only skip a pending one or ask for it again.
+  if (input.diagnosticStatus !== undefined && current.diagnostic_status !== "completed") patch.diagnostic_status = input.diagnosticStatus;
 
   const row = must(
     await db.from("profiles").update(patch).eq("id", userId).select(PROFILE_COLUMNS).single<ProfileRow>(),

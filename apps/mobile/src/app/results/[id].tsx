@@ -6,6 +6,8 @@ import { Text, View, useWindowDimensions } from "react-native";
 import Svg, { Circle } from "react-native-svg";
 import { Panel } from "@/components/dashboard/sections";
 import { TileIcon } from "@/components/dashboard/tile-icon";
+import { Mascot, type MascotAccessory, type MascotMood } from "@/components/mascot/mascot";
+import { ReportProblem } from "@/components/learning";
 import { Button, pct, ProgressBar, Screen, StateView, T } from "@/components/ui";
 import { useApi } from "@/hooks/use-api";
 import { errorMessage } from "@/lib/api";
@@ -74,12 +76,16 @@ function ReviewItem({ n, question, result }: { n: number; question: AttemptQuest
           <Text style={{ color: c.tiles.mint.ink, fontWeight: "700" }}>{t("correctAnswer", { a: correctText })}</Text>
         </View>
       )}
+      {!result.correct && result.misconception && <T variant="small">{t("likelyMistake", { m: localize(result.misconception, locale) })}</T>}
       {explanation !== "" && (
         <View style={{ backgroundColor: c.tiles.lavender.bg, borderRadius: 14, padding: 12, gap: 4 }}>
           <Text style={{ fontSize: 12, color: c.tiles.lavender.ink, fontWeight: "700" }}>{t("explanation")}</Text>
           <T>{explanation}</T>
         </View>
       )}
+      {result.hintsUsed > 0 && <T variant="small">{t("hintUsed")}</T>}
+      {result.mistakeId && <T variant="small">{t("addedToNotebook")}</T>}
+      <ReportProblem questionId={question.id} />
     </View>
   );
 }
@@ -106,10 +112,14 @@ export default function ResultsScreen() {
   }
 
   const byId = new Map(result.results.map((r) => [r.questionId, r]));
+  const wrongCount = result.results.filter((r) => r.mistakeId).length;
   const ratio = result.maxScore ? result.score / result.maxScore : 0;
   const scoreColor = result.percentage >= 70 ? c.primary : result.percentage >= 50 ? c.tiles.lemon.ink : c.tiles.peach.ink;
   const verdict = result.percentage >= 70 ? t("scoreGreat") : result.percentage >= 50 ? t("scoreGood") : t("scoreReview");
   const wide = width >= 900;
+  // Celebrate a strong score, nod along to a pass, and grab the book when it's time to review.
+  const [mascotMood, mascotGear]: [MascotMood, MascotAccessory[]] =
+    result.percentage >= 70 ? ["happy", ["cap"]] : result.percentage >= 50 ? ["idle", ["glasses"]] : ["look", ["book"]];
 
   async function again() {
     if (!userId) return;
@@ -127,25 +137,28 @@ export default function ResultsScreen() {
 
   const summary = (
     <View style={{ gap: 16 }}>
-      <View style={{ backgroundColor: c.strong, borderRadius: 22, padding: 22, flexDirection: "row", alignItems: "center", gap: 20, overflow: "hidden" }}>
-        <View style={{ position: "absolute", right: -40, top: -40, width: 160, height: 160, borderRadius: 80, backgroundColor: c.strongRaised }} />
-        <View style={{ alignItems: "center", justifyContent: "center" }}>
-          <ScoreRing value={ratio} color={scoreColor} track={c.strongRaised} />
-          <View style={{ position: "absolute", alignItems: "center" }}>
-            <Text style={{ color: c.strongText, fontSize: 26, fontWeight: "800" }}>
-              {result.score}/{result.maxScore}
-            </Text>
+      <View>
+        <Mascot size={120} mood={mascotMood} accessories={mascotGear} intro style={{ alignSelf: "flex-end", marginRight: 20, marginBottom: -10, zIndex: 1 }} />
+        <View style={{ backgroundColor: c.strong, borderRadius: 22, padding: 22, flexDirection: "row", alignItems: "center", gap: 20, overflow: "hidden" }}>
+          <View style={{ position: "absolute", right: -40, top: -40, width: 160, height: 160, borderRadius: 80, backgroundColor: c.strongRaised }} />
+          <View style={{ alignItems: "center", justifyContent: "center" }}>
+            <ScoreRing value={ratio} color={scoreColor} track={c.strongRaised} />
+            <View style={{ position: "absolute", alignItems: "center" }}>
+              <Text style={{ color: c.strongText, fontSize: 26, fontWeight: "800" }}>
+                {result.score}/{result.maxScore}
+              </Text>
+            </View>
           </View>
-        </View>
-        <View style={{ flex: 1, gap: 6 }}>
-          <Text style={{ color: c.strongMuted, fontSize: 13 }}>{t("score")}</Text>
-          <Text style={{ color: scoreColor, fontSize: 30, fontWeight: "800", letterSpacing: -0.5 }}>{Math.round(result.percentage)}%</Text>
-          <Text style={{ color: c.strongText, fontSize: 15, fontWeight: "600" }}>{verdict}</Text>
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 6, marginTop: 4 }}>
-            <Ionicons name="time-outline" size={14} color={c.strongMuted} />
-            <Text style={{ color: c.strongMuted, fontSize: 13 }}>
-              {t("time")} {formatDuration(result.durationSeconds)}
-            </Text>
+          <View style={{ flex: 1, gap: 6 }}>
+            <Text style={{ color: c.strongMuted, fontSize: 13 }}>{t("score")}</Text>
+            <Text style={{ color: scoreColor, fontSize: 30, fontWeight: "800", letterSpacing: -0.5 }}>{Math.round(result.percentage)}%</Text>
+            <Text style={{ color: c.strongText, fontSize: 15, fontWeight: "600" }}>{verdict}</Text>
+            <View style={{ flexDirection: "row", alignItems: "center", gap: 6, marginTop: 4 }}>
+              <Ionicons name="time-outline" size={14} color={c.strongMuted} />
+              <Text style={{ color: c.strongMuted, fontSize: 13 }}>
+                {t("time")} {formatDuration(result.durationSeconds)}
+              </Text>
+            </View>
           </View>
         </View>
       </View>
@@ -178,7 +191,10 @@ export default function ResultsScreen() {
         </Panel>
       )}
 
-      <Button title={t("practiceAgain")} icon="refresh" loading={starting} onPress={again} />
+      {wrongCount > 0 && (
+        <Button title={t("reviewMistakes")} icon="bandage-outline" onPress={() => router.replace("/(tabs)/practice")} />
+      )}
+      <Button title={t("practiceAgain")} variant={wrongCount > 0 ? "light" : "primary"} icon="refresh" loading={starting} onPress={again} />
       <Button title={t("backHome")} variant="dark" onPress={() => router.replace("/(tabs)")} />
     </View>
   );

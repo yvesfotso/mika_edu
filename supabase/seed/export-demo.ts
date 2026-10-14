@@ -36,6 +36,7 @@ const out = {
           subjectId: uuidFor(`subject:${ch.subject}`),
           title: clean(ch.title),
           orderIndex,
+          skills: (ch.skills ?? []).map((sk) => ({ id: uuidFor(`skill:${ch.key}:${sk.key}`), name: clean(sk.name) })),
           lessons: ch.lessons
             .filter((l) => (l.status ?? "published") === "published")
             .map((l) => ({
@@ -43,20 +44,26 @@ const out = {
               title: clean(l.title),
               body: clean(l.body),
               estimatedMinutes: l.minutes,
+              checkpoints: (l.checkpoints ?? []).map((cp) => ({ questionId: uuidFor(`question:${ch.key}:${cp.question}`), afterBlock: cp.afterBlock })),
             })),
           questions: ch.questions.map((q) => ({
             id: uuidFor(`question:${ch.key}:${q.key}`),
             type: q.type,
             prompt: clean(q.prompt),
             difficulty: q.difficulty,
-            options: (q.options ?? []).map(([en, fr, correct], i) => ({
+            skillId: q.skill ? uuidFor(`skill:${ch.key}:${q.skill}`) : null,
+            purpose: q.purpose ?? "practice",
+            version: 1,
+            options: (q.options ?? []).map(([en, fr, correct, misconception], i) => ({
               id: uuidFor(`option:${ch.key}:${q.key}:${i}`),
               text: clean({ en, fr }),
               isCorrect: correct === true,
+              misconception: misconception ? clean(misconception) : null,
             })),
             numericAnswer: q.numeric?.[0] ?? null,
             numericTolerance: q.numeric?.[1] ?? null,
             explanation: clean(q.explanation),
+            hint: q.hint ? clean(q.hint) : null,
           })),
         })),
     ),

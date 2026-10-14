@@ -11,7 +11,8 @@ import {
   type SubjectSummaryDto,
 } from "@eduprep/core";
 import { must, notFound, type Db } from "../db";
-import { parseProgram } from "../mappers";
+import { parseProgram, type ProfileRow } from "../mappers";
+import { chapterProgress, loadLearningState, skillTotalsFor, type LearningState } from "./learning";
 
 interface TrackSubjectRow {
   coefficient: number;
@@ -28,8 +29,21 @@ interface LessonRow {
   id: string;
   chapter_id: string;
   title: LocalizedText;
+  body: LocalizedText;
   estimated_minutes: number;
   order_index: number;
+}
+export interface SkillRow {
+  id: string;
+  chapter_id: string;
+  name: LocalizedText;
+  order_index: number;
+}
+export interface QuestionMetaRow {
+  id: string;
+  chapter_id: string;
+  skill_id: string | null;
+  purpose: "practice" | "checkpoint";
 }
 interface MasteryRow {
   chapter_id: string;
@@ -45,7 +59,13 @@ export interface TrackState {
   subjects: TrackSubjectRow[];
   chapters: ChapterRow[];
   lessons: LessonRow[];
+  skills: SkillRow[];
+  /** Published questions of the track's chapters (practice and checkpoints). */
+  questions: QuestionMetaRow[];
+  /** Practice questions per chapter. */
   questionCounts: Map<string, number>;
+  /** Furthest block reached per lesson. */
+  lessonProgress: Map<string, number>;
   mastery: Map<string, MasteryState>;
   completedLessons: Set<string>;
   /** Subjects the learner studies (their GCE subject choice, or the whole track). */
@@ -94,36 +114,38 @@ export async function loadTrackState(db: Db, userId: string, trackId: string): P
   const subjectRows = must(subjects, "loading subjects");
   const chapterIds = chapterRows.map((c) => c.id);
 
-  const [lessons, questions, mastery] = await Promise.all([
+  const [lessons, questions, mastery, skills] = await Promise.all([
     db
       .from("lessons")
-      .select("id, chapter_id, title, estimated_minutes, order_index")
+      .select("id, chapter_id, title, body, estimated_minutes, order_index")
       .in("chapter_id", chapterIds)
       .eq("status", "published")
       .or(`publish_at.is.null,publish_at.lte.${nowIso}`)
       .order("order_index")
       .returns<LessonRow[]>(),
-    db.from("questions").select("chapter_id").in("chapter_id", chapterIds).eq("status", "published"),
+    db.from("questions").select("id, chapter_id, skill_id, purpose").in("chapter_id", chapterIds).eq("status", "published").returns<QuestionMetaRow[]>(),
     db
       .from("mastery")
       .select("chapter_id, score, confidence, attempts_count, last_practiced_at")
       .eq("user_id", userId)
       .in("chapter_id", chapterIds)
       .returns<MasteryRow[]>(),
+    db.from("skills").select("id, chapter_id, name, order_index").in("chapter_id", chapterIds).order("order_index").returns<SkillRow[]>(),
   ]);
   const lessonRows = must(lessons, "loading lessons");
+  const lessonIds = lessonRows.map((l) => l.id);
 
-  const completions = must(
-    await db.from("lesson_completions").select("lesson_id").eq("user_id", userId).in(
-      "lesson_id",
-      lessonRows.map((l) => l.id),
-    ),
-    "loading lesson completions",
-  ) as { lesson_id: string }[];
+  const [completionsRes, progressRes] = await Promise.all([
+    db.from("lesson_completions").select("lesson_id").eq("user_id", userId).in("lesson_id", lessonIds),
+    db.from("lesson_progress").select("lesson_id, last_block").eq("user_id", userId).in("lesson_id", lessonIds),
+  ]);
+  const completions = must(completionsRes, "loading lesson completions") as { lesson_id: string }[];
+  const progress = must(progressRes, "loading lesson progress") as { lesson_id: string; last_block: number }[];
 
+  const questionRows = must(questions, "loading questions");
   const questionCounts = new Map<string, number>();
-  for (const q of must(questions, "counting questions") as { chapter_id: string }[]) {
-    questionCounts.set(q.chapter_id, (questionCounts.get(q.chapter_id) ?? 0) + 1);
+  for (const q of questionRows) {
+    if (q.purpose === "practice") questionCounts.set(q.chapter_id, (questionCounts.get(q.chapter_id) ?? 0) + 1);
   }
 
   return {
@@ -131,7 +153,10 @@ export async function loadTrackState(db: Db, userId: string, trackId: string): P
     subjects: subjectRows,
     chapters: chapterRows,
     lessons: lessonRows,
+    skills: must(skills, "loading skills"),
+    questions: questionRows,
     questionCounts,
+    lessonProgress: new Map(progress.map((p) => [p.lesson_id, p.last_block])),
     mastery: new Map(must(mastery, "loading mastery").map((m) => [m.chapter_id, toMasteryState(m)])),
     completedLessons: new Set(completions.map((c) => c.lesson_id)),
     activeSubjects: new Set(activeSubjectIds(program, subjectRows.map((s) => s.subjects.id), settings)),
@@ -139,12 +164,18 @@ export async function loadTrackState(db: Db, userId: string, trackId: string): P
   };
 }
 
+/** Track content plus the learner's evidence-derived state, for one request. */
+export async function loadLearnerTrack(db: Db, profile: ProfileRow, trackId: string, now: Date) {
+  const track = await loadTrackState(db, profile.id, trackId);
+  return { track, learning: await loadLearningState(db, profile, track, now) };
+}
+
 function chapterMastery(state: TrackState, chapterId: string, now: Date): number {
   const m = state.mastery.get(chapterId);
   return m ? retainedScore(m, now) : 0;
 }
 
-export function subjectSummaries(state: TrackState, now: Date): SubjectSummaryDto[] {
+export function subjectSummaries(state: TrackState, now: Date, learning: LearningState): SubjectSummaryDto[] {
   return state.subjects.filter((ts) => state.activeSubjects.has(ts.subjects.id)).map((ts) => {
     const chapters = state.chapters.filter((c) => c.subject_id === ts.subjects.id);
     const practicable = chapters.filter((c) => (state.questionCounts.get(c.id) ?? 0) > 0);
@@ -161,11 +192,12 @@ export function subjectSummaries(state: TrackState, now: Date): SubjectSummaryDt
       chapterCount: chapters.length,
       mastery: Math.round(mastery * 1000) / 1000,
       targetGrade: state.targetGrades[ts.subjects.id] ?? null,
+      skillTotals: skillTotalsFor(learning, ts.subjects.id),
     };
   });
 }
 
-export function chaptersForSubject(state: TrackState, subjectId: string, now: Date): ChapterDto[] {
+export function chaptersForSubject(state: TrackState, subjectId: string, now: Date, learning: LearningState): ChapterDto[] {
   if (!state.subjects.some((s) => s.subjects.id === subjectId)) throw notFound("Subject");
   return state.chapters
     .filter((c) => c.subject_id === subjectId)
@@ -176,6 +208,7 @@ export function chaptersForSubject(state: TrackState, subjectId: string, now: Da
       orderIndex: c.order_index,
       mastery: chapterMastery(state, c.id, now),
       questionCount: state.questionCounts.get(c.id) ?? 0,
+      ...(({ status, skills, openMistakes }) => ({ status, skills, openMistakes }))(chapterProgress(learning, c.id)),
       lessons: state.lessons
         .filter((l) => l.chapter_id === c.id)
         .map((l) => ({

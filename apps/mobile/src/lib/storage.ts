@@ -20,6 +20,16 @@ export const store = {
       console.warn("[store] write failed", key, err);
     }
   },
+  /** Like set, but reports whether the write succeeded (e.g. false when storage is full). */
+  trySet(key: string, value: unknown): boolean {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+      return true;
+    } catch (err) {
+      console.warn("[store] write failed", key, err);
+      return false;
+    }
+  },
   remove(key: string): void {
     try {
       localStorage.removeItem(key);

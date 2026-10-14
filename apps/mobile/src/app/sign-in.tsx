@@ -3,6 +3,7 @@ import { router } from "expo-router";
 import { useRef, useState, type ComponentProps } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 import { AuthLayout } from "@/components/auth-layout";
+import type { MascotMood } from "@/components/mascot/mascot";
 import { PillInput } from "@/components/text-field";
 import { Button } from "@/components/ui";
 import { DEMO_ACCOUNT } from "@/demo/server";
@@ -46,6 +47,8 @@ export default function SignIn() {
   const [remember, setRemember] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [done, setDone] = useState(false);
+  const [focus, setFocus] = useState<"email" | "password" | null>(null);
   const passwordRef = useRef<TextInput>(null);
 
   async function submit() {
@@ -58,21 +61,43 @@ export default function SignIn() {
     setError(null);
     const { error } = await auth.signIn(email.trim(), password, { remember });
     setBusy(false);
-    if (error) setError(error);
-    else router.replace("/");
+    if (error) {
+      setError(error);
+      return;
+    }
+    // Let the mascot celebrate for a beat before leaving.
+    setDone(true);
+    setTimeout(() => router.replace("/"), 650);
   }
+
+  // The mascot follows the email as it's typed, covers its eyes for the password and reacts to the result.
+  const mood: MascotMood = done
+    ? "happy"
+    : error
+      ? "error"
+      : focus === "password" && !showPassword
+        ? "shy"
+        : focus || busy
+          ? "look"
+          : "idle";
+  const gaze = focus === "email" ? Math.min(1, email.length / 28) : focus === "password" ? Math.min(1, password.length / 16) : undefined;
 
   const comingSoon = (feature: string) => notify(t("notAvailableYet", { feature }));
   const small = { fontSize: 12.5, color: c.text };
 
   return (
-    <AuthLayout title={t("welcomeBack")} subtitle={t("enterDetails")}>
+    <AuthLayout title={t("welcomeBack")} subtitle={t("enterDetails")} mood={mood} gaze={gaze}>
       <View style={{ gap: 12 }}>
         <PillInput
           icon="mail"
           placeholder={t("email")}
           value={email}
-          onChangeText={setEmail}
+          onChangeText={(v) => {
+            setEmail(v);
+            setError(null);
+          }}
+          onFocus={() => setFocus("email")}
+          onBlur={() => setFocus((f) => (f === "email" ? null : f))}
           autoCapitalize="none"
           autoCorrect={false}
           keyboardType="email-address"
@@ -88,7 +113,12 @@ export default function SignIn() {
           onIconPress={() => setShowPassword((v) => !v)}
           placeholder={t("password")}
           value={password}
-          onChangeText={setPassword}
+          onChangeText={(v) => {
+            setPassword(v);
+            setError(null);
+          }}
+          onFocus={() => setFocus("password")}
+          onBlur={() => setFocus((f) => (f === "password" ? null : f))}
           secureTextEntry={!showPassword}
           autoComplete="current-password"
           textContentType="password"

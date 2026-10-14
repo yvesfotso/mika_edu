@@ -110,3 +110,61 @@ export const TrendDownIcon = (p: IconProps) => (
     <path d="M12 5v14M6 13l6 6 6-6" />
   </Icon>
 );
+export const HomeIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1Z" />
+  </Icon>
+);
+export const QuestionIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <rect x="3.5" y="3.5" width="17" height="17" rx="4" />
+    <path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6v.3" />
+    <path d="M12 17h.01" />
+  </Icon>
+);
+export const UploadIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M12 15V4m0 0-4 4m4-4 4 4" />
+    <path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" />
+  </Icon>
+);
+export const LayersIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="m12 3 9 5-9 5-9-5 9-5Z" />
+    <path d="m3 13 9 5 9-5" />
+  </Icon>
+);
+export const ShieldIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M12 3 5 6v5c0 4.5 3 8.2 7 10 4-1.8 7-5.5 7-10V6l-7-3Z" />
+    <path d="m9 12 2 2 4-4" />
+  </Icon>
+);
+export const ExamIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M7 3.5h7l4 4V19a1.5 1.5 0 0 1-1.5 1.5h-9.5A1.5 1.5 0 0 1 5.5 19V5A1.5 1.5 0 0 1 7 3.5Z" />
+    <path d="M14 3.5V8h4M9 13l2 2 4-4" />
+  </Icon>
+);
+export const ChevronDownIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="m6 9 6 6 6-6" />
+  </Icon>
+);
+export const SunIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <circle cx="12" cy="12" r="4" />
+    <path d="M12 2.5v2M12 19.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4" />
+  </Icon>
+);
+export const MoonIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" />
+  </Icon>
+);
+export const FileTextIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M14 3.5H7A1.5 1.5 0 0 0 5.5 5v14A1.5 1.5 0 0 0 7 20.5h10a1.5 1.5 0 0 0 1.5-1.5V8L14 3.5Z" />
+    <path d="M14 3.5V8h4.5M8.5 13h7M8.5 16.5h5" />
+  </Icon>
+);

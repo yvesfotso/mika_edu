@@ -2,7 +2,9 @@ import "server-only";
 import { ACTIVITY_DAYS, addDays, daysUntil, displayedStreak, localDate, weightedMastery, type DashboardDto } from "@eduprep/core";
 import { must, type Db } from "../db";
 import { EXAM_COLUMNS, toExamDto, toProfileDto, type ExamRow } from "../mappers";
-import { loadTrackState, nextLesson, recommendations, subjectSummaries } from "./curriculum";
+import { loadLearnerTrack, nextLesson, recommendations, subjectSummaries, type TrackState } from "./curriculum";
+import type { LearningState } from "./learning";
+import { buildTodayPlan } from "./plan";
 import { getProfileRow } from "./profile";
 
 export async function getDashboard(db: Db, userId: string, now: Date): Promise<DashboardDto> {
@@ -44,12 +46,14 @@ export async function getDashboard(db: Db, userId: string, now: Date): Promise<D
   let subjects: DashboardDto["subjects"] = [];
   let recs: DashboardDto["recommendations"] = [];
   let continueLesson: DashboardDto["continueLesson"] = null;
+  let track: TrackState | null = null;
+  let learning: LearningState | null = null;
   if (profileRow.target_track_id) {
-    const state = await loadTrackState(db, userId, profileRow.target_track_id);
-    subjects = subjectSummaries(state, now);
-    recs = recommendations(state, now, 3);
+    ({ track, learning } = await loadLearnerTrack(db, profileRow, profileRow.target_track_id, now));
+    subjects = subjectSummaries(track, now, learning);
+    recs = recommendations(track, now, 3);
     continueLesson = nextLesson(
-      state,
+      track,
       recs.map((r) => r.chapterId),
     );
   }
@@ -66,6 +70,7 @@ export async function getDashboard(db: Db, userId: string, now: Date): Promise<D
     subjects: [...subjects].sort((a, b) => Number(b.chapterCount > 0) - Number(a.chapterCount > 0)),
     overallMastery: weightedMastery(subjects.filter((s) => s.chapterCount > 0)),
     activity,
+    today: buildTodayPlan(profileRow, track, learning, now),
   };
 }
 
