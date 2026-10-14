@@ -3,7 +3,8 @@
 import { writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { exams, subjects, type L } from "./content.ts";
+import { splitLessonBlocks } from "../../packages/core/src/lessons.ts";
+import { exams, subjects, type L, type SeedChapter } from "./content.ts";
 import { uuidFor } from "./ids.ts";
 
 function lit(value: unknown): string {
@@ -33,7 +34,29 @@ for (const s of subjects) {
   );
 }
 
-let counts = { exams: 0, tracks: 0, chapters: 0, lessons: 0, questions: 0 };
+let counts = { exams: 0, tracks: 0, chapters: 0, skills: 0, lessons: 0, questions: 0, checkpoints: 0 };
+
+/** Catches authoring mistakes before they reach the database. */
+function validateChapter(chapter: SeedChapter) {
+  const skillKeys = new Set((chapter.skills ?? []).map((s) => s.key));
+  const questionKeys = new Map(chapter.questions.map((q) => [q.key, q]));
+  for (const q of chapter.questions) {
+    if (q.skill && !skillKeys.has(q.skill)) throw new Error(`${chapter.key}:${q.key} uses unknown skill ${q.skill}`);
+    if (skillKeys.size > 0 && !q.skill) throw new Error(`${chapter.key}:${q.key} needs a skill (the chapter defines skills)`);
+  }
+  for (const lesson of chapter.lessons) {
+    const blockCounts = Object.values(text(lesson.body)).map((b) => splitLessonBlocks(b!).length);
+    if (lesson.checkpoints?.length && new Set(blockCounts).size > 1) {
+      throw new Error(`${chapter.key}:${lesson.key} has checkpoints, so every language needs the same ## sections (${blockCounts.join(" vs ")})`);
+    }
+    for (const cp of lesson.checkpoints ?? []) {
+      const q = questionKeys.get(cp.question);
+      if (!q) throw new Error(`${chapter.key}:${lesson.key} checkpoint ${cp.question} is not a question of the chapter`);
+      if (q.purpose !== "checkpoint") throw new Error(`${chapter.key}:${cp.question} is used as a checkpoint but its purpose is not "checkpoint"`);
+      if (cp.afterBlock >= Math.min(...blockCounts)) throw new Error(`${chapter.key}:${lesson.key} checkpoint ${cp.question} is after block ${cp.afterBlock}, past the end`);
+    }
+  }
+}
 
 for (const exam of exams) {
   const examId = uuidFor(`exam:${exam.slug}`);
@@ -67,12 +90,21 @@ for (const exam of exams) {
       if (!track.subjects.some(([slug]) => slug === chapter.subject)) {
         throw new Error(`Chapter ${chapter.key} uses subject ${chapter.subject} which is not in track ${track.slug}`);
       }
+      validateChapter(chapter);
       const chapterId = uuidFor(`chapter:${chapter.key}`);
       counts.chapters++;
       out.push(
         `insert into public.chapters (id, track_id, subject_id, title, order_index, status) values (${lit(chapterId)}, ${lit(trackId)}, ${lit(sid)}, ${lit(text(chapter.title))}, ${chapterIndex}, ${lit(chapter.status ?? "published")})
   on conflict (id) do update set title = excluded.title, order_index = excluded.order_index, status = excluded.status;`,
       );
+
+      (chapter.skills ?? []).forEach((skill, i) => {
+        counts.skills++;
+        out.push(
+          `insert into public.skills (id, chapter_id, slug, name, order_index) values (${lit(uuidFor(`skill:${chapter.key}:${skill.key}`))}, ${lit(chapterId)}, ${lit(skill.key)}, ${lit(text(skill.name))}, ${i})
+  on conflict (id) do update set name = excluded.name, order_index = excluded.order_index;`,
+        );
+      });
 
       chapter.lessons.forEach((lesson, lessonIndex) => {
         counts.lessons++;
@@ -90,20 +122,33 @@ for (const exam of exams) {
         if (q.type !== "numeric" && (q.options ?? []).filter((o) => o[2]).length === 0) {
           throw new Error(`${chapter.key}:${q.key} has no correct option`);
         }
+        const skillId = q.skill ? uuidFor(`skill:${chapter.key}:${q.skill}`) : null;
+        // Re-seeding changed content bumps the version, so older answers keep pointing at what was seen.
         out.push(
-          `insert into public.questions (id, subject_id, chapter_id, type, prompt, difficulty, source_type, numeric_answer, numeric_tolerance, status)
-  values (${lit(qid)}, ${lit(sid)}, ${lit(chapterId)}, ${lit(q.type)}, ${lit(text(q.prompt))}, ${q.difficulty}, 'original', ${lit(numericAnswer)}, ${lit(numericTolerance)}, ${lit(chapter.status ?? "published")})
-  on conflict (id) do update set type = excluded.type, prompt = excluded.prompt, difficulty = excluded.difficulty, numeric_answer = excluded.numeric_answer, numeric_tolerance = excluded.numeric_tolerance, status = excluded.status;`,
-          `insert into public.solutions (question_id, explanation) values (${lit(qid)}, ${lit(text(q.explanation))})
-  on conflict (question_id) do update set explanation = excluded.explanation;`,
+          `insert into public.questions (id, subject_id, chapter_id, skill_id, purpose, type, prompt, difficulty, source_type, numeric_answer, numeric_tolerance, status)
+  values (${lit(qid)}, ${lit(sid)}, ${lit(chapterId)}, ${lit(skillId)}, ${lit(q.purpose ?? "practice")}, ${lit(q.type)}, ${lit(text(q.prompt))}, ${q.difficulty}, 'original', ${lit(numericAnswer)}, ${lit(numericTolerance)}, ${lit(chapter.status ?? "published")})
+  on conflict (id) do update set skill_id = excluded.skill_id, purpose = excluded.purpose, type = excluded.type, prompt = excluded.prompt, difficulty = excluded.difficulty, numeric_answer = excluded.numeric_answer, numeric_tolerance = excluded.numeric_tolerance, status = excluded.status,
+    version = case when (questions.prompt, questions.type, questions.numeric_answer, questions.numeric_tolerance) is distinct from (excluded.prompt, excluded.type, excluded.numeric_answer, excluded.numeric_tolerance) then questions.version + 1 else questions.version end;`,
+          `insert into public.solutions (question_id, explanation, hint) values (${lit(qid)}, ${lit(text(q.explanation))}, ${lit(q.hint ? text(q.hint) : null)})
+  on conflict (question_id) do update set explanation = excluded.explanation, hint = excluded.hint;`,
         );
-        (q.options ?? []).forEach(([en, fr, correct], i) => {
+        (q.options ?? []).forEach(([en, fr, correct, misconception], i) => {
           out.push(
-            `insert into public.question_options (id, question_id, text, is_correct, order_index) values (${lit(uuidFor(`option:${chapter.key}:${q.key}:${i}`))}, ${lit(qid)}, ${lit(text({ en, fr }))}, ${correct === true}, ${i})
-  on conflict (id) do update set text = excluded.text, is_correct = excluded.is_correct, order_index = excluded.order_index;`,
+            `insert into public.question_options (id, question_id, text, is_correct, order_index, misconception) values (${lit(uuidFor(`option:${chapter.key}:${q.key}:${i}`))}, ${lit(qid)}, ${lit(text({ en, fr }))}, ${correct === true}, ${i}, ${lit(misconception ? text(misconception) : null)})
+  on conflict (id) do update set text = excluded.text, is_correct = excluded.is_correct, order_index = excluded.order_index, misconception = excluded.misconception;`,
           );
         });
       }
+
+      chapter.lessons.forEach((lesson) => {
+        (lesson.checkpoints ?? []).forEach((cp, i) => {
+          counts.checkpoints++;
+          out.push(
+            `insert into public.lesson_checkpoints (lesson_id, question_id, after_block, order_index) values (${lit(uuidFor(`lesson:${chapter.key}:${lesson.key}`))}, ${lit(uuidFor(`question:${chapter.key}:${cp.question}`))}, ${cp.afterBlock}, ${i})
+  on conflict (lesson_id, question_id) do update set after_block = excluded.after_block, order_index = excluded.order_index;`,
+          );
+        });
+      });
     });
   });
 }

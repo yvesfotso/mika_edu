@@ -2,6 +2,7 @@ import { localize, mentionFor, type AttemptMode, type DashboardDto, type Localiz
 import { Ionicons } from "@expo/vector-icons";
 import type { ComponentProps, ReactNode } from "react";
 import { ActivityIndicator, Pressable, ScrollView, Text, View, type StyleProp, type ViewStyle } from "react-native";
+import { Mascot } from "@/components/mascot/mascot";
 import { useColors, toneFor, type TileTone } from "@/lib/theme";
 import { useSession } from "@/providers/session";
 import { ProgressRing } from "./progress-ring";
@@ -311,22 +312,7 @@ export function ExamCard({ data, onMock, busy }: { data: DashboardDto; onMock?: 
   return (
     <View style={{ backgroundColor: c.strong, borderRadius: 22, padding: 18, overflow: "hidden", minHeight: 170 }}>
       <View style={{ position: "absolute", right: -30, top: -30, width: 150, height: 150, borderRadius: 75, backgroundColor: c.strongRaised }} />
-      <View
-        style={{
-          position: "absolute",
-          right: 18,
-          bottom: 18,
-          width: 64,
-          height: 64,
-          borderRadius: 32,
-          backgroundColor: c.primary,
-          alignItems: "center",
-          justifyContent: "center",
-          transform: [{ rotate: "-8deg" }],
-        }}
-      >
-        <Ionicons name="school" size={32} color={c.primaryText} />
-      </View>
+      <Mascot size={118} accessories={["glasses", "book"]} style={{ position: "absolute", right: 4, bottom: 6 }} />
 
       <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
         <Ionicons name="school-outline" size={14} color="#FFFFFF" />
@@ -375,6 +361,9 @@ const MODE_TILE: Record<AttemptMode, [IconName, TileTone]> = {
   practice: ["create-outline", "lavender"],
   mock: ["timer-outline", "peach"],
   past_paper: ["document-text-outline", "sky"],
+  diagnostic: ["compass-outline", "mint"],
+  checkpoint: ["checkmark-circle-outline", "mint"],
+  recovery: ["refresh-outline", "lemon"],
 };
 
 export function RecentQuizzes({ attempts, onOpen }: { attempts: RecentAttempt[]; onOpen: (id: string) => void }) {
@@ -384,7 +373,12 @@ export function RecentQuizzes({ attempts, onOpen }: { attempts: RecentAttempt[];
   const when = new Intl.DateTimeFormat(tag, { day: "2-digit", month: "long", hour: "2-digit", minute: "2-digit" });
 
   if (attempts.length === 0) {
-    return <Text style={{ fontSize: 13, color: c.muted }}>{t("noAttempts")}</Text>;
+    return (
+      <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
+        <Mascot size={84} accessories={["glasses"]} />
+        <Text style={{ flex: 1, fontSize: 13, color: c.muted }}>{t("noAttempts")}</Text>
+      </View>
+    );
   }
   return (
     <View style={{ gap: 10 }}>

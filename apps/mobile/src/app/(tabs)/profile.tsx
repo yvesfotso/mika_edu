@@ -1,14 +1,17 @@
-import { localize, mentionFor, type DashboardDto, type ExamDto } from "@eduprep/core";
+import { localize, mentionFor, type DashboardDto, type ExamDto, type LocalizedText } from "@eduprep/core";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Pressable, Text, View, useWindowDimensions } from "react-native";
 import { Panel } from "@/components/dashboard/sections";
 import { TileIcon } from "@/components/dashboard/tile-icon";
+import { PackControl } from "@/components/pack-control";
 import { Button, Screen, T } from "@/components/ui";
 import { api, cacheKey, errorMessage } from "@/lib/api";
 import { notify } from "@/lib/dialog";
+import { deletePack, getPack, usePackIndex } from "@/lib/packs";
 import { store } from "@/lib/storage";
+import { discardFailed, failedJobs, retryFailed } from "@/lib/sync";
 import { setThemePreference, SIDEBAR_BREAKPOINT, spacing, useColors, useThemePreference } from "@/lib/theme";
 import { useSession } from "@/providers/session";
 
@@ -30,10 +33,18 @@ function Pill({ label, selected, onPress }: { label: string; selected: boolean; 
 
 export default function Profile() {
   const c = useColors();
-  const { t, locale, setLocale, profile, session, userId, updateProfile, pendingSync, syncNow, signOut } = useSession();
+  const { t, locale, setLocale, profile, session, userId, updateProfile, pendingSync, failedSync, syncNow, signOut } = useSession();
   const { width } = useWindowDimensions();
   const wide = width >= SIDEBAR_BREAKPOINT;
   const [syncing, setSyncing] = useState(false);
+  const packs = usePackIndex(userId);
+  const downloaded = Object.entries(packs);
+  const packTitles = useMemo(() => {
+    const titles: Record<string, LocalizedText> = {};
+    if (userId) for (const [chapterId] of downloaded) titles[chapterId] = getPack(userId, chapterId)?.title ?? {};
+    return titles;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId, downloaded.length]);
   const themePref = useThemePreference();
   const dashboard = userId ? store.get<DashboardDto>(cacheKey(userId, "/me/dashboard")) : null;
   const exams = store.get<ExamDto[]>("cache:public:/exams");
@@ -188,12 +199,49 @@ export default function Profile() {
           />
         )}
       </View>
+
+      {failedSync > 0 && userId && (
+        <View style={{ gap: 8, backgroundColor: c.tiles.peach.bg, borderRadius: 16, padding: 12 }}>
+          <T style={{ fontWeight: "700", color: c.tiles.peach.ink }}>{t("syncFailed", { n: failedSync })}</T>
+          {failedJobs(userId).map((job) => (
+            <View key={job.id} style={{ gap: 4 }}>
+              <T variant="small" numberOfLines={2}>
+                {job.path} — {job.error}
+              </T>
+              <View style={{ flexDirection: "row", gap: 8 }}>
+                <Button title={t("retry")} variant="secondary" compact onPress={() => retryFailed(userId, job.id)} />
+                <Button title={t("discard")} variant="ghost" compact onPress={() => discardFailed(userId, job.id)} />
+              </View>
+            </View>
+          ))}
+        </View>
+      )}
+
+      <View style={{ gap: 8 }}>
+        <T variant="heading">{t("downloads")}</T>
+        {downloaded.length === 0 ? (
+          <T variant="small">{t("noDownloads")}</T>
+        ) : (
+          downloaded.map(([chapterId, status]) => (
+            <View key={chapterId} style={{ gap: 4, borderTopWidth: 1, borderTopColor: c.border, paddingTop: 8 }}>
+              <T style={{ fontWeight: "600" }} numberOfLines={1}>
+                {localize(packTitles[chapterId] ?? {}, locale) || chapterId.slice(0, 8)}
+              </T>
+              <PackControl chapterId={chapterId} status={status} />
+            </View>
+          ))
+        )}
+        <T variant="small">{t("onlineOnlyNote")}</T>
+      </View>
+
       <Button
         title={t("clearOffline")}
         variant="secondary"
         icon="trash-outline"
         onPress={() => {
-          if (userId) store.removePrefix(`cache:${userId}:/lessons/`);
+          if (!userId) return;
+          store.removePrefix(`cache:${userId}:/lessons/`);
+          for (const [chapterId] of downloaded) deletePack(userId, chapterId);
         }}
       />
     </Panel>

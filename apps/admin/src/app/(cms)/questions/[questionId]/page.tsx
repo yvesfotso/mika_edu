@@ -1,4 +1,4 @@
-import { canEdit, type ContentStatus, type LocalizedText, type QuestionSource, type QuestionType } from "@eduprep/core";
+import { canEdit, type ContentStatus, type LocalizedText, type QuestionPurpose, type QuestionSource, type QuestionType } from "@eduprep/core";
 import { notFound } from "next/navigation";
 import { StatusActions } from "@/components/status-actions";
 import { Card, PageHeader, StatusBadge } from "@/components/ui";
@@ -18,7 +18,7 @@ export default async function QuestionPage({ params, searchParams }: PageProps<"
     await staff.db
       .from("questions")
       .select(
-        "id, subject_id, chapter_id, type, prompt, difficulty, source_type, source_year, official_source_url, numeric_answer, numeric_tolerance, status, question_options(id, text, is_correct, order_index), solutions(explanation)",
+        "id, subject_id, chapter_id, skill_id, purpose, version, type, prompt, difficulty, source_type, source_year, official_source_url, numeric_answer, numeric_tolerance, status, question_options(id, text, is_correct, order_index, misconception), solutions(explanation, hint)",
       )
       .eq("id", questionId)
       .maybeSingle(),
@@ -27,6 +27,9 @@ export default async function QuestionPage({ params, searchParams }: PageProps<"
     id: string;
     subject_id: string;
     chapter_id: string | null;
+    skill_id: string | null;
+    purpose: QuestionPurpose;
+    version: number;
     type: QuestionType;
     prompt: LocalizedText;
     difficulty: number;
@@ -36,15 +39,15 @@ export default async function QuestionPage({ params, searchParams }: PageProps<"
     numeric_answer: number | null;
     numeric_tolerance: number | null;
     status: ContentStatus;
-    question_options: { id: string; text: LocalizedText; is_correct: boolean; order_index: number }[];
-    solutions: { explanation: LocalizedText } | null;
+    question_options: { id: string; text: LocalizedText; is_correct: boolean; order_index: number; misconception: LocalizedText | null }[];
+    solutions: { explanation: LocalizedText; hint: LocalizedText | null } | null;
   } | null;
   if (!q) notFound();
 
   return (
     <>
       <PageHeader
-        title="Edit question"
+        title={`Edit question · v${q.version}`}
         actions={
           <div className="flex items-center gap-3">
             <StatusBadge status={q.status} />
@@ -75,8 +78,11 @@ export default async function QuestionPage({ params, searchParams }: PageProps<"
             numericTolerance: q.numeric_tolerance,
             options: [...q.question_options]
               .sort((a, b) => a.order_index - b.order_index)
-              .map((o) => ({ id: o.id, text: o.text, isCorrect: o.is_correct })),
+              .map((o) => ({ id: o.id, text: o.text, isCorrect: o.is_correct, misconception: o.misconception ?? {} })),
             explanation: q.solutions?.explanation ?? {},
+            skillId: q.skill_id,
+            purpose: q.purpose,
+            hint: q.solutions?.hint ?? {},
           }}
         />
       </Card>

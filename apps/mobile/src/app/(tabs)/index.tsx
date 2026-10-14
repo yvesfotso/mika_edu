@@ -1,8 +1,8 @@
-import { localize, type AttemptMode, type DashboardDto } from "@eduprep/core";
+import type { DashboardDto, StudyTaskDto } from "@eduprep/core";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useMemo, useState } from "react";
-import { RefreshControl, ScrollView, Text, View, useWindowDimensions } from "react-native";
+import { Pressable, RefreshControl, ScrollView, Text, View, useWindowDimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ActivityChart } from "@/components/dashboard/activity-chart";
 import { MonthCalendar } from "@/components/dashboard/month-calendar";
@@ -10,29 +10,32 @@ import {
   ExamCard,
   LinkText,
   Panel,
-  PlanList,
-  PlusButton,
   RecentQuizzes,
-  RecommendedRow,
   SectionTitle,
   SubjectRows,
-  type PlanItem,
   type RecentAttempt,
 } from "@/components/dashboard/sections";
+import { TodayPlanPanel } from "@/components/dashboard/today";
 import { OfflineNotice, StateView } from "@/components/ui";
 import { useApi } from "@/hooks/use-api";
 import { errorMessage } from "@/lib/api";
-import { useColors, SIDEBAR_BREAKPOINT } from "@/lib/theme";
 import { notify } from "@/lib/dialog";
 import { startQuiz } from "@/lib/learning";
+import { useColors, SIDEBAR_BREAKPOINT } from "@/lib/theme";
 import { useSession } from "@/providers/session";
 
 function Avatar({ name }: { name: string }) {
   const c = useColors();
+  const { t } = useSession();
   return (
-    <View style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: c.tiles.lavender.bg, alignItems: "center", justifyContent: "center", borderWidth: 2, borderColor: c.card }}>
+    <Pressable
+      onPress={() => router.navigate("/(tabs)/profile")}
+      accessibilityRole="button"
+      accessibilityLabel={t("profile")}
+      style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: c.tiles.lavender.bg, alignItems: "center", justifyContent: "center", borderWidth: 2, borderColor: c.card }}
+    >
       <Text style={{ fontSize: 16, fontWeight: "700", color: c.tiles.lavender.ink }}>{(name.trim()[0] ?? "?").toUpperCase()}</Text>
-    </View>
+    </Pressable>
   );
 }
 
@@ -47,9 +50,9 @@ function StreakChip({ days, active }: { days: number; active: boolean }) {
   );
 }
 
-export default function Dashboard() {
+export default function Today() {
   const c = useColors();
-  const { t, locale, profile, userId } = useSession();
+  const { t, profile, userId } = useSession();
   const { width } = useWindowDimensions();
   const wide = width >= SIDEBAR_BREAKPOINT;
   const dashboard = useApi<DashboardDto>("/me/dashboard");
@@ -59,19 +62,6 @@ export default function Dashboard() {
 
   const activeDates = useMemo(() => new Set((data?.activity ?? []).filter((d) => d.minutes > 0).map((d) => d.date)), [data]);
 
-  async function start(key: string, scope: { chapterId?: string; subjectId?: string }, mode: AttemptMode) {
-    if (!userId || busy) return;
-    setBusy(key);
-    try {
-      const id = await startQuiz(userId, scope, mode);
-      router.push(`/quiz/${id}`);
-    } catch (err) {
-      notify(errorMessage(err, t("offlineNoData")));
-    } finally {
-      setBusy(null);
-    }
-  }
-
   if (!data) {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: c.background }}>
@@ -80,55 +70,47 @@ export default function Dashboard() {
     );
   }
 
+  /** Each task opens the activity that completes it. */
+  async function openTask(task: StudyTaskDto) {
+    if (!userId || busy) return;
+    if (task.kind === "diagnostic") {
+      router.push("/diagnostic");
+      return;
+    }
+    if (task.target.lessonId) {
+      router.push(`/lesson/${task.target.lessonId}`);
+      return;
+    }
+    setBusy(task.id);
+    try {
+      const scope = task.target.skillId ? { skillId: task.target.skillId } : { chapterId: task.target.chapterId };
+      const mode = task.kind === "recover_mistakes" ? "recovery" : "practice";
+      const attemptId = await startQuiz(userId, scope, mode, mode === "recovery" ? 3 : 10);
+      router.push(`/quiz/${attemptId}`);
+    } catch (err) {
+      notify(errorMessage(err, t("offlineNoData")));
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  async function startMock(subjectId: string) {
+    if (!userId || busy) return;
+    setBusy("mock");
+    try {
+      router.push(`/quiz/${await startQuiz(userId, { subjectId }, "mock")}`);
+    } catch (err) {
+      notify(errorMessage(err, t("offlineNoData")));
+    } finally {
+      setBusy(null);
+    }
+  }
+
   const name = profile?.displayName ?? data.profile.displayName ?? "";
   const today = data.activity.at(-1)?.date ?? "";
   const withContent = data.subjects.filter((s) => s.chapterCount > 0);
   const weakest = [...withContent].sort((a, b) => a.mastery - b.mastery)[0];
-  const topRec = data.recommendations[0];
-  const onMock = weakest ? () => start("mock", { subjectId: weakest.id }, "mock") : undefined;
   const recentAttempts = (attempts.data?.attempts ?? []).slice(0, 4);
-
-  const plan: PlanItem[] = [];
-  if (data.continueLesson) {
-    const lesson = data.continueLesson;
-    plan.push({
-      key: "lesson",
-      icon: "book-outline",
-      tone: "lavender",
-      title: localize(lesson.title, locale),
-      subtitle: t("planLesson", { chapter: localize(lesson.chapterTitle, locale) }),
-      onPress: () => router.push(`/lesson/${lesson.id}`),
-    });
-  }
-  if (topRec) {
-    plan.push({
-      key: "practise",
-      icon: "flash-outline",
-      tone: "mint",
-      title: t("planPractise", { chapter: localize(topRec.chapterTitle, locale) }),
-      subtitle: localize(topRec.subjectName, locale),
-      onPress: () => start("plan-practise", { chapterId: topRec.chapterId }, "practice"),
-      busy: busy === "plan-practise",
-    });
-  }
-  plan.push({
-    key: "goal",
-    icon: "time-outline",
-    tone: "peach",
-    title: t("dailyGoal"),
-    subtitle: t("planGoal", { done: data.todayMinutes, goal: data.profile.dailyGoalMinutes }),
-  });
-  if (weakest) {
-    plan.push({
-      key: "mock",
-      icon: "timer-outline",
-      tone: "sky",
-      title: t("timedMock"),
-      subtitle: localize(weakest.name, locale),
-      onPress: onMock,
-      busy: busy === "mock",
-    });
-  }
 
   const refreshing = dashboard.loading || attempts.loading;
   const refresh = () => {
@@ -142,22 +124,23 @@ export default function Dashboard() {
     </Text>
   );
 
-  const recommended = data.recommendations.length > 0 && (
-    <View style={{ gap: 12 }}>
-      <SectionTitle title={t("recommended")} action={<LinkText label={t("viewAll")} onPress={() => router.navigate("/(tabs)/subjects")} />} />
-      <RecommendedRow recs={data.recommendations} busyId={busy} onPractise={(id) => start(id, { chapterId: id }, "practice")} horizontal={!wide} />
-    </View>
+  const planPanel = <TodayPlanPanel plan={data.today} busy={busy} onStart={(task) => void openTask(task)} />;
+
+  const mistakesLink = data.today.openMistakes > 0 && (
+    <Pressable
+      onPress={() => router.navigate("/(tabs)/practice")}
+      accessibilityRole="button"
+      style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: c.tiles.peach.bg, borderRadius: 18, padding: 14 }}
+    >
+      <Ionicons name="bandage-outline" size={18} color={c.tiles.peach.ink} />
+      <Text style={{ flex: 1, fontWeight: "700", color: c.tiles.peach.ink }}>{t("openMistakesShort", { n: data.today.openMistakes })}</Text>
+      <Text style={{ fontSize: 13, fontWeight: "700", color: c.tiles.peach.ink, textDecorationLine: "underline" }}>{t("reviewMistakes")}</Text>
+    </Pressable>
   );
 
   const activityPanel = (
     <Panel title={t("studyActivity")} style={wide ? { flex: 1 } : undefined}>
       <ActivityChart activity={data.activity} />
-    </Panel>
-  );
-
-  const planPanel = (
-    <Panel title={t("todaysPlan")} style={wide ? { flex: 1 } : undefined}>
-      <PlanList items={plan} />
     </Panel>
   );
 
@@ -177,13 +160,12 @@ export default function Dashboard() {
 
   const quizzesSection = (
     <View style={{ gap: 12 }}>
-      <SectionTitle
-        title={t("recentActivity")}
-        action={topRec ? <PlusButton label={t("practice")} busy={busy === "plus"} onPress={() => start("plus", { chapterId: topRec.chapterId }, "practice")} /> : undefined}
-      />
+      <SectionTitle title={t("recentActivity")} />
       <RecentQuizzes attempts={recentAttempts} onOpen={(id) => router.push(`/results/${id}`)} />
     </View>
   );
+
+  const examCard = <ExamCard data={data} onMock={weakest ? () => void startMock(weakest.id) : undefined} busy={busy === "mock"} />;
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: c.background }} edges={wide ? ["top", "right"] : ["top", "left", "right"]}>
@@ -196,11 +178,9 @@ export default function Dashboard() {
           <View style={{ flexDirection: "row", gap: 22, alignItems: "flex-start" }}>
             <View style={{ flex: 1, gap: 22, minWidth: 0 }}>
               {welcome}
-              {recommended}
-              <View style={{ flexDirection: "row", gap: 16 }}>
-                {activityPanel}
-                {planPanel}
-              </View>
+              {planPanel}
+              {mistakesLink}
+              {activityPanel}
               {subjectsSection}
             </View>
             <View style={{ width: 330, gap: 18 }}>
@@ -208,7 +188,7 @@ export default function Dashboard() {
                 <StreakChip days={data.streak.currentDays} active={data.streak.activeToday} />
                 <Avatar name={name} />
               </View>
-              <ExamCard data={data} onMock={onMock} busy={busy === "mock"} />
+              {examCard}
               {calendarPanel}
               {quizzesSection}
             </View>
@@ -220,9 +200,9 @@ export default function Dashboard() {
               <Avatar name={name} />
             </View>
             <StreakChip days={data.streak.currentDays} active={data.streak.activeToday} />
-            <ExamCard data={data} onMock={onMock} busy={busy === "mock"} />
-            {recommended}
             {planPanel}
+            {mistakesLink}
+            {examCard}
             {activityPanel}
             {subjectsSection}
             {calendarPanel}

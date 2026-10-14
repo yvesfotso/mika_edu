@@ -3,6 +3,7 @@ import {
   canChangeProgram,
   DEFAULT_PROGRAM,
   programConfigSchema,
+  type DiagnosticStatus,
   type ExamDto,
   type LocalizedText,
   type Locale,
@@ -86,10 +87,12 @@ export interface ProfileRow {
   onboarding_completed: boolean;
   friend_code: string;
   program_settings: ProgramSettings | null;
+  study_days: number[];
+  diagnostic_status: DiagnosticStatus;
 }
 
 export const PROFILE_COLUMNS =
-  "id, display_name, preferred_language, role, country_code, education_level, school_name, timezone, target_exam_id, target_track_id, daily_goal_minutes, onboarding_completed, friend_code, program_settings";
+  "id, display_name, preferred_language, role, country_code, education_level, school_name, timezone, target_exam_id, target_track_id, daily_goal_minutes, onboarding_completed, friend_code, program_settings, study_days, diagnostic_status";
 
 export function toProfileDto(row: ProfileRow): ProfileDto {
   return {
@@ -108,5 +111,7 @@ export function toProfileDto(row: ProfileRow): ProfileDto {
     friendCode: row.friend_code,
     programSettings: row.program_settings,
     canChangeProgram: canChangeProgram(row.onboarding_completed, row.role),
+    studyDays: row.study_days ?? [0, 1, 2, 3, 4, 5, 6],
+    diagnosticStatus: row.diagnostic_status ?? "pending",
   };
 }

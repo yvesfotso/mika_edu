@@ -77,7 +77,8 @@ describe("demo backend", () => {
     expect(after.streak.activeToday).toBe(true);
     expect(after.streak.currentDays).toBe(3);
     const history = await call<{ attempts: unknown[] }>("GET", "/me/attempts");
-    expect(history.attempts).toHaveLength(1);
+    // The demo account starts with one earlier practice set on complex numbers.
+    expect(history.attempts).toHaveLength(2);
   });
 
   it("scores wrong answers as incorrect and reveals the right ones", async () => {

@@ -13,6 +13,8 @@ export function PillInput({
   label,
   hint,
   ref,
+  onFocus,
+  onBlur,
   ...props
 }: TextInputProps & {
   icon?: IconName;
@@ -46,9 +48,15 @@ export function PillInput({
           placeholderTextColor={c.faint}
           accessibilityLabel={label ?? props.placeholder}
           style={[{ flex: 1, fontSize: 15, color: c.text, height: "100%" }, Platform.OS === "web" && ({ outlineStyle: "none" } as object)]}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
           {...props}
+          onFocus={(e) => {
+            setFocused(true);
+            onFocus?.(e);
+          }}
+          onBlur={(e) => {
+            setFocused(false);
+            onBlur?.(e);
+          }}
         />
         {icon &&
           (onIconPress ? (

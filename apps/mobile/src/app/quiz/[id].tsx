@@ -3,6 +3,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Redirect, router, Stack, useLocalSearchParams } from "expo-router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Platform, Pressable, Text, TextInput, View } from "react-native";
+import { HintBox, ReportProblem } from "@/components/learning";
 import { Badge, Button, OfflineNotice, Row, Screen, StateView, T } from "@/components/ui";
 import { useApi } from "@/hooks/use-api";
 import { api, cacheKey, NetworkError } from "@/lib/api";
@@ -72,14 +73,17 @@ function QuestionView({
   question,
   answer,
   onChange,
+  onHint,
 }: {
   question: AttemptQuestionDto;
   answer: AnswerInputDto | undefined;
   onChange: (patch: Omit<AnswerInputDto, "questionId">) => void;
+  onHint: () => void;
 }) {
   const c = useColors();
   const { t, locale } = useSession();
   const [numericText, setNumericText] = useState(answer?.numericValue !== undefined ? String(answer.numericValue) : "");
+  const hintShown = (answer?.hintsUsed ?? 0) > 0;
   const selected = answer?.selectedOptionIds ?? [];
   const multiple = question.type === "multiple_choice";
 
@@ -141,6 +145,8 @@ function QuestionView({
           />
         ))
       )}
+      <HintBox hint={question.hint} shown={hintShown} onShow={onHint} />
+      <ReportProblem questionId={question.id} />
     </View>
   );
 }
@@ -240,7 +246,14 @@ export default function QuizScreen() {
     const elapsed = Date.now() - shownAt.current;
     setAnswers((prev) => ({
       ...prev,
-      [question!.id]: { questionId: question!.id, ...patch, responseMs: Math.min(elapsed, 3 * 60 * 60 * 1000) },
+      // Keep hintsUsed: asking for a hint counts even if the answer changes afterwards.
+      [question!.id]: {
+        questionId: question!.id,
+        hintsUsed: prev[question!.id]?.hintsUsed ?? 0,
+        ...patch,
+        responseMs: Math.min(elapsed, 3 * 60 * 60 * 1000),
+        answeredAt: new Date().toISOString(),
+      },
     }));
   }
 
@@ -304,7 +317,13 @@ export default function QuizScreen() {
       </View>
       {remainingMs !== null && remainingMs <= 0 && <T style={{ color: c.danger }}>{t("timeUp")}</T>}
 
-      <QuestionView key={question.id} question={question} answer={answers[question.id]} onChange={setAnswer} />
+      <QuestionView
+        key={question.id}
+        question={question}
+        answer={answers[question.id]}
+        onChange={setAnswer}
+        onHint={() => setAnswers((prev) => ({ ...prev, [question.id]: { ...prev[question.id], questionId: question.id, hintsUsed: 1 } }))}
+      />
 
       <Row style={{ gap: spacing.md, marginTop: spacing.sm }}>
         <View style={{ flex: 1 }}>

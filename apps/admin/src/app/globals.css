@@ -2,40 +2,82 @@
 
 :root {
   color-scheme: light dark;
-  --canvas: #e6eaea;
-  --frame: #ffffff;
-  --card: #f2f4f4;
-  --panel: #eef3f5;
-  --line: #e1e6e7;
-  --ink: #16201f;
-  --muted: #76827f;
-  --brand: #8fd19e;
-  --brand-strong: #4f9e62;
-  --brand-soft: #e3f4e6;
-  --brand-ink: #123a1d;
-  --ocean: #3f6e8c;
-  --ocean-strong: #2f5670;
-  --ocean-soft: #d8e6ee;
-  --ocean-mute: #9fb9c9;
+  /* Lime backdrop, light-grey workspace, white cards and a black sidebar — same lime as the learner app. */
+  --canvas: #d5f26a;
+  --frame: #f3f4ef;
+  --card: #ffffff;
+  --panel: #ffffff;
+  --line: #e7e8e2;
+  --ink: #17171f;
+  --muted: #8b8b93;
+  --sidebar: #111114;
+  --brand: #d5f26a;
+  --brand-strong: #557a0c;
+  --brand-soft: #f2fad2;
+  --brand-ink: #1d1d29;
+  /* "ocean" is the secondary accent used across pages; in this design it is ink-black. */
+  --ocean: #1d1d29;
+  --ocean-strong: #1d1d29;
+  --ocean-soft: #eeefe9;
+  --ocean-mute: #b9bab3;
+}
+
+/* Dark palette: chosen explicitly (data-theme="dark") or following the OS while the choice is "system". */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --canvas: #0b0b0f;
+  --frame: #15151b;
+  --card: #1e1e26;
+  --panel: #1e1e26;
+  --line: #2b2b35;
+  --ink: #f2f2f5;
+  --muted: #9a9aa8;
+  --sidebar: #050507;
+  --brand: #d5f26a;
+  --brand-strong: #d5f26a;
+  --brand-soft: #2c3318;
+  --brand-ink: #1d1d29;
+  --ocean: #33343f;
+  --ocean-strong: #e6e6ee;
+  --ocean-soft: #26272f;
+  --ocean-mute: #4a4b55;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --canvas: #0c1112;
-    --frame: #131a1c;
-    --card: #1b2426;
-    --panel: #172023;
-    --line: #273336;
-    --ink: #e7eeec;
-    --muted: #93a19e;
-    --brand: #7cc58c;
-    --brand-strong: #8fd19e;
-    --brand-soft: #1d3324;
-    --brand-ink: #0b2412;
-    --ocean: #4a7d9c;
-    --ocean-strong: #8fb8d0;
-    --ocean-soft: #1f3340;
-    --ocean-mute: #4d6d80;
+  :root[data-theme="system"] {
+    color-scheme: dark;
+    --canvas: #0b0b0f;
+    --frame: #15151b;
+    --card: #1e1e26;
+    --panel: #1e1e26;
+    --line: #2b2b35;
+    --ink: #f2f2f5;
+    --muted: #9a9aa8;
+    --sidebar: #050507;
+    --brand: #d5f26a;
+    --brand-strong: #d5f26a;
+    --brand-soft: #2c3318;
+    --brand-ink: #1d1d29;
+    --ocean: #33343f;
+    --ocean-strong: #e6e6ee;
+    --ocean-soft: #26272f;
+    --ocean-mute: #4a4b55;
+  }
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+/* `dark:` utilities follow the same switch instead of only the OS setting. */
+@custom-variant dark {
+  &:where([data-theme="dark"], [data-theme="dark"] *) {
+    @slot;
+  }
+  @media (prefers-color-scheme: dark) {
+    &:where([data-theme="system"], [data-theme="system"] *) {
+      @slot;
+    }
   }
 }
 
@@ -47,6 +89,7 @@
   --color-card: var(--card);
   --color-panel: var(--panel);
   --color-line: var(--line);
+  --color-sidebar: var(--sidebar);
   --color-ink: var(--ink);
   --color-muted: var(--muted);
   --color-brand: var(--brand);
@@ -58,20 +101,20 @@
   --color-ocean-soft: var(--ocean-soft);
   --color-ocean-mute: var(--ocean-mute);
 
-  --radius-4xl: 1.75rem;
+  --radius-4xl: 1.25rem;
 }
 
-/* Existing pages use the indigo scale for links and accents; point it at the ocean palette. */
+/* Existing pages use the indigo scale for links and accents; point it at the ink palette. */
 @theme {
-  --color-indigo-50: #eef4f8;
-  --color-indigo-100: #d8e6ee;
-  --color-indigo-200: #b5cedd;
-  --color-indigo-400: #7ea6bf;
-  --color-indigo-500: #56859f;
-  --color-indigo-600: #3f6e8c;
-  --color-indigo-700: #2f5670;
-  --color-indigo-900: #1d3445;
-  --color-indigo-950: #142430;
+  --color-indigo-50: #f4f5f0;
+  --color-indigo-100: #e9eae4;
+  --color-indigo-200: #d3d4cd;
+  --color-indigo-400: #c9c9d3;
+  --color-indigo-500: #5c5c6a;
+  --color-indigo-600: #1d1d29;
+  --color-indigo-700: #121219;
+  --color-indigo-900: #1d1d29;
+  --color-indigo-950: #121219;
 }
 
 body {
@@ -87,3 +130,14 @@ body {
 .prose-lesson table { @apply my-3 border-collapse text-sm; }
 .prose-lesson th, .prose-lesson td { @apply border border-line px-2 py-1; }
 .prose-lesson code { @apply rounded bg-card px-1; }
+
+/* Mascot idle motion (admin illustrations). */
+@keyframes mascot-blink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(0.1); } }
+@keyframes mascot-tail { 0%, 70%, 100% { transform: rotate(0); } 78% { transform: rotate(-10deg); } 86% { transform: rotate(0); } 92% { transform: rotate(-6deg); } }
+@keyframes mascot-breathe { 0%, 100% { transform: scale(1, 1); } 50% { transform: scale(0.985, 1.03); } }
+.mascot-eyes { transform-box: fill-box; transform-origin: center; animation: mascot-blink 4.6s infinite; }
+.mascot-tail { transform-box: fill-box; transform-origin: 0% 50%; animation: mascot-tail 3.8s infinite; }
+.mascot-body { transform-box: fill-box; transform-origin: 50% 100%; animation: mascot-breathe 3s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .mascot-eyes, .mascot-tail, .mascot-body { animation: none; }
+}

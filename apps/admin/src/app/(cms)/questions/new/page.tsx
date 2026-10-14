@@ -36,6 +36,9 @@ export default async function NewQuestionPage({ searchParams }: PageProps<"/ques
             numericTolerance: null,
             options: [],
             explanation: {},
+            skillId: null,
+            purpose: "practice",
+            hint: {},
           }}
         />
       </Card>

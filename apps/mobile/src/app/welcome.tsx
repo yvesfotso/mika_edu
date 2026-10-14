@@ -1,7 +1,7 @@
-import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
+import { Mascot } from "@/components/mascot/mascot";
 import { Button, Card, Screen, T } from "@/components/ui";
 import { DEMO_ACCOUNT } from "@/demo/server";
 import { auth } from "@/lib/auth";
@@ -31,19 +31,7 @@ export default function Welcome() {
       <View style={{ flex: 1, justifyContent: "center", gap: spacing.lg, minHeight: 600 }}>
         <Card tone="strong" style={{ padding: 26, gap: 14, overflow: "hidden" }}>
           <View style={{ position: "absolute", right: -40, top: -40, width: 170, height: 170, borderRadius: 85, backgroundColor: c.strongRaised }} />
-          <View
-            style={{
-              width: 58,
-              height: 58,
-              borderRadius: 29,
-              backgroundColor: c.primary,
-              alignItems: "center",
-              justifyContent: "center",
-              transform: [{ rotate: "-8deg" }],
-            }}
-          >
-            <Ionicons name="school" size={30} color={c.primaryText} />
-          </View>
+          <Mascot size={150} accessories={["cap"]} intro={200} style={{ marginLeft: -6 }} />
           <Text style={{ color: c.strongText, fontSize: 34, fontWeight: "800", letterSpacing: -0.8 }} accessibilityRole="header">
             {t("appName")}
           </Text>

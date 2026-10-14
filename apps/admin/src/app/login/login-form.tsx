@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { buttonClass, Field, inputClass } from "@/components/ui";
+import { darkButtonClass, Field, inputClass } from "@/components/ui";
 import { browserClient } from "@/lib/supabase/browser";
 
 export function LoginForm() {
@@ -41,7 +41,7 @@ export function LoginForm() {
           {error}
         </p>
       )}
-      <button type="submit" disabled={pending} className={`${buttonClass} w-full`}>
+      <button type="submit" disabled={pending} className={`${darkButtonClass} w-full py-2.5`}>
         {pending ? "Signing in…" : "Sign in"}
       </button>
     </form>

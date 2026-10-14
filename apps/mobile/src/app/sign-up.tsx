@@ -2,6 +2,7 @@ import { router } from "expo-router";
 import { useRef, useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 import { AuthLayout } from "@/components/auth-layout";
+import type { MascotMood } from "@/components/mascot/mascot";
 import { PillInput } from "@/components/text-field";
 import { Button } from "@/components/ui";
 import { auth } from "@/lib/auth";
@@ -18,6 +19,7 @@ export default function SignUp() {
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [focus, setFocus] = useState<"name" | "email" | "password" | null>(null);
   const emailRef = useRef<TextInput>(null);
   const passwordRef = useRef<TextInput>(null);
 
@@ -39,16 +41,35 @@ export default function SignUp() {
     else router.replace("/onboarding");
   }
 
+  const mood: MascotMood = notice
+    ? "happy"
+    : error
+      ? "error"
+      : focus === "password" && !showPassword
+        ? "shy"
+        : focus || busy
+          ? "look"
+          : "idle";
+  const typed = focus === "name" ? name : focus === "email" ? email : focus === "password" ? password : null;
+  const gaze = typed === null ? undefined : Math.min(1, typed.length / (focus === "password" ? 16 : 28));
+  const edit = (set: (v: string) => void) => (v: string) => {
+    set(v);
+    setError(null);
+  };
+  const blurFrom = (field: typeof focus) => () => setFocus((f) => (f === field ? null : f));
+
   const small = { fontSize: 12.5, color: c.text };
 
   return (
-    <AuthLayout title={t("getStarted")} subtitle={t("signUpSubtitle")}>
+    <AuthLayout title={t("getStarted")} subtitle={t("signUpSubtitle")} mood={mood} gaze={gaze}>
       <View style={{ gap: 12 }}>
         <PillInput
           icon="person"
           placeholder={t("name")}
           value={name}
-          onChangeText={setName}
+          onChangeText={edit(setName)}
+          onFocus={() => setFocus("name")}
+          onBlur={blurFrom("name")}
           autoComplete="given-name"
           textContentType="givenName"
           returnKeyType="next"
@@ -59,7 +80,9 @@ export default function SignUp() {
           icon="mail"
           placeholder={t("email")}
           value={email}
-          onChangeText={setEmail}
+          onChangeText={edit(setEmail)}
+          onFocus={() => setFocus("email")}
+          onBlur={blurFrom("email")}
           autoCapitalize="none"
           autoCorrect={false}
           keyboardType="email-address"
@@ -76,7 +99,9 @@ export default function SignUp() {
           placeholder={t("password")}
           hint={t("passwordHint")}
           value={password}
-          onChangeText={setPassword}
+          onChangeText={edit(setPassword)}
+          onFocus={() => setFocus("password")}
+          onBlur={blurFrom("password")}
           secureTextEntry={!showPassword}
           autoComplete="new-password"
           textContentType="newPassword"

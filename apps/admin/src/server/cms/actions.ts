@@ -20,6 +20,8 @@ import { z } from "zod";
 import { sessionClient } from "@/lib/supabase/server";
 import { ApiError, must, notFound, type Db } from "../db";
 import { openSupportConversation, sendStaffReply } from "../learner/messages";
+import { resolveContentReport } from "../learner/reports";
+import { PAST_PAPER_BUCKET, PAST_PAPER_MAX_BYTES } from "../past-papers";
 import { audit, requireStaffAction, type StaffContext } from "../staff";
 import { localized, num, optStr, runAction, str } from "./form";
 import type { ActionState } from "./state";
@@ -177,7 +179,7 @@ export async function createSubject(_prev: ActionState, fd: FormData): Promise<A
 // Review workflow
 // ---------------------------------------------------------------------------
 
-type ContentTable = "chapters" | "lessons" | "questions";
+type ContentTable = "chapters" | "lessons" | "questions" | "past_papers";
 
 async function loadStatus(db: Db, table: ContentTable, id: string): Promise<ContentStatus> {
   const row = must(await db.from(table).select("status").eq("id", id).maybeSingle(), `loading ${table}`) as {
@@ -223,6 +225,11 @@ export async function transitionQuestion(fd: FormData) {
   await transition("questions", fd);
   revalidatePath(`/questions/${str(fd, "id")}`);
   revalidatePath("/questions");
+}
+
+export async function transitionPastPaper(fd: FormData) {
+  await transition("past_papers", fd);
+  revalidatePath("/past-papers");
 }
 
 // ---------------------------------------------------------------------------
@@ -337,10 +344,25 @@ async function assertChapterMatchesSubject(db: Db, chapterId: string | null, sub
   if (chapter.subject_id !== subjectId) throw new ApiError(422, "chapter_mismatch", "The chapter belongs to a different subject.");
 }
 
+/** Empty localized text is stored as null. */
+function optionalText(t: { en?: string; fr?: string } | undefined) {
+  const en = t?.en?.trim();
+  const fr = t?.fr?.trim();
+  return en || fr ? { ...(en ? { en } : {}), ...(fr ? { fr } : {}) } : null;
+}
+
+async function assertSkillInChapter(db: Db, skillId: string | null, chapterId: string | null) {
+  if (!skillId) return;
+  const skill = must(await db.from("skills").select("chapter_id").eq("id", skillId).maybeSingle<{ chapter_id: string }>(), "checking skill");
+  if (!skill || skill.chapter_id !== chapterId) throw new ApiError(422, "skill_mismatch", "The skill belongs to a different chapter.");
+}
+
 function questionRow(q: QuestionFormInput, userId: string) {
   return {
     subject_id: q.subjectId,
     chapter_id: q.chapterId,
+    skill_id: q.chapterId ? q.skillId : null,
+    purpose: q.purpose,
     type: q.type,
     prompt: q.prompt,
     difficulty: q.difficulty,
@@ -365,12 +387,18 @@ async function insertQuestion(db: Db, q: QuestionFormInput, userId: string): Pro
   if (q.type !== "numeric" && q.options.length > 0) {
     must(
       await db.from("question_options").insert(
-        q.options.map((o, i) => ({ question_id: id, text: o.text, is_correct: o.isCorrect, order_index: i })),
+        q.options.map((o, i) => ({
+          question_id: id,
+          text: o.text,
+          is_correct: o.isCorrect,
+          order_index: i,
+          misconception: o.isCorrect ? null : optionalText(o.misconception),
+        })),
       ),
       "creating options",
     );
   }
-  must(await db.from("solutions").upsert({ question_id: id, explanation: q.explanation }), "saving explanation");
+  must(await db.from("solutions").upsert({ question_id: id, explanation: q.explanation, hint: optionalText(q.hint) }), "saving explanation");
   return id;
 }
 
@@ -390,6 +418,7 @@ export async function saveQuestion(_prev: ActionState, fd: FormData): Promise<Ac
       throw new ApiError(403, "forbidden", "Only reviewers and admins can label questions as official past-paper questions.");
     }
     await assertChapterMatchesSubject(staff.db, q.chapterId, q.subjectId);
+    await assertSkillInChapter(staff.db, q.chapterId ? q.skillId : null, q.chapterId);
 
     if (!id) {
       createdId = await insertQuestion(staff.db, q, staff.userId);
@@ -399,7 +428,40 @@ export async function saveQuestion(_prev: ActionState, fd: FormData): Promise<Ac
 
     uuid.parse(id);
     await assertEditable(staff, "questions", id);
-    must(await staff.db.from("questions").update(questionRow(q, staff.userId)).eq("id", id), "updating question");
+
+    // A change to what the learner sees or to the answer key creates a new version, so earlier
+    // answers stay tied to the version that was actually shown.
+    const before = must(
+      await staff.db
+        .from("questions")
+        .select("type, prompt, numeric_answer, numeric_tolerance, version, question_options(id, text, is_correct, order_index)")
+        .eq("id", id)
+        .single(),
+      "loading question",
+    ) as unknown as {
+      type: string;
+      prompt: unknown;
+      numeric_answer: number | null;
+      numeric_tolerance: number | null;
+      version: number;
+      question_options: { id: string; text: unknown; is_correct: boolean; order_index: number }[];
+    };
+    const nextOptions = q.type === "numeric" ? [] : q.options;
+    const fingerprint = (v: unknown) => JSON.stringify(v);
+    const changed =
+      before.type !== q.type ||
+      fingerprint(before.prompt) !== fingerprint(q.prompt) ||
+      (q.type === "numeric" && (before.numeric_answer !== q.numericAnswer || before.numeric_tolerance !== q.numericTolerance)) ||
+      fingerprint(
+        [...before.question_options].sort((a, b) => a.order_index - b.order_index).map((o) => [o.id, o.text, o.is_correct]),
+      ) !== fingerprint(nextOptions.map((o) => [o.id ?? null, o.text, o.isCorrect]));
+    must(
+      await staff.db
+        .from("questions")
+        .update({ ...questionRow(q, staff.userId), version: changed ? before.version + 1 : before.version })
+        .eq("id", id),
+      "updating question",
+    );
 
     // Keep option ids stable so past answers still point at the right choice.
     const existing = must(await staff.db.from("question_options").select("id").eq("question_id", id), "loading options") as {
@@ -410,15 +472,15 @@ export async function saveQuestion(_prev: ActionState, fd: FormData): Promise<Ac
     const removed = existing.map((o) => o.id).filter((oid) => !keep.has(oid));
     if (removed.length > 0) must(await staff.db.from("question_options").delete().in("id", removed), "removing options");
     for (const [i, o] of options.entries()) {
-      const row = { question_id: id, text: o.text, is_correct: o.isCorrect, order_index: i };
+      const row = { question_id: id, text: o.text, is_correct: o.isCorrect, order_index: i, misconception: o.isCorrect ? null : optionalText(o.misconception) };
       if (o.id && existing.some((e) => e.id === o.id)) {
         must(await staff.db.from("question_options").update(row).eq("id", o.id), "updating option");
       } else {
         must(await staff.db.from("question_options").insert(row), "adding option");
       }
     }
-    must(await staff.db.from("solutions").upsert({ question_id: id, explanation: q.explanation }), "saving explanation");
-    await audit(staff, "question.update", "questions", id, { chapterId: q.chapterId });
+    must(await staff.db.from("solutions").upsert({ question_id: id, explanation: q.explanation, hint: optionalText(q.hint) }), "saving explanation");
+    await audit(staff, "question.update", "questions", id, { chapterId: q.chapterId, versionBumped: changed });
     revalidatePath(`/questions/${id}`);
     return { ok: true, message: "Question saved" };
   });
@@ -518,6 +580,16 @@ export async function resolveReport(fd: FormData): Promise<void> {
   revalidatePath("/inbox");
 }
 
+/** Closes a learner's content report: "resolved" after fixing the item, "dismissed" if it was fine. */
+export async function closeContentReport(fd: FormData): Promise<void> {
+  const staff = await requireStaffAction(["reviewer", "admin"]);
+  const id = uuid.parse(str(fd, "id"));
+  const status = z.enum(["resolved", "dismissed"]).parse(str(fd, "status"));
+  await resolveContentReport(staff.db, staff.userId, id, status, new Date());
+  await audit(staff, `content_report.${status}`, "content_issue_reports", id);
+  revalidatePath("/content-reports");
+}
+
 // ---------------------------------------------------------------------------
 // Learners
 // ---------------------------------------------------------------------------
@@ -537,4 +609,101 @@ export async function reassignProgram(_prev: ActionState, fd: FormData): Promise
     revalidatePath("/learners");
     return { ok: true, message: "Exam updated. The learner will choose their program settings again." };
   });
+}
+
+// ---------------------------------------------------------------------------
+// Past papers (PDF uploads)
+// ---------------------------------------------------------------------------
+
+const pastPaperSchema = z.object({
+  examId: uuid,
+  trackId: uuid.nullable(),
+  subjectId: uuid,
+  year: z.coerce.number().int().min(1960, "Year looks too early").max(new Date().getFullYear(), "Year can't be in the future"),
+  session: z.string().max(60).nullable(),
+  kind: z.enum(["paper", "marking_scheme"]),
+  language: z.enum(["en", "fr"]),
+  notes: z.string().max(500).nullable(),
+});
+
+export async function uploadPastPaper(_prev: ActionState, fd: FormData): Promise<ActionState> {
+  return runAction(async () => {
+    const staff = await requireStaffAction();
+    // "program" is "<examId>" or "<examId>:<trackId>" from the grouped exam/series picker.
+    const [examId, trackId] = str(fd, "program").split(":");
+    const input = pastPaperSchema.parse({
+      examId,
+      trackId: trackId || null,
+      subjectId: str(fd, "subjectId"),
+      year: str(fd, "year"),
+      session: optStr(fd, "session"),
+      kind: str(fd, "kind"),
+      language: str(fd, "language"),
+      notes: optStr(fd, "notes"),
+    });
+
+    const file = fd.get("file");
+    if (!(file instanceof File) || file.size === 0) throw new ApiError(422, "file_required", "Choose a PDF file to upload.");
+    if (file.size > PAST_PAPER_MAX_BYTES) throw new ApiError(413, "file_too_large", "The PDF is larger than 15 MB. Compress it or split it.");
+    const bytes = Buffer.from(await file.arrayBuffer());
+    if (bytes.subarray(0, 5).toString("latin1") !== "%PDF-") throw new ApiError(422, "not_pdf", "That file isn't a PDF.");
+
+    if (input.trackId) {
+      const track = must(await staff.db.from("exam_tracks").select("exam_id").eq("id", input.trackId).maybeSingle(), "checking series") as {
+        exam_id: string;
+      } | null;
+      if (track?.exam_id !== input.examId) throw new ApiError(422, "track_mismatch", "That series doesn't belong to the selected exam.");
+    }
+
+    const id = crypto.randomUUID();
+    const filePath = `${input.examId}/${input.subjectId}/${input.year}/${id}.pdf`;
+    const upload = await staff.db.storage.from(PAST_PAPER_BUCKET).upload(filePath, bytes, { contentType: "application/pdf", upsert: false });
+    if (upload.error) {
+      console.error("[storage] past paper upload failed", upload.error);
+      throw new ApiError(502, "storage_error", "The file couldn't be stored. Please try again.");
+    }
+
+    const row = {
+      id,
+      exam_id: input.examId,
+      track_id: input.trackId,
+      subject_id: input.subjectId,
+      year: input.year,
+      session: input.session,
+      kind: input.kind,
+      language: input.language,
+      notes: input.notes,
+      file_path: filePath,
+      file_name: file.name.slice(0, 200),
+      file_size: file.size,
+      uploaded_by: staff.userId,
+    };
+    const { error } = await staff.db.from("past_papers").insert(row);
+    if (error) {
+      await staff.db.storage.from(PAST_PAPER_BUCKET).remove([filePath]);
+      must({ data: null, error }, "saving past paper");
+    }
+    await audit(staff, "past_paper.create", "past_papers", id, { ...row, file_path: undefined });
+    revalidatePath("/past-papers");
+    return { ok: true, message: `Uploaded “${file.name}” as a draft. Submit it for review when it's ready.` };
+  });
+}
+
+export async function deletePastPaper(fd: FormData): Promise<void> {
+  const staff = await requireStaffAction();
+  const id = uuid.parse(str(fd, "id"));
+  const paper = must(
+    await staff.db.from("past_papers").select("status, file_path, uploaded_by").eq("id", id).maybeSingle(),
+    "loading past paper",
+  ) as { status: ContentStatus; file_path: string; uploaded_by: string | null } | null;
+  if (!paper) throw notFound("Past paper");
+  // Teachers may only remove their own drafts; reviewers drafts/review; admins anything.
+  if (!canEdit(paper.status, staff.role) || (staff.role === "teacher" && paper.uploaded_by !== staff.userId)) {
+    throw new ApiError(403, "forbidden", "You can't delete this past paper.");
+  }
+  must(await staff.db.from("past_papers").delete().eq("id", id), "deleting past paper");
+  const removed = await staff.db.storage.from(PAST_PAPER_BUCKET).remove([paper.file_path]);
+  if (removed.error) console.error("[storage] could not remove past paper file", paper.file_path, removed.error);
+  await audit(staff, "past_paper.delete", "past_papers", id);
+  revalidatePath("/past-papers");
 }

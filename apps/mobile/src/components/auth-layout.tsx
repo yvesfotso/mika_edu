@@ -6,14 +6,27 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useColors } from "@/lib/theme";
 import { useSession } from "@/providers/session";
 import { AuthArt } from "./auth-art";
+import type { MascotMood } from "./mascot/mascot";
 
 const WIDE_BREAKPOINT = 880;
 
 /**
  * Split card for sign-in / sign-up: form on the left and artwork on the right on wide screens;
- * artwork banner above the form on phones.
+ * artwork banner above the form on phones. `mood`/`gaze` let the mascot react to the form.
  */
-export function AuthLayout({ title, subtitle, children }: { title: string; subtitle: string; children: ReactNode }) {
+export function AuthLayout({
+  title,
+  subtitle,
+  children,
+  mood,
+  gaze,
+}: {
+  title: string;
+  subtitle: string;
+  children: ReactNode;
+  mood?: MascotMood;
+  gaze?: number;
+}) {
   const c = useColors();
   const { t } = useSession();
   const { width, height } = useWindowDimensions();
@@ -70,7 +83,7 @@ export function AuthLayout({ title, subtitle, children }: { title: string; subti
           >
             {form}
           </ScrollView>
-          <AuthArt style={{ flex: 1, borderRadius: 32 }} label={t("artCaption")} />
+          <AuthArt style={{ flex: 1, borderRadius: 32 }} label={t("artCaption")} mood={mood} gaze={gaze} />
         </View>
       </View>
     );
@@ -80,7 +93,7 @@ export function AuthLayout({ title, subtitle, children }: { title: string; subti
     <SafeAreaView style={{ flex: 1, backgroundColor: c.card }} edges={["left", "right", "bottom"]}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
-          <AuthArt style={{ height: 200, borderBottomLeftRadius: 36, borderBottomRightRadius: 36 }} label={t("artCaption")} />
+          <AuthArt style={{ height: 230, borderBottomLeftRadius: 36, borderBottomRightRadius: 36 }} label={t("artCaption")} mood={mood} gaze={gaze} />
           <View style={{ flex: 1, alignItems: "center", paddingHorizontal: 24, paddingTop: 28, paddingBottom: 32 }}>{form}</View>
         </ScrollView>
       </KeyboardAvoidingView>

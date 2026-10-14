@@ -1,16 +1,21 @@
 // Local demo only: stands in for the Supabase API gateway.
 //   /rest/v1/*  -> PostgREST
 //   /auth/v1/*  -> a tiny fake of Supabase Auth that knows the accounts in accounts.mjs
+//   /storage/v1/object/* -> files on disk in .demo/storage (service role only: upload, download, remove)
 // Usage: node gateway.mjs            (serve)
 //        node gateway.mjs keys       (print anon + service-role keys for .env.local)
 import { createHmac, timingSafeEqual } from "node:crypto";
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import http from "node:http";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { accounts, DEMO_PASSWORD } from "./accounts.mjs";
 
 export const JWT_SECRET = process.env.DEMO_JWT_SECRET ?? "eduprep-local-demo-jwt-secret-not-for-production";
 const PORT = Number(process.env.DEMO_GATEWAY_PORT ?? 54321);
 const POSTGREST = process.env.DEMO_POSTGREST_URL ?? "http://127.0.0.1:54330";
 const TOKEN_TTL = 3600;
+const STORAGE_DIR = process.env.DEMO_STORAGE_DIR ?? path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../.demo/storage");
 
 const b64url = (buf) => Buffer.from(buf).toString("base64url");
 
@@ -139,6 +144,65 @@ async function handleAuth(req, res, url) {
   return authError(res, 404, "not_found", `The demo auth server does not implement ${req.method} ${path}`);
 }
 
+async function readBody(req) {
+  const chunks = [];
+  for await (const c of req) chunks.push(c);
+  return Buffer.concat(chunks);
+}
+
+/** Resolve bucket/key under STORAGE_DIR, refusing anything that would escape it. */
+function objectFile(bucket, key) {
+  if (!/^[a-z0-9-]+$/.test(bucket) || !key || key.split("/").some((seg) => !seg || seg === "." || seg === "..")) return null;
+  return path.join(STORAGE_DIR, bucket, ...key.split("/"));
+}
+
+const MIME = { ".pdf": "application/pdf", ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg" };
+
+// Only what the admin backend uses: upload (POST/PUT), download (GET), remove (DELETE with prefixes).
+async function handleStorage(req, res, url) {
+  if (verify(bearer(req) ?? req.headers.apikey)?.role !== "service_role") {
+    return send(res, 403, { statusCode: "403", error: "Unauthorized", message: "The demo storage only accepts the service role" });
+  }
+  const rest = decodeURIComponent(url.pathname.replace(/^\/storage\/v1\/object\//, ""));
+  const [bucket, ...keyParts] = rest.split("/");
+  const key = keyParts.join("/");
+
+  if (req.method === "DELETE" && !key) {
+    const { prefixes = [] } = await readJson(req);
+    const removed = [];
+    for (const p of prefixes) {
+      const file = objectFile(bucket, String(p));
+      if (!file) continue;
+      await rm(file, { force: true });
+      removed.push({ name: p, bucket_id: bucket });
+    }
+    return send(res, 200, removed);
+  }
+
+  const file = objectFile(bucket, key);
+  if (!file) return send(res, 400, { statusCode: "400", error: "InvalidKey", message: "Invalid object path" });
+
+  if (req.method === "POST" || req.method === "PUT") {
+    const body = await readBody(req);
+    if (req.method === "POST" && req.headers["x-upsert"] !== "true") {
+      const exists = await readFile(file).then(() => true, () => false);
+      if (exists) return send(res, 409, { statusCode: "409", error: "Duplicate", message: "The resource already exists" });
+    }
+    await mkdir(path.dirname(file), { recursive: true });
+    await writeFile(file, body);
+    return send(res, 200, { Key: `${bucket}/${key}`, Id: `${bucket}/${key}` });
+  }
+
+  if (req.method === "GET" || req.method === "HEAD") {
+    const data = await readFile(file).catch(() => null);
+    if (!data) return send(res, 404, { statusCode: "404", error: "not_found", message: "Object not found" });
+    res.writeHead(200, { ...cors, "content-type": MIME[path.extname(file).toLowerCase()] ?? "application/octet-stream", "content-length": data.length });
+    return res.end(req.method === "HEAD" ? undefined : data);
+  }
+
+  return send(res, 405, { message: `The demo storage does not implement ${req.method}` });
+}
+
 function proxyRest(req, res, url) {
   const target = new URL(url.pathname.replace(/^\/rest\/v1/, "") + url.search, POSTGREST);
   const headers = { ...req.headers };
@@ -167,6 +231,10 @@ function serve() {
         return;
       }
       if (url.pathname.startsWith("/rest/v1")) return proxyRest(req, res, url);
+      if (url.pathname.startsWith("/storage/v1/object/")) {
+        handleStorage(req, res, url).catch((err) => send(res, 500, { message: String(err) }));
+        return;
+      }
       send(res, 404, { message: "Not found" });
     })
     .listen(PORT, () => console.log(`[demo gateway] http://localhost:${PORT} -> ${POSTGREST}`));

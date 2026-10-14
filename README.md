@@ -4,12 +4,17 @@ A mobile-first exam-preparation platform. The pilot covers Cameroon's **GCE O Le
 
 The learning loop this MVP implements:
 
-**open app → see today's task → learn → practise → get feedback → see progress → know what to do next**
+**set a goal → learn → practise → get feedback → review mistakes → revisit the topic → show mastery**
+
+Its signature feature: **your mistakes become your next lesson**. Every wrong answer goes into a
+mistake notebook with the correction, the misconception behind it when the content names one, a link
+back to the part of the lesson that teaches it, and a different question on the same skill to try next.
 
 | Part | Stack | Path |
 |---|---|---|
 | Learner app (Android/iOS/web) | React Native · Expo · Expo Router · TypeScript | [apps/mobile](apps/mobile) |
 | Admin CMS + backend API | Next.js 16 (App Router, Route Handlers, Server Actions) · Tailwind | [apps/admin](apps/admin) |
+| Marketing landing page (EN/FR) | Next.js 16 (static) · Tailwind | [apps/web](apps/web) |
 | Shared domain logic | TypeScript · Zod · Vitest | [packages/core](packages/core) |
 | Database, auth, storage | Supabase (PostgreSQL + RLS) | [supabase](supabase) |
 
@@ -37,7 +42,12 @@ Admin browser ──(cookie session, Server Actions)──┘
 Pure, tested functions shared by the API and the app:
 
 - `scoring.ts`: all-or-nothing scoring for single, multiple, true/false and numeric questions (numeric answers have a tolerance). Also handles the mock-exam deadline and its 30 s grace period.
-- `mastery.ts`: per-chapter mastery as a moving average weighted by difficulty and exam mode. Hints and slow answers earn less credit, and mastery decays with time since the last practice (the forgetting curve).
+- `mastery.ts`: per-chapter mastery as a moving average weighted by difficulty and exam mode. Hints and slow answers earn less credit, and mastery decays with time since the last practice (the forgetting curve). Used to rank recommendations, not shown as a grade.
+- `skills.ts`: the learner-facing state of each skill — **Not assessed · Learning · Needs review · Mastered** — with the reason for it. A skill counts as mastered after at least 3 different questions answered correctly **without a hint**, across at least 2 different days, with no unresolved later mistake and practised within the last 30 days. The thresholds live in `MASTERY_RULES` and are a study aid to tune, not a validated measure; a skill with too few questions stays "not assessed" rather than being marked as failed.
+- `mistakes.ts`: which open mistakes a new answer recovers. Only an unhinted correct answer to a *different* question on the same skill, in a later session, counts as recovery; getting the same question right again is recorded as a retry.
+- `plan.ts`: today's plan — the diagnostic, then unfinished work, recent mistakes, skills due for review, the next lesson, then chapter practice — fitted to the learner's session length, with one task per target and a reason for each.
+- `lessons.ts`: splits lesson markdown into blocks at `## ` headings (checkpoints sit between blocks) and fingerprints offline study packs.
+- `progress.ts`: turns the curriculum and a learner's answers into per-skill and per-chapter progress.
 - `recommend.ts`: picks the next chapters to study. Weak or fading chapters in high-coefficient subjects come first, then unstarted chapters.
 - `streak.ts`, `dates.ts`: streaks computed in the learner's timezone. They are safe against events that sync late or out of order.
 - `workflow.ts`: the Draft → Review → Approved → Published workflow and which roles may move content between states.
@@ -68,7 +78,16 @@ In the Supabase dashboard **SQL editor**, run these in order:
 2. [supabase/migrations/20260926000002_rls.sql](supabase/migrations/20260926000002_rls.sql)
 3. [supabase/migrations/20260926000003_messaging.sql](supabase/migrations/20260926000003_messaging.sql)
 4. [supabase/migrations/20260926000004_programs.sql](supabase/migrations/20260926000004_programs.sql)
-5. [supabase/seed.sql](supabase/seed.sql) (pilot content; safe to re-run)
+5. [supabase/migrations/20261003000001_past_papers.sql](supabase/migrations/20261003000001_past_papers.sql) (past-paper PDFs table and the private `past-papers` storage bucket)
+6. [supabase/migrations/20261014000001_learning_loop.sql](supabase/migrations/20261014000001_learning_loop.sql) (skills, lesson checkpoints and reading positions, hints and misconceptions, question versions on answers, the mistake notebook, content reports, study preferences)
+7. [supabase/seed.sql](supabase/seed.sql) (pilot content; safe to re-run)
+
+After applying a migration to a running project, reload PostgREST's schema cache, or new tables come
+back as *"Could not find the table in the schema cache"*. Supabase does this for you from the SQL
+editor and the CLI; the local demo backend picks it up on restart (`pnpm demo:backend:stop` then
+`pnpm demo:admin`). To undo the learning-loop migration, run
+[supabase/rollbacks/20261014000001_learning_loop.down.sql](supabase/rollbacks/20261014000001_learning_loop.down.sql) —
+it deletes the learner data that migration introduced, so take a backup first.
 
 Or, with the Supabase CLI: `supabase link` then `supabase db push`, and run the seed file.
 
@@ -101,6 +120,14 @@ Roles: `student`, `teacher` (writes drafts), `reviewer` (approves), `admin` (pub
 ```bash
 pnpm dev:admin    # http://localhost:3000 (CMS + /api/v1)
 pnpm dev:mobile   # Expo dev server; press a / i / w, or scan the QR code with Expo Go
+pnpm dev:web      # landing page on http://localhost:3002 (/en and /fr)
+```
+
+The landing page's "Start for free" and "Sign in" buttons open the learner app's `/sign-up` and `/sign-in` with `?lang=en|fr`, and the app switches to that language for signed-out visitors. In development they point at the Expo web server, so run both:
+
+```bash
+pnpm dev:web
+pnpm --filter @eduprep/mobile web     # Expo web on http://localhost:8081 (add EXPO_PUBLIC_DEMO_MODE=true to skip the backend)
 ```
 
 ### Demo mode (no Supabase needed)
@@ -149,12 +176,20 @@ All learner endpoints expect `Authorization: Bearer <supabase access token>`.
 | GET | `/api/v1/health` | Liveness |
 | GET | `/api/v1/exams` | Active exams with tracks (public; used in onboarding) |
 | GET / PATCH | `/api/v1/me` | Profile; set language, exam, track, daily goal |
-| GET | `/api/v1/me/dashboard` | Countdown, streak, today's minutes, next lesson, recommendations, mastery |
+| GET | `/api/v1/me/dashboard` | Countdown, streak, today's minutes, today's plan, recommendations, mastery |
+| GET | `/api/v1/me/progress` | Per-skill and per-chapter status with the evidence behind it |
+| GET | `/api/v1/me/mistakes` | Mistake notebook (`?status=open\|recovered\|all`, `?chapterId=`) |
+| POST | `/api/v1/me/mistakes/:id/review` | Mark a correction as read |
 | GET | `/api/v1/me/attempts` | Recent submitted attempts |
 | GET | `/api/v1/tracks/:trackId/subjects` | Subjects with coefficient and mastery |
 | GET | `/api/v1/tracks/:trackId/subjects/:subjectId/chapters` | Chapters, lessons, completion, mastery |
 | GET | `/api/v1/lessons/:id` | Lesson content |
 | POST | `/api/v1/lessons/:id/complete` | Idempotent completion (`secondsSpent`, optional `completedAt`) |
+| POST | `/api/v1/lessons/:id/progress` | Save the furthest block read (never moves backwards) |
+| POST | `/api/v1/checkpoints` | Mark one in-lesson checkpoint answer (idempotent via `clientAttemptId`) |
+| GET | `/api/v1/chapters/:id/pack` | Versioned offline study pack (lessons, checkpoints, questions with keys) |
+| POST | `/api/v1/offline-attempts` | Sync a session done offline (idempotent via `clientAttemptId`) |
+| POST | `/api/v1/content-reports` | Flag a question or lesson that looks wrong |
 | POST | `/api/v1/quiz-attempts` | Start `practice` / `past_paper` / `mock` (idempotent via `clientAttemptId`) |
 | GET | `/api/v1/quiz-attempts/:id` | Attempt (no answer keys) and result once submitted |
 | POST | `/api/v1/quiz-attempts/:id/answers` | Autosave (rejected after the mock deadline) |
@@ -171,6 +206,26 @@ Errors have the shape `{ "error": { "code", "message", "details?" } }`.
 
 ---
 
+## The learner app
+
+Five destinations: **Today · Learn · Practice · Progress · Messages** (Profile opens from the avatar
+on Today). There is no Tutor tab while no tutor exists.
+
+- **Today** — one prominent *Start today's session* action on the first task, then the rest of the
+  plan. Every task states how long it takes, why it is there ("after your last mistake", "part 2 of
+  4") and what completes it. Work finished today drops out of the plan and appears under *Done today*.
+- **Learn** — subjects, chapters and lessons. Each chapter shows its status, its skills with a
+  one-line explanation of each, open mistakes, and a download for offline study.
+- **Lessons** — read in sections, with checkpoints in between: answer, see the correction and the
+  explanation, then continue. Reading position is saved; reading is never counted as assessment.
+- **Practice** — the mistake notebook (to review / recovered / all), each entry with the correction,
+  the misconception when known, a link back to the lesson section and a different question to try.
+- **Progress** — overall mastery, streaks, study activity and every skill's state with its reason.
+
+Onboarding asks for the language, exam and série or subjects, target, session length and study days,
+then offers a short **quick check** (one question per topic) that can be skipped — skipped skills stay
+*not assessed* rather than being given a made-up score.
+
 ## Content and trust rules
 
 - Exam dates and deadlines are shown to learners **only after an admin verifies them against an official source URL**. Changing a date clears the verification.
@@ -183,6 +238,9 @@ Errors have the shape `{ "error": { "code", "message", "details?" } }`.
   - Probatoire and BAC (`average`): every subject of the série is compulsory, and the learner picks a target average /20, shown with its mention.
   - The seeded grade scales and subject limits are placeholders to check against official regulations.
 - **Messaging:** learners can message the EduPrep team or study friends who shared their 6-character friend code. The team answers from the admin **Inbox**, and staff messages show a *Verified* badge. There is no public student directory. Learners can block other learners and report messages, and reviewers and admins resolve reports in the Inbox.
+- **Skills and checkpoints:** a chapter can declare skills, and each question belongs to one (questions in a chapter without skills are assessed as the chapter). A question is either practice or a **lesson checkpoint**; checkpoints are asked between lesson sections and never appear in practice sets. Authors can add a hint (a hinted answer still counts, but less) and tag each wrong option with the misconception it reveals — the app never guesses one.
+- **Question versions:** editing a question's wording or answer key bumps its version. Answers record the version the learner saw, so an answer to an outdated offline pack is kept but doesn't count as evidence, and the notebook marks entries whose question has changed since.
+- **Learner content reports:** learners can flag a question or lesson from the app; reviewers and admins clear them under **Content reports** in the CMS.
 
 ---
 
@@ -190,6 +248,7 @@ Errors have the shape `{ "error": { "code", "message", "details?" } }`.
 
 Following the blueprint's backlog, these are not built yet:
 
-- **P1:** push notifications (Expo Notifications + a server job), full mock-exam builder (sections, per-exam duration), past-paper PDF library, study planner, payments (Mobile Money through an aggregator), and a RAG AI tutor (pgvector, grounded in approved lessons).
+- **P1:** push notifications (Expo Notifications + a server job), full mock-exam builder (sections, per-exam duration), past-paper PDF library, payments (Mobile Money through an aggregator), and a RAG AI tutor (pgvector, grounded in approved lessons). The app has **no Tutor tab** until a tutor actually exists.
+- **Spaced revision** (review cards and due dates) and **"teach it back"** are designed for but not built: the Today plan already has a slot for due reviews, and `question_attempts` keeps the per-answer history a scheduler would need.
 - **P2:** photo correction (SnapCorrect-style), human review, video, community, parent view, voice tutor.
 - **Scale:** move analytics to SQL views or materialized views, add rate limiting (Redis), and add background workers for AI and OCR.

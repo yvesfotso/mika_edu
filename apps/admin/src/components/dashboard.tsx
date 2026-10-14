@@ -17,9 +17,7 @@ export function Delta({
   return (
     <span
       className={`inline-flex items-center gap-0.5 rounded-full px-2 py-0.5 text-xs font-semibold tabular-nums ${
-        good
-          ? "bg-brand-soft text-brand-strong"
-          : "bg-rose-100 text-rose-600 dark:bg-rose-950 dark:text-rose-300"
+        good ? "bg-brand-soft text-brand-strong" : "bg-rose-100 text-rose-600 dark:bg-rose-950 dark:text-rose-300"
       }`}
     >
       {up ? <TrendUpIcon size={12} /> : <TrendDownIcon size={12} />}
@@ -30,189 +28,143 @@ export function Delta({
   );
 }
 
-export function Widget({
-  className = "",
-  children,
-}: {
-  className?: string;
-  children: ReactNode;
-}) {
-  return (
-    <section className={`rounded-4xl bg-card p-5 md:p-6 ${className}`}>
-      {children}
-    </section>
-  );
+export function Widget({ className = "", children }: { className?: string; children: ReactNode }) {
+  return <section className={`rounded-3xl bg-card p-5 ${className}`}>{children}</section>;
 }
 
-/* ------------------------------------------------------------------ dot matrix */
+/* ------------------------------------------------------------------ KPI tile */
 
-const DOT_LEVELS = [
-  "bg-ocean-soft",
-  "bg-ocean-mute",
-  "bg-ocean",
-  "bg-ocean-strong",
-];
+const KPI_TONES = {
+  lime: "bg-brand-soft text-brand-strong",
+  sky: "bg-sky-100 text-sky-600 dark:bg-sky-950 dark:text-sky-300",
+  rose: "bg-rose-100 text-rose-500 dark:bg-rose-950 dark:text-rose-300",
+  amber: "bg-amber-100 text-amber-600 dark:bg-amber-950 dark:text-amber-300",
+};
 
-/** One column per day; the column height is how many learners studied, the shade is total time. */
-export function DotMatrix({
-  days,
-  rows = 7,
+/** Small white tile: big number, caption, and a round tinted icon — the top row of the overview. */
+export function Kpi({
+  value,
+  label,
+  icon,
+  tone,
+  delta,
 }: {
-  days: { date: string; learners: number; seconds: number }[];
-  rows?: number;
+  value: ReactNode;
+  label: string;
+  icon: ReactNode;
+  tone: keyof typeof KPI_TONES;
+  delta?: ReactNode;
 }) {
-  const maxLearners = Math.max(1, ...days.map((d) => d.learners));
-  const maxSeconds = Math.max(1, ...days.map((d) => d.seconds));
   return (
-    <div>
-      <div
-        className="flex items-end justify-between gap-[3px]"
-        role="img"
-        aria-label="Daily study activity for the last four weeks"
-      >
-        {days.map((d) => {
-          const filled =
-            d.learners === 0
-              ? 0
-              : Math.max(1, Math.round((d.learners / maxLearners) * rows));
-          const level = Math.min(3, Math.floor((d.seconds / maxSeconds) * 4));
-          return (
-            <div
-              key={d.date}
-              className="flex flex-1 flex-col-reverse items-center gap-[3px]"
-              title={`${d.date}: ${d.learners} learner(s), ${Math.round(d.seconds / 60)} min`}
-            >
-              {Array.from({ length: rows }, (_, i) => (
-                <span
-                  key={i}
-                  className={`aspect-square w-full max-w-[11px] rounded-full ${i < filled ? DOT_LEVELS[level] : "bg-transparent"}`}
-                />
-              ))}
-            </div>
-          );
-        })}
+    <div className="flex items-start justify-between gap-3 rounded-3xl bg-card p-5">
+      <div className="min-w-0">
+        <div className="text-2xl font-semibold tabular-nums text-ink">{value}</div>
+        <div className="mt-0.5 text-sm leading-snug text-muted">
+          {label}
+        </div>
+        {delta && <div className="mt-2">{delta}</div>}
       </div>
-      <div className="mt-3 flex items-center justify-between text-xs text-muted">
-        <span>4 weeks ago</span>
-        <span className="flex items-center gap-1">
-          Less
-          {DOT_LEVELS.map((c) => (
-            <span key={c} className={`size-2.5 rounded-[3px] ${c}`} />
-          ))}
-          More
-        </span>
-        <span>Today</span>
-      </div>
+      <span className={`inline-flex size-10 shrink-0 items-center justify-center rounded-full ${KPI_TONES[tone]}`}>{icon}</span>
     </div>
   );
 }
 
-/* ------------------------------------------------------------------ line chart */
+/* ------------------------------------------------------------------ area chart */
 
-export function LineChart({
+type Pt = [number, number];
+
+/** Catmull-Rom → cubic Bézier, with control points clamped so the curve never dips past the chart floor. */
+function smoothPath(pts: Pt[], top: number, bottom: number) {
+  if (pts.length === 0) return "";
+  const clampY = (y: number) => Math.min(bottom, Math.max(top, y));
+  let d = `M${pts[0]![0].toFixed(1)},${pts[0]![1].toFixed(1)}`;
+  for (let i = 0; i < pts.length - 1; i++) {
+    const p0 = pts[i - 1] ?? pts[i]!;
+    const p1 = pts[i]!;
+    const p2 = pts[i + 1]!;
+    const p3 = pts[i + 2] ?? p2;
+    const c1: Pt = [p1[0] + (p2[0] - p0[0]) / 6, clampY(p1[1] + (p2[1] - p0[1]) / 6)];
+    const c2: Pt = [p2[0] - (p3[0] - p1[0]) / 6, clampY(p2[1] - (p3[1] - p1[1]) / 6)];
+    d += ` C${c1[0].toFixed(1)},${c1[1].toFixed(1)} ${c2[0].toFixed(1)},${c2[1].toFixed(1)} ${p2[0].toFixed(1)},${p2[1].toFixed(1)}`;
+  }
+  return d;
+}
+
+function niceMax(v: number) {
+  if (v <= 0) return 1;
+  const step = 10 ** Math.floor(Math.log10(v));
+  const n = v / step;
+  return (n <= 1 ? 1 : n <= 2 ? 2 : n <= 2.5 ? 2.5 : n <= 5 ? 5 : 10) * step;
+}
+
+const LIME_LINE = "#9DC22B";
+
+/**
+ * Two series over the same days: `current` as a lime area (the last point highlighted with a value pill)
+ * and `previous` as a thin ink line for comparison.
+ */
+export function AreaChart({
   points,
-  min = 0,
-  max = 100,
-  ticks = [40, 60, 80],
-  format = (v: number) => `${Math.round(v)}%`,
+  format,
+  label,
 }: {
-  points: { label: string; value: number | null }[];
-  min?: number;
-  max?: number;
-  ticks?: number[];
-  format?: (v: number) => string;
+  points: { label: string; current: number; previous: number }[];
+  format: (v: number) => string;
+  label: string;
 }) {
-  const W = 210;
-  const H = 110;
-  const padL = 28;
-  const x = (i: number) =>
-    padL + (i * (W - padL - 8)) / Math.max(1, points.length - 1);
-  const y = (v: number) => 8 + (1 - (v - min) / (max - min)) * (H - 20);
-  const known = points
-    .map((p, i) => ({ ...p, i }))
-    .filter(
-      (p): p is { label: string; value: number; i: number } => p.value !== null,
-    );
-  const path = known
-    .map(
-      (p, k) => `${k ? "L" : "M"}${x(p.i).toFixed(1)},${y(p.value).toFixed(1)}`,
-    )
-    .join(" ");
-  const last = known.at(-1);
+  const W = 640;
+  const H = 230;
+  const padL = 40;
+  const padR = 16;
+  const top = 30;
+  const bottom = H - 28;
+  const max = niceMax(Math.max(...points.flatMap((p) => [p.current, p.previous])) * 1.1);
+  const ticks = [0, 0.25, 0.5, 0.75, 1].map((f) => f * max);
+  const x = (i: number) => padL + (i * (W - padL - padR)) / Math.max(1, points.length - 1);
+  const y = (v: number) => bottom - (v / max) * (bottom - top);
+  const cur: Pt[] = points.map((p, i) => [x(i), y(p.current)]);
+  const prev: Pt[] = points.map((p, i) => [x(i), y(p.previous)]);
+  const curPath = smoothPath(cur, top, bottom);
+  const last = points.length - 1;
+  const lastPt = cur[last];
 
   return (
-    <svg
-      viewBox={`0 0 ${W} ${H + 16}`}
-      className="mx-auto w-full max-w-[300px]"
-      role="img"
-      aria-label="Average quiz score per day"
-    >
+    <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img" aria-label={label}>
+      <defs>
+        <linearGradient id="area-lime" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="var(--brand)" stopOpacity={0.75} />
+          <stop offset="1" stopColor="var(--brand)" stopOpacity={0.12} />
+        </linearGradient>
+      </defs>
       {ticks.map((tk) => (
         <g key={tk}>
-          <line
-            x1={padL}
-            x2={W}
-            y1={y(tk)}
-            y2={y(tk)}
-            className="stroke-line"
-            strokeDasharray="3 4"
-          />
-          <text x={0} y={y(tk) + 4} className="fill-muted text-[10px]">
+          <line x1={padL} x2={W - padR} y1={y(tk)} y2={y(tk)} className="stroke-line" />
+          <text x={padL - 10} y={y(tk) + 4} textAnchor="end" className="fill-muted text-[11px]">
             {format(tk)}
           </text>
         </g>
       ))}
-      <path
-        d={path}
-        fill="none"
-        className="stroke-ocean"
-        strokeWidth={2.2}
-        strokeLinejoin="round"
-        strokeLinecap="round"
-      />
-      {last && (
+      {lastPt && <line x1={lastPt[0]} x2={lastPt[0]} y1={lastPt[1]} y2={bottom} stroke={LIME_LINE} strokeWidth={2} />}
+      {curPath && <path d={`${curPath} L${x(last)},${bottom} L${x(0)},${bottom} Z`} fill="url(#area-lime)" />}
+      {curPath && <path d={curPath} fill="none" stroke={LIME_LINE} strokeWidth={2.5} strokeLinecap="round" />}
+      <path d={smoothPath(prev, top, bottom)} fill="none" className="stroke-ink" strokeWidth={2.2} strokeLinecap="round" />
+      {lastPt && (
         <g>
-          <line
-            x1={x(last.i)}
-            x2={x(last.i)}
-            y1={y(last.value)}
-            y2={H}
-            className="stroke-ocean-mute"
-            strokeDasharray="2 3"
-          />
-          <circle
-            cx={x(last.i)}
-            cy={y(last.value)}
-            r={6}
-            className="fill-frame stroke-ocean"
-            strokeWidth={2.5}
-          />
-          <rect
-            x={Math.min(x(last.i), W - 23) - 22}
-            y={y(last.value) + 10}
-            width={44}
-            height={20}
-            rx={10}
-            className="fill-ink"
-          />
+          <circle cx={lastPt[0]} cy={lastPt[1]} r={6} fill="var(--card)" stroke={LIME_LINE} strokeWidth={3} />
+          <rect x={Math.min(lastPt[0] - 28, W - padR - 56)} y={lastPt[1] - 34} width={56} height={22} rx={6} fill="var(--brand)" />
           <text
-            x={Math.min(x(last.i), W - 23)}
-            y={y(last.value) + 24}
+            x={Math.min(lastPt[0], W - padR - 28)}
+            y={lastPt[1] - 19}
             textAnchor="middle"
-            className="fill-frame text-[10px] font-semibold"
+            className="text-[11px] font-semibold"
+            fill="var(--brand-ink)"
           >
-            {format(last.value)}
+            {format(points[last]!.current)}
           </text>
         </g>
       )}
       {points.map((p, i) => (
-        <text
-          key={p.label + i}
-          x={x(i)}
-          y={H + 14}
-          textAnchor="middle"
-          className="fill-muted text-[10px]"
-        >
+        <text key={p.label + i} x={x(i)} y={H - 6} textAnchor="middle" className="fill-muted text-[11px]">
           {p.label}
         </text>
       ))}
@@ -220,122 +172,84 @@ export function LineChart({
   );
 }
 
-/* ------------------------------------------------------------------ gauge */
+/* ------------------------------------------------------------------ meter */
 
-export interface GaugeSegment {
-  label: string;
-  value: number;
-  className: string; // stroke-* class
-  swatch: string; // bg-* class for the legend
-}
-
-/** Semicircle split into segments with small gaps, like a speedometer. */
-export function Gauge({
-  segments,
-  center,
-  caption,
-}: {
-  segments: GaugeSegment[];
-  center: ReactNode;
-  caption: string;
-}) {
-  const total = segments.reduce((a, s) => a + s.value, 0) || 1;
-  const R = 80;
-  const cx = 100;
-  const cy = 100;
-  const gap = 3; // degrees
-  const visible = segments.filter((s) => s.value > 0);
-  const arcs = visible.map((s, i) => {
-    const start =
-      180 +
-      (visible.slice(0, i).reduce((a, v) => a + v.value, 0) / total) * 180;
-    const sweep = (s.value / total) * 180;
-    const a0 = start + gap / 2;
-    const a1 = start + sweep - gap / 2;
-    const p = (deg: number) => [
-      cx + R * Math.cos((deg * Math.PI) / 180),
-      cy + R * Math.sin((deg * Math.PI) / 180),
-    ];
-    const [x0, y0] = p(a0);
-    const [x1, y1] = p(Math.max(a0, a1));
-    return {
-      ...s,
-      d: `M${x0.toFixed(2)},${y0.toFixed(2)} A${R},${R} 0 0 1 ${x1.toFixed(2)},${y1.toFixed(2)}`,
-    };
-  });
-
+/** Thin lime progress bar with an optional caption row above it. */
+export function Meter({ value, label, right }: { value: number; label?: ReactNode; right?: ReactNode }) {
+  const pct = Math.max(0, Math.min(100, value));
   return (
-    <div className="relative mx-auto w-full max-w-[240px]">
-      <svg
-        viewBox="0 0 200 110"
-        className="w-full"
-        role="img"
-        aria-label={caption}
-      >
-        {arcs.map((a) => (
-          <path
-            key={a.label}
-            d={a.d}
-            fill="none"
-            strokeWidth={30}
-            className={a.className}
-          />
-        ))}
-      </svg>
-      <div className="absolute inset-x-0 bottom-0 text-center">
-        <div className="text-4xl font-medium tabular-nums text-ink">
-          {center}
+    <div>
+      {(label || right) && (
+        <div className="mb-1.5 flex items-center justify-between gap-2 text-xs text-muted">
+          <span>{label}</span>
+          <span className="font-semibold tabular-nums text-ink">{right}</span>
         </div>
-        <div className="text-xs text-muted">{caption}</div>
+      )}
+      <div
+        className="h-2 overflow-hidden rounded-full bg-ocean-soft"
+        role="progressbar"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={Math.round(pct)}
+      >
+        <div className="h-full rounded-full bg-brand" style={{ width: `${pct}%` }} />
       </div>
     </div>
   );
 }
 
-export function Legend({
-  items,
-}: {
-  items: { label: string; value: ReactNode; swatch: string }[];
-}) {
+/* ------------------------------------------------------------------ calendar */
+
+const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+/** Month grid (Monday first) for the month containing `today`; `marked` days get a lime circle, today a dark one. */
+export function MonthCalendar({ today, marked }: { today: string; marked: Set<string> }) {
+  const [yy, mm, dd] = today.split("-").map(Number) as [number, number, number];
+  const first = new Date(Date.UTC(yy, mm - 1, 1));
+  const daysInMonth = new Date(Date.UTC(yy, mm, 0)).getUTCDate();
+  const lead = (first.getUTCDay() + 6) % 7;
+  const cells: (number | null)[] = [...Array.from({ length: lead }, () => null), ...Array.from({ length: daysInMonth }, (_, i) => i + 1)];
+  const iso = (d: number) => `${yy}-${String(mm).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+  const month = new Intl.DateTimeFormat("en-GB", { month: "long", year: "numeric", timeZone: "UTC" }).format(first);
+
   return (
-    <ul className="space-y-2.5 text-sm">
-      {items.map((it) => (
-        <li key={it.label} className="flex items-center gap-3">
-          <span className={`size-4 rounded-md ${it.swatch}`} />
-          <span className="flex-1 text-ink">{it.label}</span>
-          <span className="font-semibold tabular-nums text-ink">
-            {it.value}
+    <div>
+      <div className="mb-3 flex items-center justify-between">
+        <h2 className="text-base font-semibold text-ink">Study days</h2>
+        <span className="text-xs font-medium text-ink">{month}</span>
+      </div>
+      <div className="grid grid-cols-7 gap-y-1.5 text-center text-xs">
+        {WEEKDAYS.map((w) => (
+          <span key={w} className="pb-1 font-medium text-muted">
+            {w}
           </span>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-/* ------------------------------------------------------------------ result bars */
-
-/** One pill-shaped bar per quiz, green when passed. Height tracks the score. */
-export function ResultBars({
-  scores,
-  passMark = 50,
-}: {
-  scores: number[];
-  passMark?: number;
-}) {
-  return (
-    <div
-      className="flex h-24 items-end gap-[5px]"
-      role="img"
-      aria-label={`Last ${scores.length} quiz results`}
-    >
-      {scores.map((s, i) => (
-        <span
-          key={i}
-          title={`${Math.round(s)}%`}
-          className={`flex-1 rounded-full ${s >= passMark ? "bg-brand" : "bg-line"}`}
-          style={{ height: `${Math.max(28, s)}%` }}
-        />
-      ))}
+        ))}
+        {cells.map((d, i) => {
+          if (d === null) return <span key={`blank-${i}`} />;
+          const isToday = d === dd;
+          const on = marked.has(iso(d));
+          return (
+            <span key={d} className="flex justify-center">
+              <span
+                className={`inline-flex size-7 items-center justify-center rounded-full tabular-nums ${
+                  isToday ? "bg-ink font-semibold text-frame" : on ? "bg-brand font-medium text-brand-ink" : d > dd ? "text-muted" : "text-ink"
+                }`}
+                title={on ? "Learners studied" : undefined}
+              >
+                {d}
+              </span>
+            </span>
+          );
+        })}
+      </div>
+      <div className="mt-3 flex gap-4 text-xs text-muted">
+        <span className="flex items-center gap-1.5">
+          <span className="size-2.5 rounded-full bg-brand" /> Learners studied
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="size-2.5 rounded-full bg-ink" /> Today
+        </span>
+      </div>
     </div>
   );
 }
